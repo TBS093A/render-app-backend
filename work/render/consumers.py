@@ -1,6 +1,7 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 
+import json
 
 class RenderConsumer(WebsocketConsumer):
 
@@ -12,26 +13,49 @@ class RenderConsumer(WebsocketConsumer):
         self.render_model = self.scope['url_route']['kwargs']['render_model']
         self.render_group = f'render_{self.render_name}_{self.render_model}'
 
-        
+        # save render object
 
-        pass
+        async_to_sync(self.chennel_layer.group_add)(
+            self.render_group,
+            self.channel_name
+        )
+        
+        self.accept()
 
     def disconnect(self, close_code):
         """
         disconnect from rendering zone
         """
-        pass
+        async_to_sync(self.channel_layer.group_discard)(
+            self.render_group,
+            self.channel_name
+        )
 
-    def receive(self, progress):
+    def receive(self, command):
         """
-        get info (index) about render image
+        start rendering a every sets / single set (hand sign letter) / single image 
         
-        where index is a `frame_id`/`image_id`/`camera_id`
-        """
-        pass
+        every sets - `angle` - all hand sign positions
 
-    def check_render(self, event):
+        single set - `letter_id` + `angle`
+
+        single image - `letter_id` + `angle` + `camera_id`
+
+        (default `angle` is 12)
         """
-        send info about rendered image
+        
+        # render start. Async send percentage progress 
+
+        command_json = json.loads(command)
+
+        # render_single_image = command_json['command'] == 'single_image'
+        # render_single_set = command_json['command'] == 'single_set' and command_json['set_id']
+        # render_set = command_json['command'] == 'set'
+
+        render(command_json)
+
+    def render(command):
+        """
+        general render
         """
         pass
