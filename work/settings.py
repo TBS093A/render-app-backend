@@ -159,3 +159,9 @@ SWAGGER_SETTINGS = {
         }
     }
 }
+
+# blender settings
+
+BLENDER_DEFAULT_RENDER_FILE = os.path.join(BASE_DIR + '/static/model', 'uklady_dloni_ver_16_18.01.2014_2.blend')
+BLENDER_RENDER_DIR = BASE_DIR + '/static/render'
+BLENDER_RENDER = 'CPU'

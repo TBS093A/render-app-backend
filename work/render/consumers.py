@@ -48,14 +48,34 @@ class RenderConsumer(WebsocketConsumer):
 
         command_json = json.loads(command)
 
-        # render_single_image = command_json['command'] == 'single_image'
-        # render_single_set = command_json['command'] == 'single_set' and command_json['set_id']
-        # render_set = command_json['command'] == 'set'
+        render_single_image = command_json['command'] == 'single_image'
+        render_customize_set = command_json['command'] == 'customize_set'
+        render_set = command_json['command'] == 'set'
 
-        render(command_json)
+        if render_single_image:
+            self.render_single_image(command_json)
+        elif render_customize_set:
+            self.render_customize_set(command_json)
+        elif render_set:
+            self.render_set(command_json)
+        
 
-    def render(command):
+    def render_single_image(self, command):
         """
-        general render
+        one hand sign image [ `set_id` + `angle` + `(width, height)` ]
+        """
+        pass
+
+    def render_customize_set(self, command):
+        """
+        one hand sign [ `set_id` + `step` + `angle` + `(width, height)` ] 
+        
+        or [ `list: [ step_id ]` + `step` + `angle` + `(width, height)` ]
+        """
+        pass
+
+    def render_set(self, command):
+        """
+        general render (all hand signs) [ `angle` + `(width, height)` ]
         """
         pass
