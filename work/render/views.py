@@ -8,7 +8,7 @@ from .models import *
 from .serializers import *
 
 
-# make views for serializers -> not swapping! use mixins
+# make views for serializers -> do not swapping! use mixins
 
 class RenderViewSet(viewsets.ModelViewSet):
     """
