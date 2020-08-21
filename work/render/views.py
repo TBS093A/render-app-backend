@@ -18,23 +18,23 @@ class RenderViewSet(viewsets.ModelViewSet):
     """
 
     def create(self, request):
-        """
-        start rendering a every sets / single set (hand sign letter) / single image 
-        
-        every sets - `angle` - all hand sign positions
+    """
+    start rendering a every sets / single set (hand sign letter) / single image 
+    
+    every sets - `angle` - all hand sign positions
 
-        single set - `letter_id` + `angle`
+    single set - `letter_id` + `angle`
 
-        single image - `letter_id` + `angle` + `camera_id`
+    single image - `letter_id` + `angle` + `camera_id`
 
-        (default `angle` is 12)
-        """
+    (default `angle` is 12)
+    """
         
         pass
 
 class ModelViewSet(viewsets.ModelViewSet):
     """
-    A Model CRUD (abstract from `viewsets.ModelViewSet`):
+    A  CRUD (abstract from `viewsets.ModelViewSet`):
         `GET`: `list()`
         `GET`: `retrieve()` /parameter {id}
         `POST`: `create()`
