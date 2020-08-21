@@ -48,8 +48,10 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
-    'channels',
-    'work'
+    # 'channels',
+    'work',
+    'work.account',
+    'work.render',
 ]
 
 MIDDLEWARE = [
@@ -98,6 +100,10 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'work.wsgi.application'
+
+# redis
+
+# ASGI_APPLICATION = 'work.render.routing.websocket_urlpatterns'
 
 
 # Database
