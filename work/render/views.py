@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets
 
 from .models import *
-# from .serializers import *
+from .serializers import *
 
 class RenderViewSet(viewsets.ModelViewSet):
     """
@@ -16,21 +16,33 @@ class RenderViewSet(viewsets.ModelViewSet):
         `PUT`&`PATCH`: `update()` /parameter {id}
         `DELETE`: `destroy()` /parameter {id}
     """
+    queryset = RenderSet.objects.all()
+    serializer_class = RenderSetSerializer
 
     def create(self, request):
-    """
-    start rendering a every sets / single set (hand sign letter) / single image 
-    
-    every sets - `angle` - all hand sign positions
-
-    single set - `letter_id` + `angle`
-
-    single image - `letter_id` + `angle` + `camera_id`
-
-    (default `angle` is 12)
-    """
+        """
+        start rendering a every sets / single set (hand sign letter) / single image 
         
-        pass
+        every sets - `angle` - all hand sign positions
+
+        single set - `letter_id` + `angle`
+
+        single image - `letter_id` + `angle` + `camera_id`
+
+        (default `angle` is 12)
+        """
+        
+        if 'angle' and 'letter_id' and 'camera_id' in request:
+            # single image serializer swap
+            pass
+        elif 'angle' and 'letter_id' in request:
+            # single set serializer swap
+            pass
+        elif 'angle' in request:
+            # every sets serializer swap
+            pass
+        return Response()
+
 
 class ModelViewSet(viewsets.ModelViewSet):
     """
@@ -41,4 +53,5 @@ class ModelViewSet(viewsets.ModelViewSet):
         `PUT`&`PATCH`: `update()` /parameter {id}
         `DELETE`: `destroy()` /parameter {id}
     """
-    pass
+    queryset = Model.objects.all()
+    serializer_class = ModelSerializer
