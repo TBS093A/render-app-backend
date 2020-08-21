@@ -7,6 +7,9 @@ from rest_framework import viewsets
 from .models import *
 from .serializers import *
 
+
+# make views for serializers -> not swapping! use mixins
+
 class RenderViewSet(viewsets.ModelViewSet):
     """
     A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):
