@@ -47,6 +47,7 @@ class RenderEverySetsSerializer(RenderSetSerializer):
 
 
     class Meta:
+        model = RenderSet
         fields = renderSerializerFields + ['angle']
 
 class RenderSingleSetSerializer(RenderEverySetsSerializer):
@@ -63,6 +64,7 @@ class RenderSingleSetSerializer(RenderEverySetsSerializer):
 
 
     class Meta:
+        model = RenderSet
         fields = renderSerializerFields + ['letter_id']   
 
 class RenderSingleImageSerializer(RenderSingleSetSerializer):
@@ -79,6 +81,7 @@ class RenderSingleImageSerializer(RenderSingleSetSerializer):
 
 
     class Meta:
+        model = RenderSet
         fields = renderSerializerFields + ['camera_id']
 
 
