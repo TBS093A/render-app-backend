@@ -16,6 +16,12 @@ class RenderViewSet(
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet
 ):
+    """
+    A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):
+        `GET`: `list()`
+        `GET`: `retrieve()` /parameter {id}
+        `DELETE`: `destroy()` /parameter {id}
+    """
     queryset = RenderSet.objects.all()
     serializer_class = RenderSetSerializer
 
@@ -25,12 +31,8 @@ class RenderEverySetsViewSet(
     viewsets.GenericViewSet
 ):
     """
-    A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):
-        `GET`: `list()`
-        `GET`: `retrieve()` /parameter {id}
+    A RenderEverySets CRUD (abstract from `viewsets.ModelViewSet`):
         `POST`: `create()`
-        `PUT`&`PATCH`: `update()` /parameter {id}
-        `DELETE`: `destroy()` /parameter {id}
     """
     queryset = RenderSet.objects.all()
     serializer_class = RenderEverySetsSerializer
@@ -52,6 +54,10 @@ class RenderSingleSetViewSet(
     mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
+    """
+    A RenderSingleSetSet CRUD (abstract from `viewsets.ModelViewSet`):
+        `POST`: `create()`
+    """
     queryset = RenderSet.objects.all()
     serializer_class = RenderSingleSetSerializer
 
@@ -67,10 +73,15 @@ class RenderSingleSetViewSet(
             pass
         return Response()
 
+
 class RenderSingleImageViewSet(
     mixins.CreateModelMixin,
     viewsets.GenericViewSet
 ):
+    """
+    A RenderSingleImage CRUD (abstract from `viewsets.ModelViewSet`):
+        `POST`: `create()`
+    """
     queryset = RenderSet.objects.all()
     serializer_class = RenderSingleImageSerializer
 
