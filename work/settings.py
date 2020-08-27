@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'drf_yasg',
+    'channels',
     'djangochannelsrestframework',
     'work',
     'work.account',
@@ -103,7 +104,7 @@ WSGI_APPLICATION = 'work.wsgi.application'
 
 # redis
 
-# ASGI_APPLICATION = 'work.render.routing.websocket_urlpatterns'
+ASGI_APPLICATION = 'work.render.routing.application'
 
 
 # Database

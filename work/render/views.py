@@ -1,8 +1,10 @@
 # make normal rest first
 # connect websocked after rest done
 from rest_framework.response import Response
-
 from rest_framework import viewsets, mixins
+
+from djangochannelsrestframework import permissions, mixins as channelMixins
+from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
 
 from .models import *
 from .serializers import *
@@ -11,10 +13,11 @@ from .serializers import *
 # make views for serializers -> do not swapping! use mixins
 
 class RenderViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    mixins.DestroyModelMixin,
-    viewsets.GenericViewSet
+    channelMixins.ListModelMixin,
+    channelMixins.RetrieveModelMixin,
+    channelMixins.DeleteModelMixin,
+    # viewsets.GenericViewSet,
+    GenericAsyncAPIConsumer
 ):
     """
     A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):

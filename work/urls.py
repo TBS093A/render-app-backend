@@ -21,8 +21,6 @@ from drf_yasg.views import get_schema_view
 from rest_framework import permissions, routers
 
 from work import settings
-from .account.views import AccountViewSet, AccountAuth
-from .render.views import RenderViewSet, RenderEverySetsViewSet, RenderSingleSetViewSet, RenderSingleImageViewSet, ModelViewSet
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -36,19 +34,10 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-router = routers.DefaultRouter()
-
-router.register(r'user', AccountViewSet, basename='user')
-router.register(r'render', RenderViewSet, basename='render')
-router.register(r'render/all', RenderEverySetsViewSet, basename='render-all')
-router.register(r'render/set', RenderSingleSetViewSet, basename='render-set')
-router.register(r'render/image', RenderSingleImageViewSet, basename='render-image')
-router.register(r'model', ModelViewSet, basename='model')
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(router.urls)),
-    re_path(r'user/auth', AccountAuth.as_view())
+    path('', include('work.account.urls')),
+    path('', include('work.render.urls')),
 ]
 
 if settings.DEBUG:
