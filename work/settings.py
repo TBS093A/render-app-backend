@@ -100,9 +100,12 @@ TEMPLATES = [
     },
 ]
 
+
+# rest endpoints
+
 WSGI_APPLICATION = 'work.wsgi.application'
 
-# redis
+# websocket / redis endpoints
 
 ASGI_APPLICATION = 'work.render.routing.application'
 
