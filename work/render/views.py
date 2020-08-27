@@ -16,8 +16,7 @@ class RenderViewSet(
     channelMixins.ListModelMixin,
     channelMixins.RetrieveModelMixin,
     channelMixins.DeleteModelMixin,
-    # viewsets.GenericViewSet,
-    GenericAsyncAPIConsumer
+    GenericAsyncAPIConsumer,
 ):
     """
     A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):
@@ -30,8 +29,8 @@ class RenderViewSet(
 
 
 class RenderEverySetsViewSet(
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet
+    channelMixins.CreateModelMixin,
+    viewsets.GenericViewSet,
 ):
     """
     A RenderEverySets CRUD (abstract from `viewsets.ModelViewSet`):
@@ -54,8 +53,8 @@ class RenderEverySetsViewSet(
 
 
 class RenderSingleSetViewSet(
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet
+    channelMixins.CreateModelMixin,
+    viewsets.GenericViewSet,
 ):
     """
     A RenderSingleSetSet CRUD (abstract from `viewsets.ModelViewSet`):
@@ -78,8 +77,8 @@ class RenderSingleSetViewSet(
 
 
 class RenderSingleImageViewSet(
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet
+    channelMixins.CreateModelMixin,
+    viewsets.GenericViewSet,
 ):
     """
     A RenderSingleImage CRUD (abstract from `viewsets.ModelViewSet`):

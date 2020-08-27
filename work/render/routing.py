@@ -10,6 +10,9 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
             url(r"^general/$", view_as_consumer(RenderViewSet)),
+            url(r'^render/all/$', view_as_consumer(RenderEverySetsViewSet)),
+            url(r'^render/set/$', view_as_consumer(RenderSingleSetViewSet)),
+            url(r'^render/image/$', view_as_consumer(RenderSingleImageViewSet)),
         ])
     ),
  })
