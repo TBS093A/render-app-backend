@@ -107,7 +107,14 @@ WSGI_APPLICATION = 'work.wsgi.application'
 # websocket / redis endpoints
 
 ASGI_APPLICATION = 'work.render.routing.application'
-
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('127.0.0.1', 6379)],
+        },
+    },
+}
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -158,6 +165,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Swagger settings
+
 SWAGGER_SETTINGS = {
     'JSON_EDITOR': True,
     'SECURITY_DEFINITIONS': {
@@ -169,8 +178,16 @@ SWAGGER_SETTINGS = {
     }
 }
 
-# blender settings
+# Blender settings
 
 BLENDER_DEFAULT_RENDER_FILE = os.path.join(BASE_DIR + '/static/model', 'uklady_dloni_ver_16_18.01.2014_2.blend')
 BLENDER_RENDER_DIR = BASE_DIR + '/static/render'
 BLENDER_RENDER = 'CPU'
+
+# Celery settings
+
+BROKER_URL = 'redis://localhost:6379'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
