@@ -10,9 +10,9 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
             url(r"^render/$", view_as_consumer(RenderViewSet)),
-            url(r'^render/angle/(?P<angle>[^/]+)/$', view_as_consumer(RenderEverySetsViewSet)),
-            url(r'^render/angle/(?P<angle>[^/]+)/letter/(?P<letter_id>[^/]+)/$', view_as_consumer(RenderSingleSetViewSet)),
-            url(r'^render/angle/(?P<angle>[^/]+)/letter/(?P<letter_id>[^/]+)/camera/(?P<camera_id>[^/]+)$', view_as_consumer(RenderSingleImageViewSet)),
+            url(r"^render/angle/(?P<angle>[^/]+)/$", view_as_consumer(RenderEverySetsViewSet)),
+            url(r"^render/angle/(?P<angle>[^/]+)/letter/(?P<letter_id>[^/]+)/$", view_as_consumer(RenderSingleSetViewSet)),
+            url(r"^render/angle/(?P<angle>[^/]+)/letter/(?P<letter_id>[^/]+)/camera/(?P<camera_id>[^/]+)$", view_as_consumer(RenderSingleImageViewSet)),
         ])
     ),
  })

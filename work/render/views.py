@@ -15,7 +15,7 @@ from .serializers import *
 class RenderViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
-    mixins.DeleteModelMixin,
+    mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
 ):
     """
