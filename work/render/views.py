@@ -13,10 +13,10 @@ from .serializers import *
 # make views for serializers -> do not swapping! use mixins
 
 class RenderViewSet(
-    channelMixins.ListModelMixin,
-    channelMixins.RetrieveModelMixin,
-    channelMixins.DeleteModelMixin,
-    GenericAsyncAPIConsumer,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DeleteModelMixin,
+    viewsets.GenericViewSet,
 ):
     """
     A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):
