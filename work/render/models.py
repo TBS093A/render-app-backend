@@ -7,7 +7,7 @@ from work.account.models import Account
 
 class Model(models.Model):
     name = models.CharField(max_length=255)
-    file = models.CharField(max_length=255)
+    model = models.FileField(upload_to='models/')
 
 class RenderSet(models.Model):
     name = models.CharField(max_length=30)
