@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-<<<<<<< HEAD
 
 RENDER_DIR = os.path.join(BASE_DIR, 'renders')
 MODEL_DIR = os.path.join(BASE_DIR, 'models')
@@ -25,8 +24,6 @@ STATICFILES_DIRS = (
     MODEL_DIR,
 )
 
-=======
->>>>>>> simple fixes
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
