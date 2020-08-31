@@ -9,8 +9,12 @@ from work.settings import (
     BPY_DEVICE,
 )
 
+# TODO make a compile of bpy library and use this in app
 
 class RenderGeneral():
+    """
+    Rendering functionality
+    """
 
     def __init__(self, blendFileName):
         self.bpy = self.__setBlendFile(blendFileName)
@@ -52,6 +56,9 @@ class RenderGeneral():
 
     @classmethod
     def renderEverySets(self):
+        """
+        render all sets from blend file
+        """
         for cameraID in len(self.cameras):
             bpy.context.scene.camera = self.cameras[ cameraID ]
             for setID in range(87):
@@ -59,6 +66,13 @@ class RenderGeneral():
 
     @classmethod
     def renderSingleSet(self, setID, cameraID):
+        """
+        render single image by parameters:
+
+        `setID` - id of generated set
+
+        `cameraID` - id of current camera used to render
+        """
         rotate = 0
         nameSeries = 0
         bpy.context.scene.frame_set(setID)
@@ -69,6 +83,17 @@ class RenderGeneral():
 
     @classmethod
     def renderSingleImage(self, setID, rotate, nameSeries, cameraID):
+        """
+        render single image by parameters:
+
+        `setID` - id of generated set
+
+        `rotate` - value between `0 - 6.2` where `0.2 == 12 deg` && `6.2 == 360 deg`
+
+        `nameSeries` - id of generated image (from current set)
+
+        `cameraID` - id of current camera used to render
+        """
         self.bones.rotation_euler = (rotate, 0, 0)
         self.bones.keyframe_insert('rotation_euler', frame=setID)
         bpy.context.scene.render.filepath = self.__setFilePathAndName(setID, nameSeries, cameraID)
