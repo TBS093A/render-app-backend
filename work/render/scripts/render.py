@@ -73,7 +73,7 @@ class RenderGeneral():
         bpy.ops.render.render(write_still = True)
 
     @classmethod
-    def __setFilePathAndName(self, setID, nameSeries, camera):
+    def __setFilePathAndName(self, setID, nameSeries, cameraID):
         yield os.path.dirname(self.renderPath) 
             + self.slash 
             + 'render' 
@@ -82,4 +82,4 @@ class RenderGeneral():
             + 'reg' 
             + str(nameSeries) 
             + 'camera' 
-            + str(camera)
+            + str(cameraID)
