@@ -16,7 +16,8 @@ class RenderGeneral():
         self.bpy.context.scene.render.film_transparent = True
         self.bpy.context.scene.render.image_settings.color_mode = 'RGBA'
         
-        self.renderPath = os.path.dirname(os.path.abspath(__file__))
+        # self.renderPath = os.path.dirname(os.path.abspath(__file__))
+        self.renderPath = BPY_RENDER_DIR
         self.slash = chr(92)
 
         self.scene = bpy.context.scene

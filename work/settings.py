@@ -15,9 +15,8 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-RENDER_DIR = os.path.join(BASE_DIR, 'renders')
-MODEL_DIR = os.path.join(BASE_DIR, 'models')
+RENDER_DIR = os.path.join(BASE_DIR, 'static/renders')
+MODEL_DIR = os.path.join(BASE_DIR, 'static/models')
 
 STATICFILES_DIRS = (
     RENDER_DIR,
@@ -180,8 +179,8 @@ SWAGGER_SETTINGS = {
 
 # Blender settings
 
-BPY_DEFAULT_RENDER_FILE = os.path.join(BASE_DIR + '/static/model', 'uklady_dloni_ver_16_18.01.2014_2.blend')
-BPY_RENDER_DIR = BASE_DIR + '/static/render'
+BPY_DEFAULT_RENDER_FILE = os.path.join(MODEL_DIR, 'uklady_dloni_ver_16_18.01.2014_2.blend')
+BPY_RENDER_DIR = RENDER_DIR
 BPY_DEVICE = 'CPU'
 
 # Celery settings
