@@ -16,6 +16,14 @@ import os
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
+RENDER_DIR = os.path.join(BASE_DIR, 'renders')
+MODEL_DIR = os.path.join(BASE_DIR, 'models')
+
+STATICFILES_DIRS = (
+    RENDER_DIR,
+    MODEL_DIR,
+)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
