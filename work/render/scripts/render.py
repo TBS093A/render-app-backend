@@ -14,39 +14,41 @@ class RenderGeneral():
 
     def __init__(self, blendFileName):
         self.bpy = self.__setBlendFile(blendFileName)
-        self.bpy.context.scene.render.film_transparent = True
-        self.bpy.context.scene.render.image_settings.color_mode = 'RGBA'
+
+        self.scene = self.bpy.context.scene
+        
+        self.bones = self.bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
+        self.bones.rotation_mode = 'XYZ'
+
+        self.scene.frame_start = 1
+        self.scene.frame_end = 86
+
+        self.rotate = 0
+        self.nameSeries = 0
         
         # self.renderPath = os.path.dirname(os.path.abspath(__file__))
         self.renderPath = BPY_RENDER_DIR
         self.slash = chr(92)
 
-        self.scene = bpy.context.scene
-        self.scene.frame_start = 1
-        self.scene.frame_end = 86
-
-        self.bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
-        bones.rotation_mode = 'XYZ'
-
-        self.cameras = [ camera for camera in bpy.data.objects if camera.type == 'CAMERA' ]
+        self.bpy.context.scene.render.film_transparent = True
+        self.bpy.context.scene.render.image_settings.color_mode = 'RGBA'
         
-        self.rotate = 0
-        self.nameSeries = 0
-
+        self.cameras = [ camera for camera in self.bpy.data.objects if camera.type == 'CAMERA' ]
+        
 
     @classmethod
     def __setBlendFile(self, blendFile):
         if 'bpy' not in sys.modules:
-            self.bpy = importlib.import_module('bpy')
+            bpy = importlib.import_module('bpy')
+            bpy.ops.wm.open_mainfile(MODEL_DIR + '/' + blendFile)
 
-        self.bpy.ops.wm.open_mainfile(MODEL_DIR + '/' + blendFile)
-
-        preferences = self.bpy.context.user_preferences.addons['cycles'].preferences
-        preferences.compute_device_type = 'CUDA'
-        
-        self.bpy.context.scene.cycles.device = BLENDER_RENDER
-        
-        yield sys.modules['bpy']
+            preferences = bpy.context.user_preferences.addons['cycles'].preferences
+            preferences.compute_device_type = 'CUDA'
+            
+            bpy.context.scene.cycles.device = BPY_DEVICE
+            
+            # return sys.modules['bpy']
+            return bpy
 
     @classmethod
     def renderEverySets(self):
@@ -67,19 +69,11 @@ class RenderGeneral():
 
     @classmethod
     def renderSingleImage(self, setID, rotate, nameSeries, cameraID):
-        bones.rotation_euler = (rotate, 0, 0)
-        bones.keyframe_insert('rotation_euler', frame=setID)
+        self.bones.rotation_euler = (rotate, 0, 0)
+        self.bones.keyframe_insert('rotation_euler', frame=setID)
         bpy.context.scene.render.filepath = self.__setFilePathAndName(setID, nameSeries, cameraID)
         bpy.ops.render.render(write_still = True)
 
     @classmethod
     def __setFilePathAndName(self, setID, nameSeries, cameraID):
-        yield os.path.dirname(self.renderPath) 
-            + self.slash 
-            + 'render' 
-            + self.slash 
-            + str(setID) 
-            + 'reg' 
-            + str(nameSeries) 
-            + 'camera' 
-            + str(cameraID)
+        yield os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + str(setID) + 'reg' + str(nameSeries) + 'camera' + str(cameraID)

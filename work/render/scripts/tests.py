@@ -2,12 +2,12 @@ import unittest
 import os
 
 from .render import RenderGeneral
-from settings import RENDER_DIR
+from work.settings import RENDER_DIR
 
 
 class TestRenderUtils(unittest.TestCase):
     
-    testRender = RenderGeneral('test.blend')
+    testRender = RenderGeneral('testHand.blend')
 
     angle = 0
     setID = 0
@@ -41,12 +41,3 @@ class TestRenderSingleImage(TestRenderUtils):
         )
         self.assertEqual(True, self.defaultImagePath)
     pass
-
-+ self.slash 
-            + 'render' 
-            + self.slash 
-            + str(x) 
-            + 'reg' 
-            + str(nameSeries) 
-            + 'camera' 
-            + str(camera)
