@@ -2,7 +2,11 @@ import importlib
 import sys
 import os
 
-from work.settings import *
+from work.settings import (
+    BPY_DEFAULT_RENDER_FILE,
+    BPY_RENDER_DIR,
+    BPY_DEVICE,
+)
 
 
 class RenderGeneral():

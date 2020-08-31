@@ -15,6 +15,7 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+<<<<<<< HEAD
 
 RENDER_DIR = os.path.join(BASE_DIR, 'renders')
 MODEL_DIR = os.path.join(BASE_DIR, 'models')
@@ -24,6 +25,8 @@ STATICFILES_DIRS = (
     MODEL_DIR,
 )
 
+=======
+>>>>>>> simple fixes
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
@@ -180,9 +183,9 @@ SWAGGER_SETTINGS = {
 
 # Blender settings
 
-BLENDER_DEFAULT_RENDER_FILE = os.path.join(BASE_DIR + '/static/model', 'uklady_dloni_ver_16_18.01.2014_2.blend')
-BLENDER_RENDER_DIR = BASE_DIR + '/static/render'
-BLENDER_RENDER = 'CPU'
+BPY_DEFAULT_RENDER_FILE = os.path.join(BASE_DIR + '/static/model', 'uklady_dloni_ver_16_18.01.2014_2.blend')
+BPY_RENDER_DIR = BASE_DIR + '/static/render'
+BPY_DEVICE = 'CPU'
 
 # Celery settings
 
