@@ -42,8 +42,10 @@ class TestRenderSingleImage(TestRenderUtils):
         self.assertEqual(True, self.defaultImagePath)
     pass
 
+
 class TestRenderSingleSet(TestRenderUtils):
     pass
+
 
 class TestRenderEverySets(TestRenderUtils):
     pass
