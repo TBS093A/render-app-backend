@@ -26,7 +26,7 @@ class TestRenderUtils(unittest.TestCase):
         yield self.checkFileExist(RENDER_DIR + '/' + imageName)
 
     def __checkFileExist(self, path):
-        yield os.path.isfile(path):
+        yield os.path.isfile(path)
 
     pass
 
