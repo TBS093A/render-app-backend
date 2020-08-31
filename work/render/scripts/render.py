@@ -1,77 +1,50 @@
-import bpy
-import math
+import importlib
+import sys
 import os
 
-from work.celery import import_bpy as bpy
+from work.settings import *
 
-# scene = bpy.context.scene
-# bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
-# bones.rotation_mode = 'XYZ'
 
-# scene.frame_start = 1
-# scene.frame_end = 86
+class RenderGeneral():
 
-# rotate = 0
-# nameSeries = 0
+    def __init__(self, blendFilePath):
+        self.bpy = self.__setBlendFile(blendFilePath)
+        self.bpy.context.scene.render.film_transparent = True
+        self.bpy.context.scene.render.image_settings.color_mode = 'RGBA'
+        
+        self.renderPath = os.path.dirname(os.path.abspath(__file__))
+        self.slash = chr(92)
 
-# renderPath = os.path.dirname(os.path.abspath(__file__))
-# slash = chr(92)
+        self.scene = bpy.context.scene
+        self.scene.frame_start = 1
+        self.scene.frame_end = 86
 
-# cameraOne = bpy.data.objects["CameraOne"]
-# cameraTwo = bpy.data.objects["CameraTwo"]
+        self.bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
+        bones.rotation_mode = 'XYZ'
 
-# bpy.context.scene.render.film_transparent = True
-# bpy.context.scene.render.image_settings.color_mode = 'RGBA'
+        self.cameras = [ camera for camera in bpy.data.objects if camera.type == 'CAMERA' ]
+        
+        self.rotate = 0
+        self.nameSeries = 0
 
-# for camera in range(2):
-#     if camera == 0:
-#         bpy.context.scene.camera = cameraOne
-#     elif camera == 1:
-#         bpy.context.scene.camera = cameraTwo
-#     for x in range(87):
-#         rotate = 0
-#         nameSeries = 0
-#         bpy.context.scene.frame_set(x)
-#         while rotate <= 6.2:
-#             bones.rotation_euler = (rotate, 0, 0)
-#             bones.keyframe_insert('rotation_euler', frame=x)
-#             bpy.context.scene.render.filepath = os.path.dirname(renderPath) + slash + 'render' + slash + str(x) + 'reg' + str(nameSeries) + 'camera' + str(camera)
-#             bpy.ops.render.render(write_still = True)
-#             rotate += 0.2
-#             nameSeries += 1
-
-class RenderScripts():
-
-    scene = bpy.context.scene
-    bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
-    bones.rotation_mode = 'XYZ'
-
-    scene.frame_start = 1
-    scene.frame_end = 86
-
-    rotate = 0
-    nameSeries = 0
-
-    renderPath = os.path.dirname(os.path.abspath(__file__))
-    slash = chr(92)
-
-    cameraOne = bpy.data.objects["CameraOne"]
-    cameraTwo = bpy.data.objects["CameraTwo"]
-
-    bpy.context.scene.render.film_transparent = True
-    bpy.context.scene.render.image_settings.color_mode = 'RGBA'
 
     @classmethod
-    def setBlendFile(self):
-        pass
+    def __setBlendFile(self, blendFile):
+        if 'bpy' not in sys.modules:
+            self.bpy = importlib.import_module('bpy')
+            self.bpy.ops.wm.open_mainfile(blendFile)
+
+            preferences = self.bpy.context.user_preferences.addons['cycles'].preferences
+            preferences.compute_device_type = 'CUDA'
+            
+            self.bpy.context.scene.cycles.device = BLENDER_RENDER
+            
+            yield sys.modules['bpy']
 
     @classmethod
     def renderEverySets(self):
-        for cameraID in range(2):
-            if cameraID == 0:
-                bpy.context.scene.camera = self.cameraOne
-            elif cameraID == 1:
-                bpy.context.scene.camera = self.cameraTwo
+        for cameraID in len(self.cameras):
+            bpy.context.scene.camera = self.cameras[ cameraID ]
             for setID in range(87):
                 self.renderSingleSet(setID, cameraID)
 
