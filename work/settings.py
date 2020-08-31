@@ -12,11 +12,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
+def makeDirIfNotExist(dir):
+    if not os.path.isdir(dir):
+        os.makedirs(dir)
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 RENDER_DIR = os.path.join(BASE_DIR, 'static/renders')
 MODEL_DIR = os.path.join(BASE_DIR, 'static/models')
+
+makeDirIfNotExist(RENDER_DIR)
+makeDirIfNotExist(MODEL_DIR)
 
 STATICFILES_DIRS = (
     RENDER_DIR,

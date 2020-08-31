@@ -3,6 +3,7 @@ import sys
 import os
 
 from work.settings import (
+    MODEL_DIR,
     BPY_DEFAULT_RENDER_FILE,
     BPY_RENDER_DIR,
     BPY_DEVICE,
@@ -11,8 +12,8 @@ from work.settings import (
 
 class RenderGeneral():
 
-    def __init__(self, blendFilePath):
-        self.bpy = self.__setBlendFile(blendFilePath)
+    def __init__(self, blendFileName):
+        self.bpy = self.__setBlendFile(blendFileName)
         self.bpy.context.scene.render.film_transparent = True
         self.bpy.context.scene.render.image_settings.color_mode = 'RGBA'
         
@@ -37,14 +38,15 @@ class RenderGeneral():
     def __setBlendFile(self, blendFile):
         if 'bpy' not in sys.modules:
             self.bpy = importlib.import_module('bpy')
-            self.bpy.ops.wm.open_mainfile(blendFile)
 
-            preferences = self.bpy.context.user_preferences.addons['cycles'].preferences
-            preferences.compute_device_type = 'CUDA'
-            
-            self.bpy.context.scene.cycles.device = BLENDER_RENDER
-            
-            yield sys.modules['bpy']
+        self.bpy.ops.wm.open_mainfile(MODEL_DIR + '/' + blendFile)
+
+        preferences = self.bpy.context.user_preferences.addons['cycles'].preferences
+        preferences.compute_device_type = 'CUDA'
+        
+        self.bpy.context.scene.cycles.device = BLENDER_RENDER
+        
+        yield sys.modules['bpy']
 
     @classmethod
     def renderEverySets(self):
