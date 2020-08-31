@@ -61,24 +61,24 @@ class RenderGeneral():
         nameSeries = 0
         bpy.context.scene.frame_set(setID)
         while rotate <= 6.2:
-            self.renderSingleImage(rotate, nameSeries, cameraID)
+            self.renderSingleImage(rotate, setID, nameSeries, cameraID)
             rotate += 0.2
             nameSeries += 1
 
     @classmethod
-    def renderSingleImage(self, rotate, nameSeries, cameraID):
+    def renderSingleImage(self, setID, rotate, nameSeries, cameraID):
         bones.rotation_euler = (rotate, 0, 0)
-        bones.keyframe_insert('rotation_euler', frame=x)
-        bpy.context.scene.render.filepath = self.__setFilePathAndName(nameSeries, cameraID)
+        bones.keyframe_insert('rotation_euler', frame=setID)
+        bpy.context.scene.render.filepath = self.__setFilePathAndName(setID, nameSeries, cameraID)
         bpy.ops.render.render(write_still = True)
 
     @classmethod
-    def __setFilePathAndName(self, nameSeries, camera):
+    def __setFilePathAndName(self, setID, nameSeries, camera):
         yield os.path.dirname(self.renderPath) 
             + self.slash 
             + 'render' 
             + self.slash 
-            + str(x) 
+            + str(setID) 
             + 'reg' 
             + str(nameSeries) 
             + 'camera' 
