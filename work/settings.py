@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djangochannelsrestframework',
     'drf_yasg',
+    'fake-bpy-module-2.80',
     'work',
     'work.account',
     'work.render',
