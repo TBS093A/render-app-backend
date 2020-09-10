@@ -7,7 +7,7 @@ Python / Django REST Framework / Blender / Celery
 
 #### TBB (Thearding Building Blocks) & Embree
 
-install first TBB:
+Install TBB first:
 
 ```bash
 echo "deb http://cz.archive.ubuntu.com/ubuntu eoan main universe" | sudo tee -a  /etc/apt/sources.list
@@ -18,7 +18,7 @@ sudo apt-get install aptitude
 sudo aptitude install libboost-all-dev
 ```
 
-and Embree
+And Embree
 
 ```bash
 git clone https://github.com/embree/embree.git
@@ -26,9 +26,9 @@ git clone https://github.com/embree/embree.git
 
 #### OpenEXR (and others blender packages)
 
-download actual version from: https://www.openexr.com/downloads.html
+Download actual version from: https://www.openexr.com/downloads.html
 
-unpack tar.gz archive and install package like this:
+Unpack files from tar.gz archive and install package like this:
 
 ```bash
 cmake openexr-<your_version>
@@ -38,7 +38,7 @@ make install
 
 ### Build blender
 
-get raw blender from repository:
+Get raw blender from repository:
 
 ```bash
 git clone https://git.blender.org/blender.git
@@ -48,7 +48,7 @@ git submodule foreach git checkout master
 git submodule foreach git pull --rebase origin master
 ```
 
-and run buildier:
+And run builder:
 
 ```bash
 ./blender/build_files/build_environment/install_deps.sh
