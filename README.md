@@ -36,6 +36,12 @@ cmake openexr-<your_version>
 make
 make install
 ```
+#### pybind11
+
+```bash
+git clone https://github.com/pybind/pybind11.git
+cmake pybind11 -DDOWNLOAD_CATCH=ON
+```
 
 ### Build blender
 
