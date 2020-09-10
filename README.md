@@ -5,17 +5,23 @@ Python / Django REST Framework / Blender / Celery
 
 ### Install actual drivers & packages
 
-#### TBB (Thearding Building Blocks)
+#### TBB (Thearding Building Blocks) & Embree
+
+install first TBB:
 
 ```bash
- echo "deb http://cz.archive.ubuntu.com/ubuntu eoan main universe" | sudo tee -a  /etc/apt/sources.list
- sudo apt update
- sudo apt install libtbb-dev
+echo "deb http://cz.archive.ubuntu.com/ubuntu eoan main universe" | sudo tee -a  /etc/apt/sources.list
+sudo apt update
+sudo apt install libtbb-dev
+
+sudo apt-get install aptitude
+sudo aptitude install libboost-all-dev
 ```
 
+and Embree
+
 ```bash
- sudo apt-get install aptitude
- sudo aptitude install libboost-all-dev
+git clone https://github.com/embree/embree.git
 ```
 
 #### OpenEXR (and others blender packages)
