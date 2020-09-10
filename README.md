@@ -22,6 +22,7 @@ And Embree
 
 ```bash
 git clone https://github.com/embree/embree.git
+cmake embree -DEMBREE_ISPC_SUPPORT=OFF
 ```
 
 #### OpenEXR (and others blender packages)
