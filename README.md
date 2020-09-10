@@ -1,9 +1,9 @@
 # render-app-backend
 Python / Django REST Framework / Blender / Celery
 
-## install bpy package
+## Install bpy package
 
-### install drivers / packages
+### Install actual drivers & packages
 
 #### TBB (Thearding Building Blocks)
 
@@ -21,6 +21,7 @@ Python / Django REST Framework / Blender / Celery
 #### OpenEXR (and others blender packages)
 
 download actual version from: https://www.openexr.com/downloads.html
+
 unpack tar.gz archive and install package like this:
 
 ```bash
@@ -29,7 +30,7 @@ make
 make install
 ```
 
-### build blender
+### Build blender
 
 get raw blender from repository:
 
