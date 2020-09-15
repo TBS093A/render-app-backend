@@ -1,6 +1,8 @@
 # render-app-backend
 Python / Django REST Framework / Blender / Celery
 
+## Basic informations
+
 Application for rendering images of hand gestures in cycles (blender) like in photogrammetry. You can use rendered sets for ML algorithm training - sign language recognize for example
 
 ## Install bpy package
