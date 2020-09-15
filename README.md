@@ -1,4 +1,4 @@
-# render-app-backend
+# Render App
 Python / Django REST Framework / Blender / Celery
 
 ## Basic informations
