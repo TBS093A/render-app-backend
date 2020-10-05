@@ -1,11 +1,13 @@
 import sys
 from .bpyModule.blender import RenderGeneral
 
+argv = sys.argv
+argv = argv[argv.index("--") + 1:]
 
-setID = sys.argv[1]
-rotate = sys.argv[2]
-nameSeries = sys.argv[3]
-cameraID = sys.argv[4]
+setID = argv[0]
+rotate = argv[1]
+nameSeries = argv[2]
+cameraID = argv[3]
 
 render = RenderGeneral()
 render.renderSingleImage(setID, rotate, nameSeries, cameraID)

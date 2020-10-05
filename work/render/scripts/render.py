@@ -10,38 +10,40 @@ class AbsoluteRender():
     """
 
     def __init__(self, blenderFile):
-        self.blenderFile = './../../../static/models/' + blenderFile
+        self.blenderFile = 'static/models/' + blenderFile
         self.renderDir = RENDER_DIR + blenderFile[0:-6]
 
     def renderSingleImage(self, setID, rotate, nameSeries, cameraID):
-        call(
+        call([
             "blender", 
             "-b", 
             self.blenderFile, 
             "--python", 
-            "./console/renderSingleImage.py", 
-            setID, 
-            rotate, 
-            nameSeries, 
-            cameraID
-        )
+            "work/render/scripts/console/renderSingleImage.py", 
+            "--",
+            str(setID), 
+            str(rotate), 
+            str(nameSeries), 
+            str(cameraID)
+        ])
 
     def renderSingleSet(self, setID, cameraID):
-        call(
+        call([
             "blender",
             "-b",
             self.blenderFile,
             "--python",
-            "./console/renderSingleSet.py",
-            setID,
-            cameraID
-        )
+            "work/render/scripts/console/renderSingleSet.py",
+            "--",
+            str(setID),
+            str(cameraID)
+        ])
 
     def renderEverySets(self):
-        call(
+        call([
             "blender",
             "-b",
             self.blenderFile,
             "--python",
-            "./console/renderEverySets.py"
-        )
+            "work/render/scripts/console/renderEverySets.py"
+        ])
