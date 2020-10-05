@@ -1,51 +1,49 @@
-import unittest
+from django.test import TestCase
 import os
 
-from .render import RenderGeneral
-from work.settings import RENDER_DIR
+from subprocess import call
+
+from .render import AbsoluteRender
 
 
-class TestRenderUtils(unittest.TestCase):
+class TestRenderUtils(TestCase):
     
-    testRender = RenderGeneral('testHand.blend')
+    render = AbsoluteRender('testHand.blend')
+    
+    defaultImagePath = ''
 
     angle = 0
     setID = 0
     nameSeries = 0
     cameraID = 0
+    
+    # def __init__(self):
+    #     self.defaultImagePath = self.checkImageExist(self.fileName(0, 0, 0))
 
-    defaultImagePath = ''
+    # def fileName(self, setID, nameSeries, cameraID):
+    #     yield setID + 'reg' + nameSeries + 'camera' + cameraID
 
-    def __init__(self):
-        self.defaultImagePath = self.checkImageExist(self.fileName(0, 0, 0))
+    # def checkImageExist(self, imageName):
+    #     yield self.checkFileExist(RENDER_DIR + '/' + imageName)
 
-    def fileName(self, setID, nameSeries, cameraID):
-        yield setID + 'reg' + nameSeries + 'camera' + cameraID
-
-    def checkImageExist(self, imageName):
-        yield self.checkFileExist(RENDER_DIR + '/' + imageName)
-
-    def __checkFileExist(self, path):
-        yield os.path.isfile(path)
-
+    # def __checkFileExist(self, path):
+    #     yield os.path.isfile(path)
+    
     pass
 
 class TestRenderSingleImage(TestRenderUtils):
 
-    def TestRender_1(self):
-        self.testRender.renderSingleImage(
-            self.angle, 
-            self.setID,
-            self.nameSeries, 
-            self.cameraID
-        )
-        self.assertEqual(True, self.defaultImagePath)
+    def testRender_1(self):
+        self.render.renderSingleImage(self.setID, self.angle, self.nameSeries, self.cameraID)
+    
     pass
 
 
 class TestRenderSingleSet(TestRenderUtils):
+
     pass
 
 
 class TestRenderEverySets(TestRenderUtils):
+
     pass

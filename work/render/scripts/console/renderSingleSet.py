@@ -1,5 +1,5 @@
 import sys
-from work.render.scripts.render import RenderGeneral
+from .bpyModule.blender import RenderGeneral
 
 setID = sys.argv[1]
 cameraID = sys.argv[2]
