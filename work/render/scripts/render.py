@@ -38,21 +38,6 @@ class RenderGeneral():
         self.bpy.context.scene.render.image_settings.color_mode = 'RGBA'
         
         self.cameras = [ camera for camera in self.bpy.data.objects if camera.type == 'CAMERA' ]
-        
-
-    @classmethod
-    def __setBlendFile(self, blendFile):
-        if 'bpy' not in sys.modules:
-            bpy = importlib.import_module('bpy')
-            bpy.ops.wm.open_mainfile(MODEL_DIR + '/' + blendFile)
-
-            preferences = bpy.context.user_preferences.addons['cycles'].preferences
-            preferences.compute_device_type = 'CUDA'
-            
-            bpy.context.scene.cycles.device = BPY_DEVICE
-            
-            # return sys.modules['bpy']
-            return bpy
 
     @classmethod
     def renderEverySets(self):
