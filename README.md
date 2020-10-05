@@ -5,62 +5,58 @@ Python / Django REST Framework / Blender / Celery
 
 Application for rendering images of hand gestures in cycles (blender) like in photogrammetry. You can use rendered sets for ML algorithm training - sign language recognize for example
 
-## Install bpy package
+## Install
 
-### Install actual drivers & packages
+### Install blender package
 
-#### TBB (Thearding Building Blocks) & Embree
-
-Install TBB first:
+Install blender for server functionality
 
 ```bash
-echo "deb http://cz.archive.ubuntu.com/ubuntu eoan main universe" | sudo tee -a  /etc/apt/sources.list
-sudo apt update
-sudo apt install libtbb-dev
 
-sudo apt-get install aptitude
-sudo aptitude install libboost-all-dev
+sudo apt-get install blender
+
 ```
 
-And Embree
+### Create Python Environment and install requirment packages
+
+Create envirionment
 
 ```bash
-git clone https://github.com/embree/embree.git
-cmake embree -DEMBREE_ISPC_SUPPORT=OFF
+
+python3 -m venv venv
+
 ```
 
-#### OpenEXR (and others blender packages)
-
-Download actual version from: https://www.openexr.com/downloads.html
-
-Unpack files from tar.gz archive and install package like this:
+Install packages automatically
 
 ```bash
-cmake openexr-<your_version>
-make
-make install
-```
-#### pybind11
 
-```bash
-git clone https://github.com/pybind/pybind11.git
-cmake pybind11 -DDOWNLOAD_CATCH=ON
+./packages.sh
+
 ```
 
-### Build blender
+## Usage
 
-Get raw blender from repository:
+### Migrate All Application Tables
 
 ```bash
-git clone https://git.blender.org/blender.git
-cd blender
-git submodule update --init --recursive
-git submodule foreach git checkout master
-git submodule foreach git pull --rebase origin master
+
+./migrate.sh
+
 ```
 
-And run builder:
+### Run Tests
 
 ```bash
-./blender/build_files/build_environment/install_deps.sh
+
+python manage.py test
+
+```
+
+### Run Server
+
+```bash
+
+./run.sh
+
 ```
