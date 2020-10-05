@@ -1,5 +1,8 @@
 import sys
-from .bpyModule.blender import RenderGeneral
+sys.path.append("/home/tbs093a/Projects/engineer's work/application/work/work/render/scripts/console/")
+sys.path.append("/home/tbs093a/Projects/engineer's work/application/work/")
+print(sys.path)
+from blender import RenderGeneral
 
 argv = sys.argv
 argv = argv[argv.index("--") + 1:]

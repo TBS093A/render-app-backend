@@ -6,7 +6,7 @@ class AbsoluteRender():
     """
     Render methods for server usage (command line)
 
-    Use split script with subprocess
+    this class just use split scripts from ./console directory
     """
 
     def __init__(self, blenderFile):

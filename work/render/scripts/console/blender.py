@@ -16,7 +16,7 @@ class RenderGeneral():
     Rendering functionality for scripts (blender usage)
     """
 
-    def __init__(self, blendFileName):
+    def __init__(self):
         self.scene = bpy.context.scene
         
         self.bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
