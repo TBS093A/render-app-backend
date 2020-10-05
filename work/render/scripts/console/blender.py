@@ -9,33 +9,46 @@ from work.settings import (
     BPY_DEVICE,
 )
 
-# TODO make a compile of bpy library and use this in app
-
 class RenderGeneral():
     """
     Rendering functionality for scripts (blender usage)
     """
 
-    def __init__(self):
-        self.scene = bpy.context.scene
-        
-        self.bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
-        self.bones.rotation_mode = 'XYZ'
+    renderPath = BPY_RENDER_DIR
+    slash = chr(92)
 
-        self.scene.frame_start = 1
-        self.scene.frame_end = 86
+    bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
+    bones.rotation_mode = 'XYZ'
 
-        self.rotate = 0
-        self.nameSeries = 0
-        
-        # self.renderPath = os.path.dirname(os.path.abspath(__file__))
-        self.renderPath = BPY_RENDER_DIR
-        self.slash = chr(92)
+    scene = bpy.context.scene
+    scene.frame_start = 1
+    scene.frame_end = 86
 
-        bpy.context.scene.render.film_transparent = True
-        bpy.context.scene.render.image_settings.color_mode = 'RGBA'
+    bpy.context.scene.render.film_transparent = True
+    bpy.context.scene.render.image_settings.color_mode = 'RGBA'
+
+    cameras = [ camera for camera in bpy.data.objects if camera.type == 'CAMERA' ]
+
+    # def __init__(self):
+    #     self.scene = bpy.context.scene
         
-        self.cameras = [ camera for camera in bpy.data.objects if camera.type == 'CAMERA' ]
+    #     self.bones = bpy.data.collections["Collection3"].all_objects["IKSkeleton"]
+    #     self.bones.rotation_mode = 'XYZ'
+
+    #     self.scene.frame_start = 1
+    #     self.scene.frame_end = 86
+
+    #     self.rotate = 0
+    #     self.nameSeries = 0
+        
+    #     # self.renderPath = os.path.dirname(os.path.abspath(__file__))
+    #     self.renderPath = BPY_RENDER_DIR
+    #     self.slash = chr(92)
+
+    #     bpy.context.scene.render.film_transparent = True
+    #     bpy.context.scene.render.image_settings.color_mode = 'RGBA'
+        
+    #     self.cameras = [ camera for camera in bpy.data.objects if camera.type == 'CAMERA' ]
 
     @classmethod
     def renderEverySets(self):
@@ -60,7 +73,7 @@ class RenderGeneral():
         nameSeries = 0
         bpy.context.scene.frame_set(setID)
         while rotate <= 6.2:
-            self.renderSingleImage(rotate, setID, nameSeries, cameraID)
+            self.renderSingleImage(setID, rotate, nameSeries, cameraID)
             rotate += 0.2
             nameSeries += 1
 
@@ -77,11 +90,12 @@ class RenderGeneral():
 
         `cameraID` - id of current camera used to render
         """
-        self.bones.rotation_euler = (rotate, 0, 0)
-        self.bones.keyframe_insert('rotation_euler', frame=setID)
+        self.bones.rotation_euler = (float(rotate), 0, 0)
+        self.bones.keyframe_insert('rotation_euler', frame=int(setID))
+        
         bpy.context.scene.render.filepath = self.__setFilePathAndName(setID, nameSeries, cameraID)
         bpy.ops.render.render(write_still = True)
 
     @classmethod
     def __setFilePathAndName(self, setID, nameSeries, cameraID):
-        yield os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + str(setID) + 'reg' + str(nameSeries) + 'camera' + str(cameraID)
+        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + str(setID) + 'reg' + str(nameSeries) + 'camera' + str(cameraID)

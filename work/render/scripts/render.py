@@ -28,22 +28,31 @@ class AbsoluteRender():
         ])
 
     def renderSingleSet(self, setID, cameraID):
-        call([
-            "blender",
-            "-b",
-            self.blenderFile,
-            "--python",
-            "work/render/scripts/console/renderSingleSet.py",
-            "--",
-            str(setID),
-            str(cameraID)
-        ])
+        rotate = 0
+        nameSeries = 0
+        while rotate <= 6.2:
+            self.renderSingleImage(setID, rotate, nameSeries, cameraID)
+            rotate += 0.2
+            nameSeries += 1
+        # call([
+        #     "blender",
+        #     "-b",
+        #     self.blenderFile,
+        #     "--python",
+        #     "work/render/scripts/console/renderSingleSet.py",
+        #     "--",
+        #     str(setID),
+        #     str(cameraID)
+        # ])
 
     def renderEverySets(self):
-        call([
-            "blender",
-            "-b",
-            self.blenderFile,
-            "--python",
-            "work/render/scripts/console/renderEverySets.py"
-        ])
+        for cameraID in range(1):
+            for setID in range(87):
+                self.renderSingleSet(setID, cameraID)
+        # call([
+        #     "blender",
+        #     "-b",
+        #     self.blenderFile,
+        #     "--python",
+        #     "work/render/scripts/console/renderEverySets.py"
+        # ])

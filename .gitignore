@@ -1,0 +1,9 @@
+# blender files
+*.blend
+
+# sqlite database
+db.sqlite3
+
+# every render effects
+*.png
+*.jpg

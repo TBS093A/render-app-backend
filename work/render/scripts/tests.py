@@ -35,15 +35,21 @@ class TestRenderSingleImage(TestRenderUtils):
 
     def testRender_1(self):
         self.render.renderSingleImage(self.setID, self.angle, self.nameSeries, self.cameraID)
-    
+
     pass
 
 
 class TestRenderSingleSet(TestRenderUtils):
 
+    def testRender_1(self):
+        self.render.renderSingleSet(self.setID, self.cameraID)
+
     pass
 
 
 class TestRenderEverySets(TestRenderUtils):
+
+    def testRender_1(self):
+        self.render.renderEverySets()
 
     pass
