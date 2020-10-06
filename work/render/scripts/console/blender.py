@@ -30,7 +30,7 @@ class RenderGeneral():
     cameras = [ camera for camera in bpy.data.objects if camera.type == 'CAMERA' ]
 
     @classmethod
-    def renderSingleImage(self, setID, rotate, nameSeries, cameraID):
+    def renderSingleImage(self, setID, rotate, nameSeries, cameraID, resolution, renderDir):
         """
         render single image by parameters:
 
@@ -44,10 +44,20 @@ class RenderGeneral():
         """
         self.bones.rotation_euler = (float(rotate), 0, 0)
         self.bones.keyframe_insert('rotation_euler', frame=int(setID))
+
+        if int(resolution[0]) is not 0 and int(resolution[1]) is not 0:
+            self.scene.render.resolution_x = int(resolution[0])
+            self.scene.render.resolution_y = int(resolution[1])
+        else:
+            resolution = ( 
+                self.scene.render.resolution_x,
+                self.scene.render.resolution_y
+            )
         
-        bpy.context.scene.render.filepath = self.__setFilePathAndName(setID, nameSeries, cameraID)
+        self.scene.render.filepath = self.__setFilePathAndName(renderDir, setID, nameSeries, cameraID, resolution)
+
         bpy.ops.render.render(write_still = True)
 
     @classmethod
-    def __setFilePathAndName(self, setID, nameSeries, cameraID):
-        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + str(setID) + 'reg' + str(nameSeries) + 'camera' + str(cameraID)
+    def __setFilePathAndName(self, dirPath, setID, nameSeries, cameraID, resolution):
+        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + 'set' + str(setID) + '_reg' + str(nameSeries) + '_camera' + str(cameraID) + '_size' + str(resolution[0]) + 'x' + str(resolution[1])

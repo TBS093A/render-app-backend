@@ -11,6 +11,15 @@ setID = argv[0]
 rotate = argv[1]
 nameSeries = argv[2]
 cameraID = argv[3]
+resolution = (argv[4], argv[5])
+renderDir = argv[6]
 
 render = RenderGeneral()
-render.renderSingleImage(setID, rotate, nameSeries, cameraID)
+render.renderSingleImage(
+    setID, 
+    rotate, 
+    nameSeries, 
+    cameraID, 
+    resolution, 
+    renderDir
+)

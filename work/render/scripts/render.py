@@ -13,7 +13,9 @@ class AbsoluteRender():
         self.blenderFile = 'static/models/' + blenderFile
         self.renderDir = RENDER_DIR + blenderFile[0:-6]
 
-    def renderSingleImage(self, setID, rotate, nameSeries, cameraID):
+        self.slash = chr(92)
+
+    def renderSingleImage(self, setID, rotate, nameSeries, cameraID, resolution=(0,0), renderDir='SingleImages'):
         """
         render single image by parameters:
 
@@ -24,6 +26,14 @@ class AbsoluteRender():
         `nameSeries` - id of generated image (from current set)
 
         `cameraID` - id of current camera used to render
+
+        `resolution` - tuple like: `( <width>, <height> )`
+
+        `renderDir` - directory order: 
+                        
+            single images: SingleImages, 
+            single sets: Set<setID>_camera<cameraID>_size<width>x<height>
+            every sets: AllSets_size<width>x<height>/Set<setID>_camera<cameraID>
         """
         call([
             "blender", 
@@ -35,28 +45,50 @@ class AbsoluteRender():
             str(setID), 
             str(rotate), 
             str(nameSeries), 
-            str(cameraID)
+            str(cameraID),
+            str(resolution[0]),
+            str(resolution[1]),
+            renderDir
         ])
 
-    def renderSingleSet(self, setID, cameraID):
+    def renderSingleSet(self, setID, cameraID, resolution=(0,0), generalDir=''):
         """
         render single image by parameters:
 
         `setID` - id of generated set
 
         `cameraID` - id of current camera used to render
+
+        `resolution` - tuple like: `( <width>, <height> )`
+
+        `generalDir` - for all sets rendering directory order
         """
         rotate = 0
         nameSeries = 0
+        renderDir = ''
+
+        if generalDir is '' and resolution[0] is 0 and resolution[1] is 0:
+            renderDir = f'Set{ setID }_camera{ cameraID }_sizeDefault'
+        elif generalDir is '':
+            renderDir = f'Set{ setID }_camera{ cameraID }_size{ resolution[0] }x{ resolution[1] }'
+        else:
+            renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'
+
         while rotate <= 6.2:
-            self.renderSingleImage(setID, rotate, nameSeries, cameraID)
+            self.renderSingleImage(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
             rotate += 0.2
             nameSeries += 1
 
-    def renderEverySets(self):
+    def renderEverySets(self, resolution=(0,0)):
         """
         render all sets from blend file
+
+        `resolution` - tuple like: `( <width>, <height> )`
         """
+        if resolution[0] is 0 and resolution[1] is 0:
+            generalDir = f'AllSets_sizeDefault'
+        else:
+            generalDir = f'AllSets_size{ resolution[0] }x{ resolution[1] }'
         for cameraID in range(1):
             for setID in range(87):
-                self.renderSingleSet(setID, cameraID)
+                self.renderSingleSet(setID, cameraID, resolution=resolution, generalDir=generalDir)
