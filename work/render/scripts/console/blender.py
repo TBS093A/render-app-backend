@@ -29,33 +29,6 @@ class RenderGeneral():
 
     cameras = [ camera for camera in bpy.data.objects if camera.type == 'CAMERA' ]
 
-    # @classmethod
-    # def renderEverySets(self):
-    #     """
-    #     render all sets from blend file
-    #     """
-    #     for cameraID in len(self.cameras):
-    #         bpy.context.scene.camera = self.cameras[ cameraID ]
-    #         for setID in range(87):
-    #             self.renderSingleSet(setID, cameraID)
-
-    # @classmethod
-    # def renderSingleSet(self, setID, cameraID):
-    #     """
-    #     render single image by parameters:
-
-    #     `setID` - id of generated set
-
-    #     `cameraID` - id of current camera used to render
-    #     """
-    #     rotate = 0
-    #     nameSeries = 0
-    #     bpy.context.scene.frame_set(setID)
-    #     while rotate <= 6.2:
-    #         self.renderSingleImage(setID, rotate, nameSeries, cameraID)
-    #         rotate += 0.2
-    #         nameSeries += 1
-
     @classmethod
     def renderSingleImage(self, setID, rotate, nameSeries, cameraID):
         """
