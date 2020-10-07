@@ -34,7 +34,7 @@ class TestRenderUtils(TestCase):
 class TestRenderSingleImage(TestRenderUtils):
 
     def testRender_1(self):
-        self.render.renderSingleImage(self.setID, self.angle, self.nameSeries, self.cameraID)
+        self.render.renderSingleImage(self.setID, self.angle, self.nameSeries, self.cameraID, resolution=(50,33))
 
     pass
 
@@ -42,7 +42,7 @@ class TestRenderSingleImage(TestRenderUtils):
 class TestRenderSingleSet(TestRenderUtils):
 
     def testRender_1(self):
-        self.render.renderSingleSet(self.setID, self.cameraID)
+        self.render.renderSingleSet(self.setID, self.cameraID, resolution=(50,33))
 
     pass
 
@@ -50,6 +50,6 @@ class TestRenderSingleSet(TestRenderUtils):
 class TestRenderEverySets(TestRenderUtils):
 
     def testRender_1(self):
-        self.render.renderEverySets()
+        self.render.renderEverySets(resolution=(50,33))
 
     pass

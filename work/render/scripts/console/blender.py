@@ -54,6 +54,8 @@ class RenderGeneral():
                 self.scene.render.resolution_y
             )
         
+        self.scene.camera = self.cameras[int(cameraID)]
+        self.scene.frame_set(int(setID))
         self.scene.render.filepath = self.__setFilePathAndName(renderDir, setID, nameSeries, cameraID, resolution)
 
         bpy.ops.render.render(write_still = True)

@@ -29,6 +29,8 @@ class AbsoluteRender():
 
         `resolution` - tuple like: `( <width>, <height> )`
 
+            default: (0,0) (blender file render settings)
+
         `renderDir` - directory order: 
                         
             single images: SingleImages, 
@@ -51,7 +53,7 @@ class AbsoluteRender():
             renderDir
         ])
 
-    def renderSingleSet(self, setID, cameraID, resolution=(0,0), generalDir=''):
+    def renderSingleSet(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
         """
         render single image by parameters:
 
@@ -61,7 +63,15 @@ class AbsoluteRender():
 
         `resolution` - tuple like: `( <width>, <height> )`
 
+            default: (0,0) (blender file render settings)
+
+        `angle` - value between `0 - 6.2` (`0 - 360`) 
+            
+            default: 0.2
+
         `generalDir` - for all sets rendering directory order
+
+            default: ''
         """
         rotate = 0
         nameSeries = 0
@@ -76,14 +86,20 @@ class AbsoluteRender():
 
         while rotate <= 6.2:
             self.renderSingleImage(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
-            rotate += 0.2
+            rotate += angle
             nameSeries += 1
 
-    def renderEverySets(self, resolution=(0,0)):
+    def renderEverySets(self, resolution=(0,0), angle=0.2):
         """
         render all sets from blend file
 
         `resolution` - tuple like: `( <width>, <height> )`
+
+            default: (0,0) (blender file render settings)
+
+        `angle` - value between `0 - 6.2` (`0 - 360`) 
+            
+            default: 0.2
         """
         if resolution[0] is 0 and resolution[1] is 0:
             generalDir = f'AllSets_sizeDefault'
@@ -91,4 +107,4 @@ class AbsoluteRender():
             generalDir = f'AllSets_size{ resolution[0] }x{ resolution[1] }'
         for cameraID in range(1):
             for setID in range(87):
-                self.renderSingleSet(setID, cameraID, resolution=resolution, generalDir=generalDir)
+                self.renderSingleSet(setID, cameraID, angle=angle, resolution=resolution, generalDir=generalDir)
