@@ -33,7 +33,7 @@ class RenderSetSerializer(serializers.ModelSerializer):
         model = RenderSet
         fields = renderSerializerFields
 
-class RenderEverySetsSerializer(RenderSetSerializer):
+class RenderAllSetsSerializer(RenderSetSerializer):
     """
     every sets - `angle` - all hand sign positions
     
@@ -88,7 +88,6 @@ class RenderSingleImageSerializer(RenderSingleSetSerializer):
 class ModelSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
     name = serializers.CharField(max_length=255)
-    file = serializers.CharField(max_length=255)
 
     class Meta:
         model = Model

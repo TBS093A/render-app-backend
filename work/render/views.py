@@ -8,6 +8,7 @@ from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
 
 from .models import *
 from .serializers import *
+from .scripts.render import AbsoluteRender
 
 
 # make views for serializers -> do not swapping! use mixins
