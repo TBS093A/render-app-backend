@@ -13,7 +13,6 @@ class RenderSet(models.Model):
     name = models.CharField(max_length=30)
     images_width = models.IntegerField()
     images_height = models.IntegerField()
-    images_count = models.IntegerField()
     
     model = models.ForeignKey(Model, on_delete=models.CASCADE)
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
