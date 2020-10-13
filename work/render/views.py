@@ -10,7 +10,6 @@ from .models import *
 from .serializers import *
 from .scripts.render import AbsoluteRender
 
-
 # make views for serializers -> do not swapping! use mixins
 
 class RenderViewSet(
@@ -38,7 +37,7 @@ class RenderEverySetsViewSet(
         `POST`: `create()`
     """
     queryset = RenderSet.objects.all()
-    serializer_class = RenderEverySetsSerializer
+    serializer_class = RenderAllSetsSerializer
 
     def create(self, request):
         if 'angle' and 'letter_id' and 'camera_id' in request:

@@ -19,7 +19,6 @@ class RenderSetSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=30)
     images_width = serializers.IntegerField()
     images_height = serializers.IntegerField()
-    images_count = serializers.IntegerField(read_only=True)
     
     model_id = serializers.IntegerField()
     user_id = serializers.IntegerField()
@@ -50,7 +49,7 @@ class RenderAllSetsSerializer(RenderSetSerializer):
         model = RenderSet
         fields = renderSerializerFields + ['angle']
 
-class RenderSingleSetSerializer(RenderEverySetsSerializer):
+class RenderSingleSetSerializer(RenderAllSetsSerializer):
     """
     single set - `letter_id` + `angle`
 

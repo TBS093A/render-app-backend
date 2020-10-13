@@ -1,6 +1,9 @@
 from subprocess import call
 from work.settings import RENDER_DIR
 
+from celery import Celery
+
+app = Celery('render')
 
 class AbsoluteRender():
     """
