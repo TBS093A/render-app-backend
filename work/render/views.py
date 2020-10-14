@@ -41,7 +41,7 @@ class RenderEverySetsViewSet(
 
     def create(self, request):
         if 'angle' and 'letter_id' and 'camera_id' in request:
-            # single image serializer swap
+            # single image serializer swap*
             pass
         elif 'angle' and 'letter_id' in request:
             # single set serializer swap
