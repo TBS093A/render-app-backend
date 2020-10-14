@@ -1,11 +1,9 @@
 from subprocess import call
 from work.settings import RENDER_DIR
 
-from celery import Celery
+from celery import Task
 
-app = Celery('render')
-
-class AbsoluteRender():
+class AbsoluteRender(Task):
     """
     Render methods for server usage (command line)
 
