@@ -49,7 +49,7 @@ Install packages automatically
 
 ```bash
 
-python manage.py test
+./test.sh
 
 ```
 
@@ -58,5 +58,13 @@ python manage.py test
 ```bash
 
 ./run.sh
+
+```
+
+### Show Celery Workers / Tasks
+
+```bash
+
+./celery.sh
 
 ```
