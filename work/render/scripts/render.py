@@ -119,37 +119,38 @@ class AbsoluteRender():
                 self.renderSingleSet(setID, cameraID, angle=angle, resolution=resolution, generalDir=generalDir)
 
 
-class AbstractRender(Task):
-
-    def __init__(self, blenderFile):
-        self.AR = AbsoluteRender(blenderFile)
-
-    def run(self):
-        pass
+@app.task
+def testRender():
+    AR = AbsoluteRender('testHand.blend')
+    AR.renderSingleImage(30, 0.2, 0, 0)
 
 
-class RenderSingleImage(AbstractRender):
+class RenderSingleImage(app.Task):
 
-    ignore_result = True
     # name = 'work.render.scripts.render.RenderSingleImage'
 
-    def run(self, setID, rotate, nameSeries, cameraID, resolution=(0,0), renderDir='SingleImages'):
-        self.AR.renderSingleImage(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
+    def run(blenderFile, setID, rotate, nameSeries, cameraID, resolution=(0,0), renderDir='SingleImages'):
+        AR = AbsoluteRender(blenderFile)
+        AR.renderSingleImage(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
 
 
-class RenderSingleSet(AbstractRender):
+class RenderSingleSet(app.Task):
 
     ignore_result = True
     # name = 'work.render.scripts.render.RenderSingleSet'
     
-    def run(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
-        self.AR.renderSingleSet(setID, cameraID, resolution=resolution, angle=angle, generalDir=generalDir)
+    @app.task
+    def run(blenderFile, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
+        AR = AbsoluteRender(blenderFile)
+        AR.renderSingleSet(setID, cameraID, resolution=resolution, angle=angle, generalDir=generalDir)
 
 
-class RenderAllSets(AbstractRender):
+class RenderAllSets(app.Task):
 
     ignore_result = True
     # name = 'work.render.scripts.render.RenderAllSets'
     
-    def run(self, resolution=(0,0), angle=0.2):
-        self.AR.renderEverySets(resolution=resolution, angle=angle)
+    @app.task
+    def run(blenderFile, resolution=(0,0), angle=0.2):
+        AR = AbsoluteRender(blenderFile)
+        AR.renderEverySets(resolution=resolution, angle=angle)
