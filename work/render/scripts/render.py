@@ -1,15 +1,6 @@
 from subprocess import call
 from work.settings import RENDER_DIR
 
-from work.celery import *
-from celery import Task
-
-@app.task
-def test(a):
-    return [ x for x in range(a) ]
-
-# register class first in seralizers or views
-# app.tasks.register(AbsoluteRender())
 
 class AbsoluteRender():
     """
@@ -117,40 +108,3 @@ class AbsoluteRender():
         for cameraID in range(1):
             for setID in range(87):
                 self.renderSingleSet(setID, cameraID, angle=angle, resolution=resolution, generalDir=generalDir)
-
-
-@app.task
-def testRender():
-    AR = AbsoluteRender('testHand.blend')
-    AR.renderSingleImage(30, 0.2, 0, 0)
-
-
-class RenderSingleImage(app.Task):
-
-    # name = 'work.render.scripts.render.RenderSingleImage'
-
-    def run(blenderFile, setID, rotate, nameSeries, cameraID, resolution=(0,0), renderDir='SingleImages'):
-        AR = AbsoluteRender(blenderFile)
-        AR.renderSingleImage(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
-
-
-class RenderSingleSet(app.Task):
-
-    ignore_result = True
-    # name = 'work.render.scripts.render.RenderSingleSet'
-    
-    @app.task
-    def run(blenderFile, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
-        AR = AbsoluteRender(blenderFile)
-        AR.renderSingleSet(setID, cameraID, resolution=resolution, angle=angle, generalDir=generalDir)
-
-
-class RenderAllSets(app.Task):
-
-    ignore_result = True
-    # name = 'work.render.scripts.render.RenderAllSets'
-    
-    @app.task
-    def run(blenderFile, resolution=(0,0), angle=0.2):
-        AR = AbsoluteRender(blenderFile)
-        AR.renderEverySets(resolution=resolution, angle=angle)
