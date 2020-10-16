@@ -12,7 +12,7 @@ class AbsoluteRender():
     def __init__(self, blenderFile):
         self.blenderFile = 'static/models/' + blenderFile
         self.renderDir = RENDER_DIR + blenderFile[0:-6]
-
+        
         self.slash = chr(92)
 
     def renderSingleImage(self, setID, rotate, nameSeries, cameraID, resolution=(0,0), renderDir='SingleImages'):
