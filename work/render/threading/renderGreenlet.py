@@ -3,6 +3,9 @@ import gevent
 
 
 class RenderGeenlet(Greenlet):
+    """
+    Own greenlet class for rendering in background
+    """
 
     def __init__(self, func, **kwargs):
         Greenlet.__init__(self)
@@ -10,6 +13,9 @@ class RenderGeenlet(Greenlet):
 
 
 class GreenletSingleton():
+    """
+    Global class for storage all running threads / greenlets
+    """
 
     _greenletList = []
 

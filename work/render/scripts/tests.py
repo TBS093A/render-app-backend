@@ -3,13 +3,17 @@ import os
 
 from subprocess import call
 
-from .render import AbsoluteRender
+from .render import *
 
 
 class TestRenderUtils(TestCase):
     
-    render = AbsoluteRender('testHand.blend')
-    
+    testFile = 'testHand.blend'
+
+    renderSingleImage = RenderSingleImage(testFile)
+    renderSingleSet = RenderSingleSet(testFile)
+    renderAllSets = RenderAllSets(testFile)
+
     defaultImagePath = ''
 
     angle = 0
@@ -34,7 +38,7 @@ class TestRenderUtils(TestCase):
 class TestRenderSingleImage(TestRenderUtils):
 
     def testRender_1(self):
-        self.render.renderSingleImage(self.setID, self.angle, self.nameSeries, self.cameraID, resolution=(50,33))
+        self.renderSingleImage.render(self.setID, self.angle, self.nameSeries, self.cameraID, resolution=(50,33))
 
     pass
 
@@ -42,7 +46,7 @@ class TestRenderSingleImage(TestRenderUtils):
 class TestRenderSingleSet(TestRenderUtils):
 
     def testRender_1(self):
-        self.render.renderSingleSet(self.setID, self.cameraID, resolution=(50,33))
+        self.renderSingleSet.render(self.setID, self.cameraID, resolution=(50,33))
 
     pass
 
@@ -50,6 +54,6 @@ class TestRenderSingleSet(TestRenderUtils):
 class TestRenderEverySets(TestRenderUtils):
 
     def testRender_1(self):
-        self.render.renderEverySets(resolution=(50,33))
+        self.renderAllSets.render(resolution=(50,33))
 
     pass

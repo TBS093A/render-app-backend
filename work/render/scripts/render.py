@@ -3,6 +3,7 @@ from work.settings import RENDER_DIR
 
 from abc import ABC, abstractmethod
 
+# Strategy design pattern 
 
 class AbstractRenderStrategy(ABC):
     """
@@ -65,7 +66,12 @@ class RenderSingleImage(AbstractRenderStrategy):
             renderDir
         ])
 
+
 class RenderSingleSet(AbstractRenderStrategy):
+
+    def __init__(self, blenderFile):
+        AbstractRenderStrategy.__init__(self, blenderFile)
+        self.RenderSingleImage = RenderSingleImage(blenderFile)
 
     def render(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
         """
@@ -99,11 +105,16 @@ class RenderSingleSet(AbstractRenderStrategy):
             renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'
 
         while rotate <= 6.2:
-            self.renderSingleImage(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
+            self.RenderSingleImage.render(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
             rotate += angle
             nameSeries += 1
 
+
 class RenderAllSets(AbstractRenderStrategy):
+
+    def __init__(self, blenderFile):
+        AbstractRenderStrategy.__init__(self, blenderFile)
+        self.RenderSingleSet = RenderSingleSet(blenderFile)
 
     def render(self, resolution=(0,0), angle=0.2):
         """
@@ -123,4 +134,4 @@ class RenderAllSets(AbstractRenderStrategy):
             generalDir = f'AllSets_size{ resolution[0] }x{ resolution[1] }'
         for cameraID in range(1):
             for setID in range(87):
-                self.renderSingleSet(setID, cameraID, angle=angle, resolution=resolution, generalDir=generalDir)
+                self.RenderSingleSet.render(setID, cameraID, angle=angle, resolution=resolution, generalDir=generalDir)
