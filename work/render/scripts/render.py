@@ -1,6 +1,8 @@
 from subprocess import call
 from work.settings import RENDER_DIR
 
+from gevent import Greenlet
+
 
 class AbsoluteRender():
     """
