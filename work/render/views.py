@@ -3,12 +3,14 @@ from rest_framework import viewsets, mixins
 
 from djangochannelsrestframework import permissions, mixins as channelMixins
 from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
+
 from djangochannelsrestframework.consumers import AsyncAPIConsumer
 from djangochannelsrestframework.decorators import action
 
 from .models import *
 from .serializers import *
 from .scripts.render import AbsoluteRender
+from .threading.renderGreenlet import RenderGeenlet, GreenletSingleton
 
 
 class RenderProgressConsumer(AsyncAPIConsumer):
@@ -42,7 +44,7 @@ class RenderViewSet(
 
 
 class RenderEverySetsViewSet(
-    channelMixins.CreateModelMixin,
+    mixins.CreateModelMixin,
     viewsets.GenericViewSet,
 ):
     """
@@ -66,7 +68,7 @@ class RenderEverySetsViewSet(
 
 
 class RenderSingleSetViewSet(
-    channelMixins.CreateModelMixin,
+    mixins.CreateModelMixin,
     viewsets.GenericViewSet,
 ):
     """
@@ -90,7 +92,7 @@ class RenderSingleSetViewSet(
 
 
 class RenderSingleImageViewSet(
-    channelMixins.CreateModelMixin,
+    mixins.CreateModelMixin,
     viewsets.GenericViewSet,
 ):
     """
