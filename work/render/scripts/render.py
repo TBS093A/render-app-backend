@@ -1,10 +1,10 @@
 from subprocess import call
 from work.settings import RENDER_DIR
 
-from gevent import Greenlet
+from abc import ABC, abstractmethod
 
 
-class AbsoluteRender():
+class AbstractRenderStrategy(ABC):
     """
     Render methods for server usage (command line)
 
@@ -17,7 +17,17 @@ class AbsoluteRender():
         
         self.slash = chr(92)
 
-    def renderSingleImage(self, setID, rotate, nameSeries, cameraID, resolution=(0,0), renderDir='SingleImages'):
+    @abstractmethod
+    def render(self, *args, **kwargs):
+        pass
+
+    class Meta:
+        abstract = True
+
+
+class RenderSingleImage(AbstractRenderStrategy):
+
+    def render(self, setID, rotate, nameSeries, cameraID, resolution=(0,0), renderDir='SingleImages'):
         """
         render single image by parameters:
 
@@ -55,7 +65,9 @@ class AbsoluteRender():
             renderDir
         ])
 
-    def renderSingleSet(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
+class RenderSingleSet(AbstractRenderStrategy):
+
+    def render(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
         """
         render single image by parameters:
 
@@ -91,7 +103,9 @@ class AbsoluteRender():
             rotate += angle
             nameSeries += 1
 
-    def renderEverySets(self, resolution=(0,0), angle=0.2):
+class RenderAllSets(AbstractRenderStrategy):
+
+    def render(self, resolution=(0,0), angle=0.2):
         """
         render all sets from blend file
 
