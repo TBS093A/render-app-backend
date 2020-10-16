@@ -1,16 +1,25 @@
-# make normal rest first
-# connect websocked after rest done
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins
 
 from djangochannelsrestframework import permissions, mixins as channelMixins
 from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
+from djangochannelsrestframework.consumers import AsyncAPIConsumer
+from djangochannelsrestframework.decorators import action
 
 from .models import *
 from .serializers import *
 from .scripts.render import AbsoluteRender
 
-# make views for serializers -> do not swapping! use mixins
+
+class RenderProgressConsumer(AsyncAPIConsumer):
+    """
+    WebSocket consumer class for check progress of render in background
+    """
+
+    @action()
+    async def getProggress(self, taskID):
+        return {f'render progress': f'{}'}, 200
+
 
 class RenderViewSet(
     mixins.ListModelMixin,
