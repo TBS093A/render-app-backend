@@ -17,8 +17,12 @@ class RenderProgressConsumer(AsyncAPIConsumer):
     """
 
     @action()
-    async def getProggress(self, taskID):
-        return {f'render progress': f'{}'}, 200
+    async def getTasksList(self, **kwargs):
+        return {'tasks IDs list': f'{200}'}, 200
+
+    @action()
+    async def getProggress(self, taskID, **kwargs):
+        return {'render progress': f'{200}'}, 200
 
 
 class RenderViewSet(
