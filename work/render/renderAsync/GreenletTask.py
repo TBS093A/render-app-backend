@@ -10,11 +10,11 @@ class GreenletTask():
     Own greenlet class for rendering in background
     """
 
-    def __init__(self, func, *args, **kwargs):
+    def __init__(self, func, logger=None, *args, **kwargs):
         self.taskKey = f'RenderAsync/{ uuid.uuid4() }'
-        self.task = Task(self.taskKey, func, args=args, kwargs=kwargs)
+        self.task = Task(self.taskKey, func, args=args, kwargs=kwargs, logger=logger)
         self.taskManager = TaskManager()
-        self.taskManager.add(self.task)
+        self.taskManager.add(self.task, start=True)
 
     def getTaskId(self) -> str:
         return self.taskKey
@@ -27,9 +27,6 @@ class GreenletTask():
 
     def _start(self):
         self.taskManager.start(self.taskKey)
-
-    def start(self):
-        self.task.start()
 
     def _stop(self, force=False):
         self.taskManager.stop(self.taskKey, force=force)
