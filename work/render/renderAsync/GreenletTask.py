@@ -13,7 +13,7 @@ class GreenletTask():
     def __init__(self, func, *args, **kwargs):
         self.taskKey = f'RenderAsync/{ uuid.uuid4() }'
         self.task = Task(self.taskKey, func, args=args, kwargs=kwargs)
-        self.taskManager = TaskManager(pool_size=25)
+        self.taskManager = TaskManager()
         self.taskManager.add(self.task)
 
     def getTaskId(self) -> str:
@@ -22,8 +22,14 @@ class GreenletTask():
     def getTask(self) -> Task:
         return self.task
 
+    def getValue(self):
+        return self.task.value()
+
     def _start(self):
         self.taskManager.start(self.taskKey)
+
+    def start(self):
+        self.task.start()
 
     def _stop(self, force=False):
         self.taskManager.stop(self.taskKey, force=force)
@@ -49,6 +55,24 @@ class GreenletTaskManager():
 
     def remove(self, item: GreenletTask):
         self._taskList.remove(item)
+
+    def _start(self, taskKey):
+        for task in self._taskList:
+            if task.taskKey is taskKey:
+                task._start()
+
+    def _stop(self, taskKey, force=False):
+        for task in self._taskList:
+            if task.taskKey is taskKey:
+                task._stop(force=force)
+
+    def _startAll(self):
+        for task in self._taskList:
+            task._start()
+
+    def _stopAll(self, force=False):
+        for task in self._taskList:
+            task._stop(force=force)
 
     def __repr__(self):
         info = ''
