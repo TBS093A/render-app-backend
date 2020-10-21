@@ -13,15 +13,15 @@ application = ProtocolTypeRouter({
         URLRouter([
             url(
                 r'^render/all/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)/angle/(?P<angle>[^/]+)', 
-                RenderConsumer,
+                RenderAllConsumer,
             ),
             url(
                 r'^render/single/set/set-id/(?P<setID>[^/]+)/camera-id/(?P<cameraID>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)/angle/(?P<angle>[^/]+)', 
-                RenderConsumer,
+                RenderSingleSetConsumer,
             ),
             url(
                 r'render/single/image/set-id/(?P<setID>[^/]+)/rotate/(?P<rotate>[^/]+)/name-series/(?P<nameSeries>[^/]+)/camera-id/(?P<cameraID>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)',
-                RenderConsumer,
+                RenderSingleImageConsumer,
             ),
         ])
     ),

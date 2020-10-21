@@ -1,10 +1,12 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
+from abc import ABC, abstractmethod
+
 from .scripts.render import *
 
 
-class AbstractConsumer(AsyncWebsocketConsumer):
+class AbstractConsumer(AsyncWebsocketConsumer, ABC):
 
     async def connect(self):
         self.params = self.scope['url_route']['kwargs']
@@ -20,6 +22,7 @@ class AbstractConsumer(AsyncWebsocketConsumer):
         await self.accept()
         await self.render()
 
+    @abstractmethod
     async def render(self):
         pass
 
@@ -29,16 +32,21 @@ class AbstractConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
+    class Meta:
+        abstract = True
+
 
 class RenderSingleImageConsumer(AbstractConsumer):
 
     async def render(self):
         pass
 
+
 class RenderSingleSetConsumer(AbstractConsumer):
 
     async def render(self):
         pass
+
 
 class RenderAllConsumer(AbstractConsumer):
 
