@@ -73,7 +73,7 @@ class RenderSingleSet(AbstractRenderStrategy):
         AbstractRenderStrategy.__init__(self, blenderFile)
         self.RenderSingleImage = RenderSingleImage(blenderFile)
 
-    def render(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
+    def render(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir='', progress=0):
         """
         render single image by parameters:
 

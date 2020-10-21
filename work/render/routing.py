@@ -12,15 +12,15 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
             url(
-                r"^render/angle/(?P<angle>[^/]+)/$", 
+                r'^render/all/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)/angle/(?P<angle>[^/]+)', 
                 RenderConsumer,
             ),
             url(
-                r"^render/angle/(?P<angle>[^/]+)/letter/(?P<letter_id>[^/]+)/$", 
+                r'^render/single/set/set-id/(?P<setID>[^/]+)/camera-id/(?P<cameraID>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)/angle/(?P<angle>[^/]+)', 
                 RenderConsumer,
             ),
             url(
-                r"^render/angle/(?P<angle>[^/]+)/letter/(?P<letter_id>[^/]+)/camera/(?P<camera_id>[^/]+)$",
+                r'render/single/image/set-id/(?P<setID>[^/]+)/rotate/(?P<rotate>[^/]+)/name-series/(?P<nameSeries>[^/]+)/camera-id/(?P<cameraID>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)',
                 RenderConsumer,
             ),
         ])
