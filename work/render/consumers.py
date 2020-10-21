@@ -1,8 +1,10 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
+from .scripts.render import *
 
-class RenderConsumer(AsyncWebsocketConsumer):
+
+class AbstractConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         self.params = self.scope['url_route']['kwargs']
@@ -16,6 +18,10 @@ class RenderConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
         await self.accept()
+        await self.render()
+
+    async def render(self):
+        pass
 
     async def disconnect(self, close_code):
         await elf.channel_layer.group_discard(
@@ -23,22 +29,18 @@ class RenderConsumer(AsyncWebsocketConsumer):
             self.channel_name
         )
 
-    # async def receive(self, text_data):
-    #     text_data_json = json.loads(text_data)
-    #     message = text_data_json
 
-    #     await self.channel_layer.group_send(
-    #         self.group_name,
-    #         {
-    #             'type': 'renderProgress',
-    #             'progress': percentage
-    #         }
-    #     )
+class RenderSingleImageConsumer(AbstractConsumer):
 
-    # async def renderProgress(self, event):
-    #     message = event['message']
+    async def render(self):
+        pass
 
-    #     # Send message to WebSocket
-    #     await self.send(text_data=json.dumps({
-    #         'message': message
-    #     }))
+class RenderSingleSetConsumer(AbstractConsumer):
+
+    async def render(self):
+        pass
+
+class RenderAllConsumer(AbstractConsumer):
+
+    async def render(self):
+        pass
