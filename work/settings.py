@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'djangochannelsrestframework',
     'drf_yasg',
+    'channels',
     'work',
     'work.account',
     'work.render',
