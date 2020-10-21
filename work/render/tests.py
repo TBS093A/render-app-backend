@@ -1,10 +1,14 @@
 from django.test import TestCase
 
-import pytest
+# import pytest
 from channels.testing import HttpCommunicator
-from work.render.consumers import RenderConsumer
+from work.render.consumers import (
+    RenderSingleImageConsumer,
+    RenderSingleSetConsumer,
+    RenderAllConsumer,
+)
 
 
-@pytest.mark.asyncio
-async def testSocket_1():
-    pass
+# @pytest.mark.asyncio
+# async def testSocket_1():
+#     pass

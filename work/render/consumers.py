@@ -1,9 +1,12 @@
+from abc import ABC, abstractmethod
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
 
-from abc import ABC, abstractmethod
-
-from .scripts.render import *
+from .scripts.render import (
+    RenderSingleImage,
+    RenderSingleSet,
+    RenderAllSets
+)
 
 
 class AbstractConsumer(AsyncWebsocketConsumer, ABC):

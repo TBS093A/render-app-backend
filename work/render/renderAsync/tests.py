@@ -29,24 +29,24 @@ class UtilsTestGreenletTask():
          self.renderSingleImage.render(self.setID, self.angle, self.nameSeries, self.cameraID, resolution=(50,33))
 
 
-class TestGreenletTask(TestCase, UtilsTestGreenletTask):
+# class TestGreenletTask(TestCase, UtilsTestGreenletTask):
 
-    def testTask_1(self):
-        logger = Logger('testTask_1')
-        GT = GreenletTask(self.task_1, logger=logger)
-        GT._start()
+#     def testTask_1(self):
+#         logger = Logger('testTask_1')
+#         GT = GreenletTask(self.task_1, logger=logger)
+#         GT._start()
 
-    def testTask_2(self):
-        logger = Logger('testTask_2')
-        GT = GreenletTask(self.task_2, args=(10, ), logger=logger)
-        GT._start()
+#     def testTask_2(self):
+#         logger = Logger('testTask_2')
+#         GT = GreenletTask(self.task_2, args=(10, ), logger=logger)
+#         GT._start()
 
-    def testTask_3(self):
-        logger = Logger('testTask_3')
-        GT = GreenletTask(self.task_2, args=(20, ), logger=logger)
-        GT._start()
+#     def testTask_3(self):
+#         logger = Logger('testTask_3')
+#         GT = GreenletTask(self.task_2, args=(20, ), logger=logger)
+#         GT._start()
 
-    def testTask_4(self):
-        logger = Logger('testTask_4')
-        GT = GreenletTask(self.task_3, logger=logger)
-        GT._start()
+#     def testTask_4(self):
+#         logger = Logger('testTask_4')
+#         GT = GreenletTask(self.task_3, logger=logger)
+#         GT._start()

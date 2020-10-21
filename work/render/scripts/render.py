@@ -73,7 +73,7 @@ class RenderSingleSet(AbstractRenderStrategy):
         AbstractRenderStrategy.__init__(self, blenderFile)
         self.RenderSingleImage = RenderSingleImage(blenderFile)
 
-    def render(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir='', progress=0):
+    def render(self, setID, cameraID, resolution=(0,0), angle=0.2, generalDir=''):
         """
         render single image by parameters:
 
@@ -104,10 +104,20 @@ class RenderSingleSet(AbstractRenderStrategy):
         else:
             renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'
 
+        progress = 0 
         while rotate <= 6.2:
-            self.RenderSingleImage.render(setID, rotate, nameSeries, cameraID, resolution=resolution, renderDir=renderDir)
+            self.RenderSingleImage.render(
+                setID, 
+                rotate, 
+                nameSeries, 
+                cameraID, 
+                resolution=resolution, 
+                renderDir=renderDir
+            )
             rotate += angle
             nameSeries += 1
+            progress = round(rotate / (6.2 / 100), 2)
+            yield progress
 
 
 class RenderAllSets(AbstractRenderStrategy):
@@ -132,6 +142,19 @@ class RenderAllSets(AbstractRenderStrategy):
             generalDir = f'AllSets_sizeDefault'
         else:
             generalDir = f'AllSets_size{ resolution[0] }x{ resolution[1] }'
-        for cameraID in range(1):
+
+        generalProgress = 0
+        for cameraID in range(2):
             for setID in range(87):
-                self.RenderSingleSet.render(setID, cameraID, angle=angle, resolution=resolution, generalDir=generalDir)
+                generalProgress += ((cameraID + 1) * (setID + 1)) / ((2 * 87) / 100)
+                for renderSetProgress in self.RenderSingleSet.render(
+                    setID, 
+                    cameraID, 
+                    angle=angle, 
+                    resolution=resolution, 
+                    generalDir=generalDir
+                ):
+                    yield {
+                        f'set{setID}_camera{cameraID}_percent:': renderSetProgress, 
+                        'general_percent': round(generalProgress, 2)
+                    }
