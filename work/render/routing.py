@@ -1,11 +1,13 @@
 from django.conf.urls import url
 
-from djangochannelsrestframework.consumers import view_as_consumer
 from channels.routing import ProtocolTypeRouter, URLRouter
 from channels.auth import AuthMiddlewareStack
 
-from .views import *
-from .consumers import *
+from .consumers import (
+    RenderAllConsumer,
+    RenderSingleSetConsumer,
+    RenderSingleImageConsumer
+)
 
 
 application = ProtocolTypeRouter({

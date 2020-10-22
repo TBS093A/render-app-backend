@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 from channels.generic.websocket import AsyncWebsocketConsumer
 import json
+import sys
+import asyncio
 
 from .scripts.render import (
     RenderSingleImage,
@@ -38,6 +40,8 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
     class Meta:
         abstract = True
 
+# test:
+# ws://localhost:9090/render/testHand/single/image/set-id/0/rotate/0.2/name-series/0/camera-id/1/resolution/X/50/Y/33/
 
 class RenderSingleImageConsumer(AbstractConsumer):
 
@@ -45,7 +49,7 @@ class RenderSingleImageConsumer(AbstractConsumer):
         renderSingleImage = RenderSingleImage(
             self.params['fileName'] + '.blend'
         )
-        await renderSingleImage.render(
+        renderSingleImage.render(
             int(self.params['setID']),
             float(self.params['rotate']),
             int(self.params['nameSeries']),
@@ -55,11 +59,13 @@ class RenderSingleImageConsumer(AbstractConsumer):
                 int(self.params['resolutionY'])
             )
         )
-        await self.send({
+        await self.send(json.dumps({
             'info': 'render success',
             'details': self.params
-        })
+        }))
 
+# test:
+# ws://localhost:9090/render/testHand/single/set/set-id/50/camera-id/1/resolution/X/50/Y/33/angle/0.2
 
 class RenderSingleSetConsumer(AbstractConsumer):
 
@@ -67,7 +73,7 @@ class RenderSingleSetConsumer(AbstractConsumer):
         renderSingleSet = RenderSingleSet(
             self.params['fileName'] + '.blend'
         )
-        for renderImage in renderSingleSet(
+        for renderImage in renderSingleSet.render(
             int(self.params['setID']),
             int(self.params['cameraID']),
             resolution=(
@@ -76,11 +82,17 @@ class RenderSingleSetConsumer(AbstractConsumer):
             ),
             angle=float(self.params['angle'])
         ):
-            await self.send({
-                'info': renderImage,
-                'details': self.params
-            })
+            await asyncio.sleep(0.5)
+            await self.send(json.dumps(
+                    {
+                        'info': renderImage,
+                        'details': self.params
+                    }
+                )
+            )
 
+# test
+# ws://localhost:9090/render/testHand/all/resolution/X/50/Y/33/angle/0.2
 
 class RenderAllConsumer(AbstractConsumer):
 
@@ -88,14 +100,18 @@ class RenderAllConsumer(AbstractConsumer):
         renderAllSets = RenderAllSets(
             self.params['fileName'] + '.blend'
         )
-        for renderSet in renderAllSets(
+        for renderSet in renderAllSets.render(
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
             ),
             angle=float(self.params['angle'])
         ):
-            await self.send({
-                'info': renderSet,
-                'details': self.params
-            })
+            await asyncio.sleep(0.5)
+            await self.send(json.dumps(
+                    {
+                        'info': renderSet,
+                        'details': self.params
+                    }
+                )
+            )

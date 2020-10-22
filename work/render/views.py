@@ -13,20 +13,6 @@ from .scripts.render import *
 # from .renderAsync.GreenletTask import *
 
 
-class RenderProgressConsumer(AsyncAPIConsumer):
-    """
-    WebSocket consumer class for check progress of render in background
-    """
-
-    @action()
-    async def getTasksList(self, **kwargs):
-        return {'tasks IDs list': f'{200}'}, 200
-
-    @action()
-    async def getProggress(self, taskID, **kwargs):
-        return {'render progress': f'{200}'}, 200
-
-
 class RenderViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
@@ -41,78 +27,6 @@ class RenderViewSet(
     """
     queryset = RenderSet.objects.all()
     serializer_class = RenderSetSerializer
-
-
-class RenderEverySetsViewSet(
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet,
-):
-    """
-    A RenderEverySets CRUD (abstract from `viewsets.ModelViewSet`):
-        `POST`: `create()`
-    """
-    queryset = RenderSet.objects.all()
-    serializer_class = RenderAllSetsSerializer
-
-    def create(self, request):
-        if 'angle' and 'letter_id' and 'camera_id' in request:
-            # single image serializer swap*
-            pass
-        elif 'angle' and 'letter_id' in request:
-            # single set serializer swap
-            pass
-        elif 'angle' in request:
-            # every sets serializer swap
-            pass
-        return Response()
-
-
-class RenderSingleSetViewSet(
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet,
-):
-    """
-    A RenderSingleSetSet CRUD (abstract from `viewsets.ModelViewSet`):
-        `POST`: `create()`
-    """
-    queryset = RenderSet.objects.all()
-    serializer_class = RenderSingleSetSerializer
-
-    def create(self, request):
-        if 'angle' and 'letter_id' and 'camera_id' in request:
-            # single image serializer swap
-            pass
-        elif 'angle' and 'letter_id' in request:
-            # single set serializer swap
-            pass
-        elif 'angle' in request:
-            # every sets serializer swap
-            pass
-        return Response()
-
-
-class RenderSingleImageViewSet(
-    mixins.CreateModelMixin,
-    viewsets.GenericViewSet,
-):
-    """
-    A RenderSingleImage CRUD (abstract from `viewsets.ModelViewSet`):
-        `POST`: `create()`
-    """
-    queryset = RenderSet.objects.all()
-    serializer_class = RenderSingleImageSerializer
-
-    def create(self, request):
-        if 'angle' and 'letter_id' and 'camera_id' in request:
-            # single image serializer swap
-            pass
-        elif 'angle' and 'letter_id' in request:
-            # single set serializer swap
-            pass
-        elif 'angle' in request:
-            # every sets serializer swap
-            pass
-        return Response()
 
 
 class ModelViewSet(viewsets.ModelViewSet):
