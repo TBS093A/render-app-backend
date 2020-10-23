@@ -7,15 +7,19 @@ from work.account.models import Account
 
 class Model(models.Model):
     name = models.CharField(max_length=255)
+    sets = models.IntegerField()
+    cameras = models.IntegerField()
     model = models.FileField(upload_to='models/')
 
 class RenderSet(models.Model):
     name = models.CharField(max_length=30)
+    setID = models.IntegerField()
+    cameraID = models.IntegerField()
+    angle = models.FloatField()
     images_width = models.IntegerField()
     images_height = models.IntegerField()
     
     model = models.ForeignKey(Model, on_delete=models.CASCADE)
-    user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     def share_archive_of_renders(self):
         file = open(f'renders/{self.name}.7z', 'r')

@@ -32,7 +32,7 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
         pass
 
     async def disconnect(self, close_code):
-        await elf.channel_layer.group_discard(
+        await self.channel_layer.group_discard(
             self.group_name,
             self.channel_name
         )
