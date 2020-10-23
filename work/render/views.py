@@ -1,10 +1,29 @@
 from rest_framework.response import Response
 from rest_framework import viewsets, mixins, parsers
 
+from work.settings import RENDER_DIR
 from .models import *
 from .serializers import *
 from .scripts.render import *
 # from .renderAsync.GreenletTask import *
+
+import os
+import zipfile
+import shutil
+
+
+class ZipUtils():
+
+    def __init__(self, directory):
+        self.name = directory + '.zip'
+        self.path = RENDER_DIR + '/' + directory
+
+    def zipDir():
+        archive = zipfile.ZipFile(self.name, 'w', zipfile.ZIP_DEFLATED)
+        for root, dirs, images in os.walk(self.path)
+            for image in images:
+                archive.write(os.path.join(root, image))
+        archive.close()
 
 
 class RenderViewSet(
@@ -21,6 +40,14 @@ class RenderViewSet(
     """
     queryset = RenderSet.objects.all()
     serializer_class = RenderSetSerializer
+
+    def list(self, request):
+        pass
+
+    def retrieve(self, request):
+        self.queryset.
+        archive = ZipUtils()
+        pass
 
 
 class ModelViewSet(viewsets.ModelViewSet):
