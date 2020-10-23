@@ -10,6 +10,8 @@ class Model(models.Model):
     sets = models.IntegerField()
     cameras = models.IntegerField()
     model = models.FileField(upload_to='models/')
+    
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class RenderSet(models.Model):
     name = models.CharField(max_length=30)

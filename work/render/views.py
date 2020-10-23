@@ -1,11 +1,5 @@
 from rest_framework.response import Response
-from rest_framework import viewsets, mixins
-
-from djangochannelsrestframework import permissions, mixins as channelMixins
-from djangochannelsrestframework.generics import GenericAsyncAPIConsumer
-
-from djangochannelsrestframework.consumers import AsyncAPIConsumer
-from djangochannelsrestframework.decorators import action
+from rest_framework import viewsets, mixins, parsers
 
 from .models import *
 from .serializers import *
@@ -40,3 +34,8 @@ class ModelViewSet(viewsets.ModelViewSet):
     """
     queryset = Model.objects.all()
     serializer_class = ModelSerializer
+    parser_classes = (parsers.FileUploadParser,)
+
+    def create(self, request, filename, format='blend'):
+        model = request.FILES['file']
+        return Response('')
