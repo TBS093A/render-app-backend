@@ -40,7 +40,8 @@ class ModelSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=255)
     sets = serializers.IntegerField()
     cameras = serializers.IntegerField()
-    model = serializers.FileField(upload_to='models/')
+
+    user_id = serializers.IntegerField()
 
     @staticmethod
     def create(self, **kwargs) -> dict:
@@ -48,6 +49,7 @@ class ModelSerializer(serializers.ModelSerializer):
         newModel.save()
         return { 'info': 'model has been saved' }
 
+    @staticmethod
     def update(self, **kwargs) -> dict:
         model = Model.objects.get(id=kwargs['id'])
         model.__dict__.update(kwargs)

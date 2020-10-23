@@ -38,4 +38,19 @@ class ModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request, filename, format='blend'):
         model = request.FILES['file']
-        return Response('')
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        name = serializer.validated_data['name']
+        sets = serializer.validated_data['sets']
+        cameras = serializer.validated_data['cameras']
+        user = serializer.validated_data['user_id']
+        return Response(ModelSerializer.create(
+                {
+                    'model': model,
+                    'name': name,
+                    'sets': sets,
+                    'cameras': cameras,
+                    'user_id': user
+                }
+            )
+        )

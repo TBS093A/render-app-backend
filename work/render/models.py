@@ -10,7 +10,7 @@ class Model(models.Model):
     sets = models.IntegerField()
     cameras = models.IntegerField()
     model = models.FileField(upload_to='models/')
-    
+
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 class RenderSet(models.Model):
@@ -21,7 +21,7 @@ class RenderSet(models.Model):
     images_width = models.IntegerField()
     images_height = models.IntegerField()
     
-    model = models.ForeignKey(Model, on_delete=models.CASCADE)
+    model = models.ForeignKey(Model, on_delete=models.STANDARD)
 
     def share_archive_of_renders(self):
         file = open(f'renders/{self.name}.7z', 'r')
