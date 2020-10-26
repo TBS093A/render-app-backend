@@ -27,6 +27,7 @@ class ZipUtils():
             for image in images:
                 archive.write(os.path.join(root, image))
         archive.close()
+        return archive
 
     def getSize(self):
         """
@@ -57,7 +58,7 @@ class RenderViewSet(
     def retrieve(self, request, **kwargs):
         setName = self.kwargs.get('setName')
         archive = ZipUtils(setName)
-        
+        archiveFile = archive.zipDir()
 
         response = FileResponse(archiveFile, content_type='zip')
         response['Content-Length'] = archive.getSize()
