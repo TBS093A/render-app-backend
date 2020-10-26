@@ -19,6 +19,9 @@ class ZipUtils():
         self.path = RENDER_DIR + '/' + directory
 
     def zipDir(self):
+        """
+        create zip archive
+        """
         archive = zipfile.ZipFile(self.name, 'w', zipfile.ZIP_DEFLATED)
         for root, dirs, images in os.walk(self.path):
             for image in images:
@@ -26,6 +29,9 @@ class ZipUtils():
         archive.close()
 
     def getSize(self):
+        """
+        archive size in bytes
+        """
         size = os.path.getsize(self.path + '.zip')
         return size
 
