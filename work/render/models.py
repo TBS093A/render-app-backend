@@ -21,7 +21,7 @@ class RenderSet(models.Model):
     images_width = models.IntegerField()
     images_height = models.IntegerField()
     
-    model = models.ForeignKey(Model, on_delete=models.STANDARD)
+    model = models.ForeignKey(Model, on_delete=models.SET_NULL, null=True)
 
     def share_archive_of_renders(self):
         file = open(f'renders/{self.name}.7z', 'r')

@@ -20,7 +20,7 @@ class ZipUtils():
 
     def zipDir():
         archive = zipfile.ZipFile(self.name, 'w', zipfile.ZIP_DEFLATED)
-        for root, dirs, images in os.walk(self.path)
+        for root, dirs, images in os.walk(self.path):
             for image in images:
                 archive.write(os.path.join(root, image))
         archive.close()
@@ -44,9 +44,9 @@ class RenderViewSet(
     def list(self, request):
         pass
 
-    def retrieve(self, request):
-        self.queryset.
-        archive = ZipUtils()
+    def retrieve(self, request, **kwargs):
+        print(kwargs)
+        archive = ZipUtils(kwargs['set'])
         pass
 
 
