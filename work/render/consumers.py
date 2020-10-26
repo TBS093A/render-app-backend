@@ -20,6 +20,8 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
         for param, value in self.params.items():
             self.group_name += f'_{param}{value}'
         
+        self.channel_layer
+
         await self.channel_layer.group_add(
             self.group_name,
             self.channel_name
@@ -61,7 +63,8 @@ class RenderSingleImageConsumer(AbstractConsumer):
         )
         await self.send(json.dumps({
             'info': 'render success',
-            'details': self.params
+            'details': self.params,
+            'group': self.group_name
         }))
 
 # test:
@@ -86,7 +89,8 @@ class RenderSingleSetConsumer(AbstractConsumer):
             await self.send(json.dumps(
                     {
                         'info': renderImage,
-                        'details': self.params
+                        'details': self.params,
+                        'group': self.group_name
                     }
                 )
             )
@@ -111,7 +115,8 @@ class RenderAllConsumer(AbstractConsumer):
             await self.send(json.dumps(
                     {
                         'info': renderSet,
-                        'details': self.params
+                        'details': self.params,
+                        'group': self.group_name
                     }
                 )
             )

@@ -18,12 +18,16 @@ class ZipUtils():
         self.name = directory + '.zip'
         self.path = RENDER_DIR + '/' + directory
 
-    def zipDir():
+    def zipDir(self):
         archive = zipfile.ZipFile(self.name, 'w', zipfile.ZIP_DEFLATED)
         for root, dirs, images in os.walk(self.path):
             for image in images:
                 archive.write(os.path.join(root, image))
         archive.close()
+
+    def getSize(self):
+        size = os.path.getsize(self.path + '.zip')
+        return size
 
 
 class RenderViewSet(
@@ -35,7 +39,7 @@ class RenderViewSet(
     """
     A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):
         `GET`: `list()`
-        `GET`: `retrieve()` /parameter {id}
+        `GET`: `retrieve()` /parameter {id}'odf
         `DELETE`: `destroy()` /parameter {id}
     """
     queryset = RenderSet.objects.all()
@@ -45,9 +49,15 @@ class RenderViewSet(
         pass
 
     def retrieve(self, request, **kwargs):
-        print(kwargs)
-        archive = ZipUtils(kwargs['set'])
-        pass
+        setName = self.kwargs.get('setName')
+        archive = ZipUtils(setName)
+        
+
+        response = FileResponse(archiveFile, content_type='zip')
+        response['Content-Length'] = archive.getSize()
+        response['Content-Disposition'] = f'attachment; filename={archive.name}'
+        
+        return response
 
 
 class ModelViewSet(viewsets.ModelViewSet):
