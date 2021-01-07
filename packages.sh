@@ -8,3 +8,5 @@ pip install redis==3.5.3
 pip install channels==2.4.0
 pip install channels_redis==3.1.0
 pip install djangochannelsrestframework==0.1.1
+
+# sudo apt-get install blender===2.91
