@@ -106,19 +106,9 @@ class RenderGeneral():
                         'x': -0.08322930335998535, 
                         'y': 0.06281907856464386, 
                         'z': -0.009127259254455566
-                        }
-                    }, 
-                'IK_joint3_R': {
-                    'head': {
-                        'x': -0.07600140571594238, 
-                        'y': 0.0691424161195755, 
-                        'z': -0.23052507638931274}, 
-                    'tail': {
-                        'x': -0.7473515272140503,
-                        'y': 0.014268334023654461,
-                        'z': -0.2997741997241974
                     }
-                },
+                }, 
+                'IK_joint3_R': {},
                 'IK_maly_1_R': {},
                 'IK_maly_2_R': {},
                 'IK_maly_3_R': {},
@@ -160,8 +150,10 @@ class RenderGeneral():
         for bone in bones.data.edit_bones:
             for key, value in vectors.items():
                 if key == bone.name:
-                    bone.head.x = value.head
-            pass
+                    bone.head = value.head
+                    bone.tail = value.tail
+
+        bpy.ops.object.mode_set(mode='OBJECT')
 
         self.scene.render.filepath = self.__setFilePathAndName(renderDir, 0, 'customizeVector', cameraID, resolution)
 
