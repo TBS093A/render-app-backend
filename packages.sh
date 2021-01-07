@@ -1,9 +1,10 @@
-pip install django
-pip install djangorestframework
-pip install drf_yasg
-pip install pyjwt
+pip install django==3.1.2
+pip install djangorestframework==3.12.1
+pip install drf_yasg==1.17.1
+pip install pyjwt==1.7.1 
 
-pip install asyncio
-pip install redis
-pip install channels_redis
-pip install djangochannelsrestframework
+pip install asyncio==3.4.3
+pip install redis==3.5.3
+pip install channels==2.4.0
+pip install channels_redis==3.1.0
+pip install djangochannelsrestframework==0.1.1
