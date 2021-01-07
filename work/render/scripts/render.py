@@ -158,3 +158,90 @@ class RenderAllSets(AbstractRenderStrategy):
                         f'set{setID}_camera{cameraID}_percent:': renderSetProgress, 
                         'general_percent': round(generalProgress, 2)
                     }
+
+class RenderSingleImageByVector(AbstractRenderStrategy):
+
+    def render(
+        self, 
+        setID: int, 
+        rotate: float, 
+        nameSeries: int, 
+        cameraID: int, 
+        resolution: tuple=(0,0), 
+        renderDir: str='SingleImages', 
+        vectors: dict
+    ):
+        """
+        render single image by parameters:
+
+        `setID` - id of generated set
+
+        `rotate` - value between `0 - 6.2` where `0.2 == 12 deg` && `6.2 == 360 deg`
+
+        `nameSeries` - id of generated image (from current set)
+
+        `cameraID` - id of current camera used to render
+
+        `resolution` - tuple like: `( <width>, <height> )`
+
+            default: (0,0) (blender file render settings)
+
+        `renderDir` - directory order: 
+                        
+            single images: SingleImages, 
+            single sets: Set<setID>_camera<cameraID>_size<width>x<height>
+            every sets: AllSets_size<width>x<height>/Set<setID>_camera<cameraID>
+        
+        `vectors` - dict with tuples with positions of fingers in hand: (example)
+            
+            {
+                'IK_nadgarstek_R': {
+                    'head': {
+                        'x': 0.1445000171661377, 
+                        'y': 0.06353862583637238, 
+                        'z': -0.0073097944259643555
+                    }, 
+                    'tail': {
+                        'x': -0.08322930335998535, 
+                        'y': 0.06281907856464386, 
+                        'z': -0.009127259254455566
+                    }
+                }, 
+                'IK_joint3_R': {},
+                'IK_maly_1_R': {},
+                'IK_maly_2_R': {},
+                'IK_maly_3_R': {},
+                'IK_joint4_R': {}, 
+                'IK_serdeczny_1_R': {}, 
+                'IK_serdeczny_2_R': {}, 
+                'IK_serdeczny_3_R': {}, 
+                'IK_joint5_R': {}, 
+                'IK_srodkowy_1_R': {}, 
+                'IK_srodkowy_2_R': {}, 
+                'IK_srodkowy_3_R': {}, 
+                'IK_joint6_R': {}, 
+                'IK_wskazujacy_1_R': {}, 
+                'IK_wskazujacy_2_R': {}, 
+                'IK_wskazujacy_3_R': {}, 
+                'IK_kciuk_0_R': {},
+                'IK_kciuk_1_R': {}, 
+                'IK_kciuk_2_R': {}
+            }
+
+        """
+        call(
+            [
+                "blender", 
+                "-b", 
+                self.blenderFile, 
+                "--python", 
+                "work/render/scripts/console/renderSingleImageByVector.py", 
+                "--",
+                str(rotate),
+                str(cameraID),
+                str(resolution[0]),
+                str(resolution[1]),
+                renderDir,
+                str(vectors)
+            ]
+        )
