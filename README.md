@@ -1,5 +1,5 @@
 # Render App
-Python / Django REST Framework / Django Channels REST Framework / Gevent / Blender
+Python / Django REST Framework / Django Channels REST Framework / Asyncio / Blender
 
 ## Basic informations
 
