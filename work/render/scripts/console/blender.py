@@ -75,7 +75,7 @@ class RenderGeneral():
         return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + 'set' + str(setID) + '_reg' + str(nameSeries) + '_camera' + str(cameraID) + '_size' + str(resolution[0]) + 'x' + str(resolution[1])
 
     @classmethod
-    def renderHandByVector(self, rotate, cameraID, resolution, renderDir, vectors: dict):
+    def renderHandByVector(self, rotate, cameraID, resolution, renderDir, vectors):
         """
         render single image by parameters:
 
@@ -150,8 +150,14 @@ class RenderGeneral():
         for bone in bones.data.edit_bones:
             for key, value in vectors.items():
                 if key == bone.name:
-                    bone.head = value.head
-                    bone.tail = value.tail
+                    
+                    bone.head.x = float(value.head.x)
+                    bone.head.y = float(value.head.y)
+                    bone.head.z = float(value.head.z)
+
+                    bone.tail.x = float(value.tail.x)
+                    bone.tail.y = float(value.tail.y)
+                    bone.tail.z = float(value.tail.z)
 
         bpy.ops.object.mode_set(mode='OBJECT')
 
