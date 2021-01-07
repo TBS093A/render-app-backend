@@ -41,6 +41,16 @@ class RenderGeneral():
         `nameSeries` - id of generated image (from current set)
 
         `cameraID` - id of current camera used to render
+
+        `resolution` - tuple like: `( <width>, <height> )`
+
+            default: (0,0) (blender file render settings)
+
+        `renderDir` - directory order: 
+                        
+            single images: SingleImages, 
+            single sets: Set<setID>_camera<cameraID>_size<width>x<height>
+            every sets: AllSets_size<width>x<height>/Set<setID>_camera<cameraID>
         """
         self.bones.rotation_euler = (float(rotate), 0, 0)
         self.bones.keyframe_insert('rotation_euler', frame=int(setID))
@@ -63,3 +73,27 @@ class RenderGeneral():
     @classmethod
     def __setFilePathAndName(self, dirPath, setID, nameSeries, cameraID, resolution):
         return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + 'set' + str(setID) + '_reg' + str(nameSeries) + '_camera' + str(cameraID) + '_size' + str(resolution[0]) + 'x' + str(resolution[1])
+
+    @classmethod
+    def renderHandByVector(self, rotate, cameraID, resolution, renderDir, vectors: dict):
+        """
+        render single image by parameters:
+
+        `rotate` - value between `0 - 6.2` where `0.2 == 12 deg` && `6.2 == 360 deg`
+
+        `cameraID` - id of current camera used to render
+
+        `resolution` - tuple like: `( <width>, <height> )`
+
+            default: (0,0) (blender file render settings)
+
+        `renderDir` - directory order: 
+                        
+            single images: SingleImages, 
+            single sets: Set<setID>_camera<cameraID>_size<width>x<height>
+            every sets: AllSets_size<width>x<height>/Set<setID>_camera<cameraID>
+
+        `vectors` - dict with tuples with positions of fingers in hand:
+
+        """
+        pass
