@@ -96,29 +96,29 @@ class RenderGeneral():
         `vectors` - dict with tuples with positions of fingers in hand: (example)
             
             {
-                *   'IK_nadgarstek_R':      (useless: float, y: float, x: float, z: float), 
-                *   'IK_joint3_R':          (useless: float, y: float, x: float, z: float),
-                'IK_maly_1_R':          (useless: float, y: float, x: float, z: float),
-                'IK_maly_2_R':          (useless: float, y: float, x: float, z: float),
-                'IK_maly_3_R':          (useless: float, y: float, x: float, z: float),
-                *   'IK_joint4_R':          (useless: float, y: float, x: float, z: float), 
-                'IK_serdeczny_1_R':     (useless: float, y: float, x: float, z: float), 
-                'IK_serdeczny_2_R':     (useless: float, y: float, x: float, z: float), 
-                'IK_serdeczny_3_R':     (useless: float, y: float, x: float, z: float), 
-                *   'IK_joint5_R':          (useless: float, y: float, x: float, z: float), 
-                'IK_srodkowy_1_R':      (useless: float, y: float, x: float, z: float), 
-                'IK_srodkowy_2_R':      (useless: float, y: float, x: float, z: float), 
-                'IK_srodkowy_3_R':      (useless: float, y: float, x: float, z: float), 
-                *   'IK_joint6_R':          (useless: float, y: float, x: float, z: float), 
-                'IK_wskazujacy_1_R':    (useless: float, y: float, x: float, z: float), 
-                'IK_wskazujacy_2_R':    (useless: float, y: float, x: float, z: float), 
-                'IK_wskazujacy_3_R':    (useless: float, y: float, x: float, z: float), 
-                'IK_kciuk_0_R':         (useless: float, y: float, x: float, z: float),
-                'IK_kciuk_1_R':         (useless: float, y: float, x: float, z: float), 
-                'IK_kciuk_2_R':         (useless: float, y: float, x: float, z: float)
+                *   'IK_nadgarstek_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                *   'IK_joint3_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
+                'IK_maly_1_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
+                'IK_maly_2_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
+                'IK_maly_3_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
+                *   'IK_joint4_R':          {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_1_R':     {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_2_R':     {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_3_R':     {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                *   'IK_joint5_R':          {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_1_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_2_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_3_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                *   'IK_joint6_R':          {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_1_R':    {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_2_R':    {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_3_R':    {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_kciuk_0_R':         {'useless': float, 'y': float, 'x': float, 'z': float},
+                'IK_kciuk_1_R':         {'useless': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_kciuk_2_R':         {'useless': float, 'y': float, 'x': float, 'z': float}
             }
 
-            * optional (extremal)
+            * optional params (extremal)
 
             min / max single finger rotate scale:
                 thumb:
@@ -191,24 +191,18 @@ class RenderGeneral():
         self.scene.camera = self.cameras[int(cameraID)]
         self.scene.frame_set(0)
 
-        bpy.ops.object.posemode_toggle()
-
-        for bone in bones.data.edit_bones:
-            for key, value in vectors.items():
-                if key == bone.name:
-
-                    bone.head.x = float(value.head.x)
-                    bone.head.y = float(value.head.y)
-                    bone.head.z = float(value.head.z)
-
-                    bone.tail.x = float(value.tail.x)
-                    bone.tail.y = float(value.tail.y)
-                    bone.tail.z = float(value.tail.z)
+        for boneName, quaternion in vectors.items():
+            bone = bones.pose.bones.get(boneName)
+            bone.rotation_quaternion = (
+                quaternion['useless'],
+                quaternion['y'],
+                quaternion['x'],
+                quaternion['z']
+            )
+            bone.keyframe_insert("rotation_quaternion", frame=0)
 
         self.bones.rotation_euler = (float(rotate), 0, 0)
         self.bones.keyframe_insert('rotation_euler', frame=0)
-
-        bpy.ops.object.mode_set(mode='OBJECT')
 
         self.scene.render.filepath = self.__setFilePathAndName(renderDir, 0, 'customizeVector', cameraID, resolution)
 
