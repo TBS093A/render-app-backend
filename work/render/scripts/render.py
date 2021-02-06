@@ -159,6 +159,7 @@ class RenderAllSets(AbstractRenderStrategy):
                         'general_percent': round(generalProgress, 2)
                     }
 
+
 class RenderSingleImageByVector(AbstractRenderStrategy):
 
     def render(
@@ -167,9 +168,9 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
         rotate: float, 
         nameSeries: int, 
         cameraID: int, 
+        vectors: dict,
         resolution: tuple=(0,0), 
         renderDir: str='SingleImages', 
-        vectors: dict
     ):
         """
         render single image by parameters:
@@ -245,3 +246,57 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
                 str(vectors)
             ]
         )
+
+
+class RenderSingleSetByVector(AbstractRenderStrategy):
+
+    def __init__(self, blenderFile):
+        AbstractRenderStrategy.__init__(self, blenderFile)
+        self.RenderSingleImage = RenderSingleImageByVector(blenderFile)
+
+    def render(self, setID, cameraID, vectors: dict, resolution=(0,0), angle=0.2, generalDir=''):
+        """
+        render single image by parameters:
+
+        `setID` - id of generated set
+
+        `cameraID` - id of current camera used to render
+
+        `resolution` - tuple like: `( <width>, <height> )`
+
+            default: (0,0) (blender file render settings)
+
+        `angle` - value between `0 - 6.2` (`0 - 360`) 
+            
+            default: 0.2
+
+        `generalDir` - for all sets rendering directory order
+
+            default: ''
+        """
+        rotate = 0
+        nameSeries = 0
+        renderDir = ''
+
+        if generalDir is '' and resolution[0] is 0 and resolution[1] is 0:
+            renderDir = f'Set{ setID }_camera{ cameraID }_sizeDefault'
+        elif generalDir is '':
+            renderDir = f'Set{ setID }_camera{ cameraID }_size{ resolution[0] }x{ resolution[1] }'
+        else:
+            renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'
+
+        progress = 0 
+        while rotate <= 6.2:
+            self.RenderSingleImage.render(
+                setID, 
+                rotate, 
+                nameSeries, 
+                cameraID, 
+                vectors,
+                resolution=resolution, 
+                renderDir=renderDir
+            )
+            rotate += angle
+            nameSeries += 1
+            progress = round(rotate / (6.2 / 100), 2)
+            yield progress

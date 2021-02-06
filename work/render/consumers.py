@@ -7,7 +7,10 @@ import asyncio
 from .scripts.render import (
     RenderSingleImage,
     RenderSingleSet,
-    RenderAllSets
+    RenderAllSets,
+
+    RenderSingleImageByVector,
+    RenderSingleSetByVector
 )
 
 
@@ -115,6 +118,57 @@ class RenderAllConsumer(AbstractConsumer):
             await self.send(json.dumps(
                     {
                         'info': renderSet,
+                        'details': self.params,
+                        'group': self.group_name
+                    }
+                )
+            )
+
+
+class RenderSingleImageByVectorConsumer(AbstractConsumer):
+
+    async def render(self):
+        renderSingleImage = RenderSingleImageByVector(
+            self.params['fileName'] + '.blend'
+        )
+        renderSingleImage.render(
+            int(self.params['setID']),
+            float(self.params['rotate']),
+            int(self.params['nameSeries']),
+            int(self.params['cameraID']),
+            json.loads(self.params['vectors'])
+            resolution=(
+                int(self.params['resolutionX']), 
+                int(self.params['resolutionY'])
+            )
+        )
+        await self.send(json.dumps({
+            'info': 'render success',
+            'details': self.params,
+            'group': self.group_name
+        }))
+
+
+class RenderSingleSetByVectorConsumer(AbstractConsumer):
+
+    async def render(self):
+        renderSingleSet = RenderSingleSetByVector(
+            self.params['fileName'] + '.blend'
+        )
+        for renderImage in renderSingleSet.render(
+            int(self.params['setID']),
+            int(self.params['cameraID']),
+            json.loads(self.params['vectors'])
+            resolution=(
+                int(self.params['resolutionX']), 
+                int(self.params['resolutionY'])
+            ),
+            angle=float(self.params['angle'])
+        ):
+            await asyncio.sleep(0.5)
+            await self.send(json.dumps(
+                    {
+                        'info': renderImage,
                         'details': self.params,
                         'group': self.group_name
                     }
