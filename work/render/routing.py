@@ -16,23 +16,23 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(
         URLRouter([
             url(
-                r'^render/(?P<fileName>[^/]+)/all/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)/angle/(?P<angle>[^/]+)', 
+                r'^render/all/(?P<room_uuid>[^/]+)', 
                 RenderAllConsumer,
             ),
             url(
-                r'^render/(?P<fileName>[^/]+)/single/set/set-id/(?P<setID>[^/]+)/camera-id/(?P<cameraID>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)/angle/(?P<angle>[^/]+)', 
+                r'^render/single/set/(?P<room_uuid>[^/]+)', 
                 RenderSingleSetConsumer,
             ),
             url(
-                r'render/(?P<fileName>[^/]+)/single/image/set-id/(?P<setID>[^/]+)/rotate/(?P<rotate>[^/]+)/name-series/(?P<nameSeries>[^/]+)/camera-id/(?P<cameraID>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)',
+                r'render/single/image/(?P<room_uuid>[^/]+)',
                 RenderSingleImageConsumer,
             ),
             url(
-                r'^render/(?P<fileName>[^/]+)/single/set/set-id/(?P<setID>[^/]+)/camera-id/(?P<cameraID>[^/]+)/vectors/(?P<vectors>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)/angle/(?P<angle>[^/]+)', 
+                r'^render/single/set/vectors/(?P<room_uuid>[^/]+)', 
                 RenderSingleSetByVectorConsumer,
             ),
             url(
-                r'render/(?P<fileName>[^/]+)/single/image/set-id/(?P<setID>[^/]+)/rotate/(?P<rotate>[^/]+)/name-series/(?P<nameSeries>[^/]+)/camera-id/(?P<cameraID>[^/]+)/vectors/(?P<vectors>[^/]+)/resolution/X/(?P<resolutionX>[^/]+)/Y/(?P<resolutionY>[^/]+)',
+                r'render/single/image/vectors/(?P<room_uuid>[^/]+)',
                 RenderSingleImageByVectorConsumer,
             )
         ])

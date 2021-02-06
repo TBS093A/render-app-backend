@@ -2,6 +2,7 @@ from subprocess import call
 from work.settings import RENDER_DIR
 
 from abc import ABC, abstractmethod
+import uuid
 
 # Strategy design pattern 
 
@@ -163,8 +164,7 @@ class RenderAllSets(AbstractRenderStrategy):
 class RenderSingleImageByVector(AbstractRenderStrategy):
 
     def render(
-        self, 
-        setID: int, 
+        self,
         rotate: float, 
         nameSeries: int, 
         cameraID: int, 
@@ -174,8 +174,6 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
     ):
         """
         render single image by parameters:
-
-        `setID` - id of generated set
 
         `rotate` - value between `0 - 6.2` where `0.2 == 12 deg` && `6.2 == 360 deg`
 
@@ -254,7 +252,7 @@ class RenderSingleSetByVector(AbstractRenderStrategy):
         AbstractRenderStrategy.__init__(self, blenderFile)
         self.RenderSingleImage = RenderSingleImageByVector(blenderFile)
 
-    def render(self, setID, cameraID, vectors: dict, resolution=(0,0), angle=0.2, generalDir=''):
+    def render(self, cameraID, vectors: dict, resolution=(0,0), angle=0.2, generalDir=''):
         """
         render single image by parameters:
 
@@ -277,18 +275,18 @@ class RenderSingleSetByVector(AbstractRenderStrategy):
         rotate = 0
         nameSeries = 0
         renderDir = ''
+        uuid_hash = uuid.uuid4()
 
         if generalDir is '' and resolution[0] is 0 and resolution[1] is 0:
-            renderDir = f'Set{ setID }_camera{ cameraID }_sizeDefault'
+            renderDir = f'Set_vector_{ uuid_hash }_camera{ cameraID }_sizeDefault'
         elif generalDir is '':
-            renderDir = f'Set{ setID }_camera{ cameraID }_size{ resolution[0] }x{ resolution[1] }'
+            renderDir = f'Set_vector_{ uuid_hash }_camera{ cameraID }_size{ resolution[0] }x{ resolution[1] }'
         else:
             renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'
 
         progress = 0 
         while rotate <= 6.2:
             self.RenderSingleImage.render(
-                setID, 
                 rotate, 
                 nameSeries, 
                 cameraID, 
