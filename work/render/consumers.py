@@ -136,7 +136,7 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
             float(self.params['rotate']),
             int(self.params['nameSeries']),
             int(self.params['cameraID']),
-            json.loads(self.params['vectors'])
+            json.loads(self.params['vectors']),
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
@@ -158,7 +158,7 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
         for renderImage in renderSingleSet.render(
             int(self.params['setID']),
             int(self.params['cameraID']),
-            json.loads(self.params['vectors'])
+            json.loads(self.params['vectors']),
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
