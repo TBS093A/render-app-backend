@@ -42,7 +42,6 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
         pass
 
     async def receive(self, **kwargs):
-        print(kwargs)
         self.params = json.loads(
             kwargs['text_data']
         )

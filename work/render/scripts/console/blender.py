@@ -96,43 +96,89 @@ class RenderGeneral():
         `vectors` - dict with tuples with positions of fingers in hand: (example)
             
             {
-                'IK_nadgarstek_R': {
-                    'head': {
-                        'x': 0.1445000171661377, 
-                        'y': 0.06353862583637238, 
-                        'z': -0.0073097944259643555
-                    }, 
-                    'tail': {
-                        'x': -0.08322930335998535, 
-                        'y': 0.06281907856464386, 
-                        'z': -0.009127259254455566
-                    }
-                }, 
-                'IK_joint3_R': {},
-                'IK_maly_1_R': {},
-                'IK_maly_2_R': {},
-                'IK_maly_3_R': {},
-                'IK_joint4_R': {}, 
-                'IK_serdeczny_1_R': {}, 
-                'IK_serdeczny_2_R': {}, 
-                'IK_serdeczny_3_R': {}, 
-                'IK_joint5_R': {}, 
-                'IK_srodkowy_1_R': {}, 
-                'IK_srodkowy_2_R': {}, 
-                'IK_srodkowy_3_R': {}, 
-                'IK_joint6_R': {}, 
-                'IK_wskazujacy_1_R': {}, 
-                'IK_wskazujacy_2_R': {}, 
-                'IK_wskazujacy_3_R': {}, 
-                'IK_kciuk_0_R': {},
-                'IK_kciuk_1_R': {}, 
-                'IK_kciuk_2_R': {}
+                *   'IK_nadgarstek_R':      (useless: float, y: float, x: float, z: float), 
+                *   'IK_joint3_R':          (useless: float, y: float, x: float, z: float),
+                'IK_maly_1_R':          (useless: float, y: float, x: float, z: float),
+                'IK_maly_2_R':          (useless: float, y: float, x: float, z: float),
+                'IK_maly_3_R':          (useless: float, y: float, x: float, z: float),
+                *   'IK_joint4_R':          (useless: float, y: float, x: float, z: float), 
+                'IK_serdeczny_1_R':     (useless: float, y: float, x: float, z: float), 
+                'IK_serdeczny_2_R':     (useless: float, y: float, x: float, z: float), 
+                'IK_serdeczny_3_R':     (useless: float, y: float, x: float, z: float), 
+                *   'IK_joint5_R':          (useless: float, y: float, x: float, z: float), 
+                'IK_srodkowy_1_R':      (useless: float, y: float, x: float, z: float), 
+                'IK_srodkowy_2_R':      (useless: float, y: float, x: float, z: float), 
+                'IK_srodkowy_3_R':      (useless: float, y: float, x: float, z: float), 
+                *   'IK_joint6_R':          (useless: float, y: float, x: float, z: float), 
+                'IK_wskazujacy_1_R':    (useless: float, y: float, x: float, z: float), 
+                'IK_wskazujacy_2_R':    (useless: float, y: float, x: float, z: float), 
+                'IK_wskazujacy_3_R':    (useless: float, y: float, x: float, z: float), 
+                'IK_kciuk_0_R':         (useless: float, y: float, x: float, z: float),
+                'IK_kciuk_1_R':         (useless: float, y: float, x: float, z: float), 
+                'IK_kciuk_2_R':         (useless: float, y: float, x: float, z: float)
             }
 
-        """
-        self.bones.rotation_euler = (float(rotate), 0, 0)
-        self.bones.keyframe_insert('rotation_euler', frame=0)
+            * optional (extremal)
 
+            min / max single finger rotate scale:
+                thumb:
+                    0 max:
+                        y = 0.5
+                        x = 0.5
+                        z = 0.6
+                    0 min:
+                        y = -0,3
+                        x = 0
+                        z = -0.3
+                        
+                        1 max:
+                            y = 0
+                            x = 0
+                            z = 0.7
+                        1 min:
+                            y = -0.1
+                            x = 0
+                            z = 0
+
+                            2 max:
+                                y = 0
+                                x = 0
+                                z = 0.7
+                            2 min:
+                                y = 0
+                                x = 0
+                                z = -0.4
+                    
+                others:
+                    1 max:
+                        y = 0.2
+                        x = 0
+                        z = 0.7
+                    1 min: 
+                        y = -0.3
+                        x = 0
+                        z = -0.3
+
+                        2 max:
+                            y = 0
+                            x = 0
+                            z = 1.6
+                        2 min :
+                            y = 0
+                            x = 0
+                            z = 0
+
+                            3 max:
+                                y = 0
+                                x = 0
+                                z = 0.7
+                            3 min :
+                                y = 0
+                                x = 0
+                                z = 0
+
+
+        """
         if int(resolution[0]) is not 0 and int(resolution[1]) is not 0:
             self.scene.render.resolution_x = int(resolution[0])
             self.scene.render.resolution_y = int(resolution[1])
@@ -145,7 +191,7 @@ class RenderGeneral():
         self.scene.camera = self.cameras[int(cameraID)]
         self.scene.frame_set(0)
 
-        bpy.ops.object.mode_set(mode='EDIT')
+        bpy.ops.object.posemode_toggle()
 
         for bone in bones.data.edit_bones:
             for key, value in vectors.items():
@@ -158,6 +204,9 @@ class RenderGeneral():
                     bone.tail.x = float(value.tail.x)
                     bone.tail.y = float(value.tail.y)
                     bone.tail.z = float(value.tail.z)
+
+        self.bones.rotation_euler = (float(rotate), 0, 0)
+        self.bones.keyframe_insert('rotation_euler', frame=0)
 
         bpy.ops.object.mode_set(mode='OBJECT')
 
