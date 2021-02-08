@@ -1,5 +1,5 @@
 # FROM nytimes/blender:2.91-gpu-ubuntu18.04
-FROM python:3
+FROM python:3.9
 
 ENV PYTHONUNBUFFERED=1
 RUN pip install --upgrade pip setuptools
