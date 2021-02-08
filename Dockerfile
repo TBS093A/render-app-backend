@@ -1,6 +1,8 @@
+# FROM nytimes/blender:2.91-gpu-ubuntu18.04
 FROM python:3
 
 ENV PYTHONUNBUFFERED=1
+RUN pip install --upgrade pip setuptools
 
 WORKDIR /app
 COPY . /app/
