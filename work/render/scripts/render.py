@@ -4,6 +4,10 @@ from work.settings import RENDER_DIR
 from abc import ABC, abstractmethod
 import uuid
 
+from work.settings import (
+    BASE_DIR
+)
+
 # Strategy design pattern 
 
 class AbstractRenderStrategy(ABC):
@@ -14,7 +18,7 @@ class AbstractRenderStrategy(ABC):
     """
 
     def __init__(self, blenderFile):
-        self.blenderFile = 'static/models/' + blenderFile
+        self.blenderFile = BASE_DIR + '/static/models/' + blenderFile
         self.renderDir = RENDER_DIR + blenderFile[0:-6]
         
         self.slash = chr(92)

@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  render-app-backend:
+  render_app_backend:
     build: .
     ports:
       - "9090:9090"

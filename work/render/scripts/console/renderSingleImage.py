@@ -1,6 +1,10 @@
+import os
 import sys
-sys.path.append("/home/tbs093a/Projects/engineer's work/application/work/work/render/scripts/console/")
-sys.path.append("/home/tbs093a/Projects/engineer's work/application/work/")
+dir_path = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(dir_path)
+sys.path.append(dir_path + '/../../../..')
+# sys.path.append("/home/tbs093a/Projects/engineer's work/application/work/work/render/scripts/console/")
+# sys.path.append("/home/tbs093a/Projects/engineer's work/application/work/")
 from blender import RenderGeneral
 
 
