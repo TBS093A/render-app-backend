@@ -15,7 +15,7 @@ pip install djangochannelsrestframework==0.1.1
 
 # docker
 
-pip install psycopg-binary==2.8
+pip install psycopg2-binary==2.8
 
 # blender
 
