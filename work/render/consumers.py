@@ -354,71 +354,71 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
 # General
 #
 # {
-#     "IK_nadgarstek_R":      {"y": float, "x": float, "z": float}, 
-#     "IK_joint3_R":          {"y": float, "x": float, "z": float},
-#     "IK_maly_1_R":          {"y": float, "x": float, "z": float},
-#     "IK_maly_2_R":          {"y": float, "x": float, "z": float},
-#     "IK_maly_3_R":          {"y": float, "x": float, "z": float},
-#     "IK_joint4_R":          {"y": float, "x": float, "z": float}, 
-#     "IK_serdeczny_1_R":     {"y": float, "x": float, "z": float}, 
-#     "IK_serdeczny_2_R":     {"y": float, "x": float, "z": float}, 
-#     "IK_serdeczny_3_R":     {"y": float, "x": float, "z": float}, 
-#     "IK_joint5_R":          {"y": float, "x": float, "z": float}, 
-#     "IK_srodkowy_1_R":      {"y": float, "x": float, "z": float}, 
-#     "IK_srodkowy_2_R":      {"y": float, "x": float, "z": float}, 
-#     "IK_srodkowy_3_R":      {"y": float, "x": float, "z": float}, 
-#     "IK_joint6_R":          {"y": float, "x": float, "z": float}, 
-#     "IK_wskazujacy_1_R":    {"y": float, "x": float, "z": float}, 
-#     "IK_wskazujacy_2_R":    {"y": float, "x": float, "z": float}, 
-#     "IK_wskazujacy_3_R":    {"y": float, "x": float, "z": float}, 
-#     "IK_kciuk_0_R":         {"y": float, "x": float, "z": float},
-#     "IK_kciuk_1_R":         {"y": float, "x": float, "z": float}, 
-#     "IK_kciuk_2_R":         {"y": float, "x": float, "z": float}
+#     "IK_nadgarstek_R":      {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_joint3_R":          {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_maly_1_R":          {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_maly_2_R":          {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_maly_3_R":          {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_joint4_R":          {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_serdeczny_1_R":     {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_serdeczny_2_R":     {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_serdeczny_3_R":     {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_joint5_R":          {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_srodkowy_1_R":      {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_srodkowy_2_R":      {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_srodkowy_3_R":      {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_joint6_R":          {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_wskazujacy_1_R":    {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_wskazujacy_2_R":    {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_wskazujacy_3_R":    {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_kciuk_0_R":         {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_kciuk_1_R":         {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_kciuk_2_R":         {"scale": float, "y": float, "x": float, "z": float}
 # }
 #
 # Without extremals
 #
 # {
-#     "IK_maly_1_R":          {"y": float, "x": float, "z": float},
-#     "IK_maly_2_R":          {"y": float, "x": float, "z": float},
-#     "IK_maly_3_R":          {"y": float, "x": float, "z": float},
+#     "IK_maly_1_R":          {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_maly_2_R":          {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_maly_3_R":          {"scale": float, "y": float, "x": float, "z": float},
 #  
-#     "IK_serdeczny_1_R":     {"y": float, "x": float, "z": float}, 
-#     "IK_serdeczny_2_R":     {"y": float, "x": float, "z": float}, 
-#     "IK_serdeczny_3_R":     {"y": float, "x": float, "z": float}, 
+#     "IK_serdeczny_1_R":     {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_serdeczny_2_R":     {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_serdeczny_3_R":     {"scale": float, "y": float, "x": float, "z": float}, 
 #
-#     "IK_srodkowy_1_R":      {"y": float, "x": float, "z": float}, 
-#     "IK_srodkowy_2_R":      {"y": float, "x": float, "z": float}, 
-#     "IK_srodkowy_3_R":      {"y": float, "x": float, "z": float}, 
+#     "IK_srodkowy_1_R":      {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_srodkowy_2_R":      {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_srodkowy_3_R":      {"scale": float, "y": float, "x": float, "z": float}, 
 #
-#     "IK_wskazujacy_1_R":    {"y": float, "x": float, "z": float}, 
-#     "IK_wskazujacy_2_R":    {"y": float, "x": float, "z": float}, 
-#     "IK_wskazujacy_3_R":    {"y": float, "x": float, "z": float}, 
-#     "IK_kciuk_0_R":         {"y": float, "x": float, "z": float},
-#     "IK_kciuk_1_R":         {"y": float, "x": float, "z": float}, 
-#     "IK_kciuk_2_R":         {"y": float, "x": float, "z": float}
+#     "IK_wskazujacy_1_R":    {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_wskazujacy_2_R":    {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_wskazujacy_3_R":    {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_kciuk_0_R":         {"scale": float, "y": float, "x": float, "z": float},
+#     "IK_kciuk_1_R":         {"scale": float, "y": float, "x": float, "z": float}, 
+#     "IK_kciuk_2_R":         {"scale": float, "y": float, "x": float, "z": float}
 # }
 #
 # With example values
 #
-# {
-#     "IK_maly_1_R":          {"y": 0.2, "x": 0.0, "z": 0.7},
-#     "IK_maly_2_R":          {"y": 0.0, "x": 0.0, "z": 0.0},
-#     "IK_maly_3_R":          {"y": 0.0, "x": 0.0, "z": 0.0},
+{
+    "IK_maly_1_R":          {"scale": 0.9, "": 0.2, "x": 0.0, "z": 0.7},
+    "IK_maly_2_R":          {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0},
+    "IK_maly_3_R":          {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0},
  
-#     "IK_serdeczny_1_R":     {"y": 0.2, "x": 0.0, "z": 0.6},
-#     "IK_serdeczny_2_R":     {"y": 0.0, "x": 0.0, "z": 0.0}, 
-#     "IK_serdeczny_3_R":     {"y": 0.0, "x": 0.0, "z": 0.0}, 
+    "IK_serdeczny_1_R":     {"scale": 0.9, "": 0.2, "x": 0.0, "z": 0.6},
+    "IK_serdeczny_2_R":     {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0}, 
+    "IK_serdeczny_3_R":     {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0}, 
 
-#     "IK_srodkowy_1_R":      {"y": 0.2, "x": 0.0, "z": 0.5},
-#     "IK_srodkowy_2_R":      {"y": 0.0, "x": 0.0, "z": 0.0}, 
-#     "IK_srodkowy_3_R":      {"y": 0.0, "x": 0.0, "z": 0.0},
+    "IK_srodkowy_1_R":      {"scale": 0.9, "": 0.2, "x": 0.0, "z": 0.5},
+    "IK_srodkowy_2_R":      {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0}, 
+    "IK_srodkowy_3_R":      {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0},
 
-#     "IK_wskazujacy_1_R":    {"y": 0.2, "x": 0.0, "z": 0.4},
-#     "IK_wskazujacy_2_R":    {"y": 0.0, "x": 0.0, "z": 0.0},
-#     "IK_wskazujacy_3_R":    {"y": 0.0, "x": 0.0, "z": 0.0},
+    "IK_wskazujacy_1_R":    {"scale": 0.9, "": 0.2, "x": 0.0, "z": 0.4},
+    "IK_wskazujacy_2_R":    {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0},
+    "IK_wskazujacy_3_R":    {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.0},
 
-#     "IK_kciuk_0_R":         {"y": 0.5, "x": 0.5, "z": 0.6},
-#     "IK_kciuk_1_R":         {"y": 0.0, "x": 0.0, "z": 0.7}, 
-#     "IK_kciuk_2_R":         {"y": 0.0, "x": 0.0, "z": 0.7}
-# }
+    "IK_kciuk_0_R":         {"scale": 0.9, "": 0.5, "x": 0.5, "z": 0.6},
+    "IK_kciuk_1_R":         {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.7}, 
+    "IK_kciuk_2_R":         {"scale": 0.9, "": 0.0, "x": 0.0, "z": 0.7}
+}

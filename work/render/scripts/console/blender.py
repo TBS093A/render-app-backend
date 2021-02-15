@@ -96,31 +96,31 @@ class RenderGeneral():
         `vectors` - dict with tuples with positions of fingers in hand: (example)
             
             {
-                *   'IK_nadgarstek_R':      {'y': float, 'x': float, 'z': float}, 
-                *   'IK_joint3_R':          {'y': float, 'x': float, 'z': float},
-                'IK_maly_1_R':          {'y': float, 'x': float, 'z': float},
-                'IK_maly_2_R':          {'y': float, 'x': float, 'z': float},
-                'IK_maly_3_R':          {'y': float, 'x': float, 'z': float},
-                *   'IK_joint4_R':          {'y': float, 'x': float, 'z': float}, 
-                'IK_serdeczny_1_R':     {'y': float, 'x': float, 'z': float}, 
-                'IK_serdeczny_2_R':     {'y': float, 'x': float, 'z': float}, 
-                'IK_serdeczny_3_R':     {'y': float, 'x': float, 'z': float}, 
-                *   'IK_joint5_R':          {'y': float, 'x': float, 'z': float}, 
-                'IK_srodkowy_1_R':      {'y': float, 'x': float, 'z': float}, 
-                'IK_srodkowy_2_R':      {'y': float, 'x': float, 'z': float}, 
-                'IK_srodkowy_3_R':      {'y': float, 'x': float, 'z': float}, 
-                *   'IK_joint6_R':          {'y': float, 'x': float, 'z': float}, 
-                'IK_wskazujacy_1_R':    {'y': float, 'x': float, 'z': float}, 
-                'IK_wskazujacy_2_R':    {'y': float, 'x': float, 'z': float}, 
-                'IK_wskazujacy_3_R':    {'y': float, 'x': float, 'z': float}, 
-                'IK_kciuk_0_R':         {'y': float, 'x': float, 'z': float},
-                'IK_kciuk_1_R':         {'y': float, 'x': float, 'z': float}, 
-                'IK_kciuk_2_R':         {'y': float, 'x': float, 'z': float}
+            *   'IK_nadgarstek_R':      {'scale': float, 'y': float, 'x': float, 'z': float}, 
+            *   'IK_joint3_R':          {'scale': float, 'y': float, 'x': float, 'z': float},
+                'IK_maly_1_R':          {'scale': float, 'y': float, 'x': float, 'z': float},
+                'IK_maly_2_R':          {'scale': float, 'y': float, 'x': float, 'z': float},
+                'IK_maly_3_R':          {'scale': float, 'y': float, 'x': float, 'z': float},
+            *   'IK_joint4_R':          {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_1_R':     {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_2_R':     {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_3_R':     {'scale': float, 'y': float, 'x': float, 'z': float}, 
+            *   'IK_joint5_R':          {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_1_R':      {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_2_R':      {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_3_R':      {'scale': float, 'y': float, 'x': float, 'z': float}, 
+            *   'IK_joint6_R':          {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_1_R':    {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_2_R':    {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_3_R':    {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_kciuk_0_R':         {'scale': float, 'y': float, 'x': float, 'z': float},
+                'IK_kciuk_1_R':         {'scale': float, 'y': float, 'x': float, 'z': float}, 
+                'IK_kciuk_2_R':         {'scale': float, 'y': float, 'x': float, 'z': float}
             }
 
             * optional params (extremal)
 
-            min / max single finger rotate scale:
+            min / max single finger rotate (with scale = 0.9):
                 thumb:
                     0 max:
                         y = 0.5
@@ -194,7 +194,7 @@ class RenderGeneral():
         for boneName, quaternion in vectors.items():
             bone = self.bones.pose.bones.get(boneName)
             bone.rotation_quaternion = (
-                9.2,
+                quaternion['scale'],
                 quaternion['y'],
                 quaternion['x'],
                 quaternion['z']
