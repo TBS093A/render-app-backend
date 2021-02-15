@@ -3,6 +3,6 @@ services:
   render_app_backend:
     build: .
     ports:
-      - "9090:9090"
+      - 9090:9090
   redis:
     image: "redis:5"
