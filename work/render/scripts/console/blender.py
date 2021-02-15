@@ -204,6 +204,10 @@ class RenderGeneral():
         self.bones.rotation_euler = (float(rotate), 0, 0)
         self.bones.keyframe_insert('rotation_euler', frame=0)
 
-        self.scene.render.filepath = self.__setFilePathAndName(renderDir, 0, 'customizeVector', cameraID, resolution)
+        self.scene.render.filepath = self.__setFilePathAndNameVector(renderDir, 0, f'{ str(rotate) }_customizeVector', cameraID, resolution)
 
         bpy.ops.render.render(write_still = True)
+
+    @classmethod
+    def __setFilePathAndNameVector(self, dirPath, setID, imageName, cameraID, resolution):
+        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + 'set' + str(setID) + '_name_' + str(imageName) + '_camera' + str(cameraID) + '_size' + str(resolution[0]) + 'x' + str(resolution[1])

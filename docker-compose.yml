@@ -1,8 +1,15 @@
 version: '3.9'
+
+# volumes:
+#   backend_static:
+
 services:
   render_app_backend:
     build: .
     ports:
       - 9090:9090
+    volumes:
+      # - backend_static:/app/static
+      - ~/render_app_static/:/app/static
   redis:
     image: "redis:5"

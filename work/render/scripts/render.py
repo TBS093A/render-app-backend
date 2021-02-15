@@ -175,7 +175,7 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
         cameraID: int, 
         vectors: dict,
         resolution: tuple=(0,0), 
-        renderDir: str='SingleImages', 
+        renderDir: str='SingleImagesVector', 
     ):
         """
         render single image by parameters:
