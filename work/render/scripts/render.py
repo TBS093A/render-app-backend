@@ -3,6 +3,7 @@ from work.settings import RENDER_DIR
 
 from abc import ABC, abstractmethod
 import uuid
+import json
 
 from work.settings import (
     BASE_DIR
@@ -245,7 +246,7 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
                 str(resolution[0]),
                 str(resolution[1]),
                 renderDir,
-                str(vectors)
+                json.dumps(vectors)
             ]
         )
 

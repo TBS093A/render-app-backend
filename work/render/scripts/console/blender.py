@@ -96,26 +96,26 @@ class RenderGeneral():
         `vectors` - dict with tuples with positions of fingers in hand: (example)
             
             {
-                *   'IK_nadgarstek_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                *   'IK_joint3_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
-                'IK_maly_1_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
-                'IK_maly_2_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
-                'IK_maly_3_R':          {'useless': float, 'y': float, 'x': float, 'z': float},
-                *   'IK_joint4_R':          {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_serdeczny_1_R':     {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_serdeczny_2_R':     {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_serdeczny_3_R':     {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                *   'IK_joint5_R':          {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_srodkowy_1_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_srodkowy_2_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_srodkowy_3_R':      {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                *   'IK_joint6_R':          {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_wskazujacy_1_R':    {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_wskazujacy_2_R':    {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_wskazujacy_3_R':    {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_kciuk_0_R':         {'useless': float, 'y': float, 'x': float, 'z': float},
-                'IK_kciuk_1_R':         {'useless': float, 'y': float, 'x': float, 'z': float}, 
-                'IK_kciuk_2_R':         {'useless': float, 'y': float, 'x': float, 'z': float}
+                *   'IK_nadgarstek_R':      {'y': float, 'x': float, 'z': float}, 
+                *   'IK_joint3_R':          {'y': float, 'x': float, 'z': float},
+                'IK_maly_1_R':          {'y': float, 'x': float, 'z': float},
+                'IK_maly_2_R':          {'y': float, 'x': float, 'z': float},
+                'IK_maly_3_R':          {'y': float, 'x': float, 'z': float},
+                *   'IK_joint4_R':          {'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_1_R':     {'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_2_R':     {'y': float, 'x': float, 'z': float}, 
+                'IK_serdeczny_3_R':     {'y': float, 'x': float, 'z': float}, 
+                *   'IK_joint5_R':          {'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_1_R':      {'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_2_R':      {'y': float, 'x': float, 'z': float}, 
+                'IK_srodkowy_3_R':      {'y': float, 'x': float, 'z': float}, 
+                *   'IK_joint6_R':          {'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_1_R':    {'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_2_R':    {'y': float, 'x': float, 'z': float}, 
+                'IK_wskazujacy_3_R':    {'y': float, 'x': float, 'z': float}, 
+                'IK_kciuk_0_R':         {'y': float, 'x': float, 'z': float},
+                'IK_kciuk_1_R':         {'y': float, 'x': float, 'z': float}, 
+                'IK_kciuk_2_R':         {'y': float, 'x': float, 'z': float}
             }
 
             * optional params (extremal)
@@ -192,9 +192,9 @@ class RenderGeneral():
         self.scene.frame_set(0)
 
         for boneName, quaternion in vectors.items():
-            bone = bones.pose.bones.get(boneName)
+            bone = self.bones.pose.bones.get(boneName)
             bone.rotation_quaternion = (
-                quaternion['useless'],
+                9.2,
                 quaternion['y'],
                 quaternion['x'],
                 quaternion['z']

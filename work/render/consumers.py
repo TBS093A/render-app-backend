@@ -23,10 +23,10 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
 
     async def connect(self):
         self.params = self.scope['url_route']['kwargs']
-        self.group_name = 'render'
+        self.group_name = 'render_room_' + self.params['room_uuid']
         
-        for param, value in self.params.items():
-            self.group_name += f'_{param}{value}'
+        # for param, value in self.params.items():
+        #     self.group_name += f'_{param}{value}'
         
         self.channel_layer
 
@@ -48,9 +48,11 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
         try:
             await self.send(f'Render { self.group_name } Has Been Started!')
             await self.render()
-        except:
+        except Exception as error:
             await self.send(f'Render { self.group_name } Has Been Terminated!')
             await self.send(f'Bad Parameter! Type JSON like this: {json.dumps(self.schema)}')
+            await self.send(f'Error: { str(error) }')
+            await self.send(f'Error: { repr(error) }')
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -190,14 +192,14 @@ class RenderAllConsumer(AbstractConsumer):
             )
 
 # test:
-# ws://localhost:9090/render/single/image/vector/<room_uuid>
+# ws://localhost:9090/render/vector/single/image/<room_uuid>
 # {
 #     "fileName": "testHand", 
 #     "setID": 0, 
 #     "rotate": 0.2, 
 #     "nameSeries": 0, 
 #     "cameraID": 1,
-#     "vector": {}, 
+#     "vectors": {}, 
 #     "resolutionX": 1920, 
 #     "resolutionY": 1080
 # }
@@ -254,7 +256,7 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
             float(self.params['rotate']),
             int(self.params['nameSeries']),
             int(self.params['cameraID']),
-            json.loads(self.params['vectors']),
+            self.params['vectors'],
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
@@ -267,13 +269,13 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
         }))
 
 # test:
-# ws://localhost:9090/render/single/set/vector/<room_uuid>
+# ws://localhost:9090/render/vector/single/set/<room_uuid>
 # {
 #     "fileName": "testHand", 
 #     "setID": 0,
 #     "nameSeries": 0, 
 #     "cameraID": 1,
-#     "vector": {}, 
+#     "vectors": {}, 
 #     "resolutionX": 1920, 
 #     "resolutionY": 1080,
 #     "angle": 0.2
@@ -330,7 +332,7 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
         )
         for renderImage in renderSingleSet.render(
             int(self.params['cameraID']),
-            json.loads(self.params['vectors']),
+            self.params['vectors'],
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
@@ -349,256 +351,74 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
 
 # example vectors
 # 
-# in multiline
-# 
+# General
+#
 # {
-#     "IK_nadgarstek_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_joint3_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     },
-#     "IK_maly_1_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     },
-#     "IK_maly_2_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     },
-#     "IK_maly_3_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     },
-#     "IK_joint4_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_serdeczny_1_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_serdeczny_2_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_serdeczny_3_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_joint5_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_srodkowy_1_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_srodkowy_2_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_srodkowy_3_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_joint6_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_wskazujacy_1_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_wskazujacy_2_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_wskazujacy_3_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_kciuk_0_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     },
-#     "IK_kciuk_1_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }, 
-#     "IK_kciuk_2_R": {
-#         "head": {
-#             "x": 0.1445000171661377, 
-#             "y": 0.06353862583637238, 
-#             "z": -0.0073097944259643555
-#         }, 
-#         "tail": {
-#             "x": -0.08322930335998535, 
-#             "y": 0.06281907856464386, 
-#             "z": -0.009127259254455566
-#         }
-#     }
+#     'IK_nadgarstek_R':      {'y': float, 'x': float, 'z': float}, 
+#     'IK_joint3_R':          {'y': float, 'x': float, 'z': float},
+#     'IK_maly_1_R':          {'y': float, 'x': float, 'z': float},
+#     'IK_maly_2_R':          {'y': float, 'x': float, 'z': float},
+#     'IK_maly_3_R':          {'y': float, 'x': float, 'z': float},
+#     'IK_joint4_R':          {'y': float, 'x': float, 'z': float}, 
+#     'IK_serdeczny_1_R':     {'y': float, 'x': float, 'z': float}, 
+#     'IK_serdeczny_2_R':     {'y': float, 'x': float, 'z': float}, 
+#     'IK_serdeczny_3_R':     {'y': float, 'x': float, 'z': float}, 
+#     'IK_joint5_R':          {'y': float, 'x': float, 'z': float}, 
+#     'IK_srodkowy_1_R':      {'y': float, 'x': float, 'z': float}, 
+#     'IK_srodkowy_2_R':      {'y': float, 'x': float, 'z': float}, 
+#     'IK_srodkowy_3_R':      {'y': float, 'x': float, 'z': float}, 
+#     'IK_joint6_R':          {'y': float, 'x': float, 'z': float}, 
+#     'IK_wskazujacy_1_R':    {'y': float, 'x': float, 'z': float}, 
+#     'IK_wskazujacy_2_R':    {'y': float, 'x': float, 'z': float}, 
+#     'IK_wskazujacy_3_R':    {'y': float, 'x': float, 'z': float}, 
+#     'IK_kciuk_0_R':         {'y': float, 'x': float, 'z': float},
+#     'IK_kciuk_1_R':         {'y': float, 'x': float, 'z': float}, 
+#     'IK_kciuk_2_R':         {'y': float, 'x': float, 'z': float}
 # }
-# 
-# in one-liner
-# 
-# {"IK_nadgarstek_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_joint3_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_maly_1_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_maly_2_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_maly_3_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_joint4_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_serdeczny_1_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_serdeczny_2_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_serdeczny_3_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_joint5_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_srodkowy_1_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_srodkowy_2_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_srodkowy_3_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_joint6_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_wskazujacy_1_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_wskazujacy_2_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_wskazujacy_3_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_kciuk_0_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_kciuk_1_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}},"IK_kciuk_2_R":{"head":{"x":0.1445000171661377,"y":0.06353862583637238,"z":-0.0073097944259643555},"tail":{"x":-0.08322930335998535,"y":0.06281907856464386,"z":-0.009127259254455566}}}
-# 
-# in base64
-# 
-# eydJS19uYWRnYXJzdGVrX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfam9pbnQzX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfbWFseV8xX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfbWFseV8yX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfbWFseV8zX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfam9pbnQ0X1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfc2VyZGVjem55XzFfUic6eydoZWFkJzp7J3gnOjAuMTQ0NTAwMDE3MTY2MTM3NywneSc6MC4wNjM1Mzg2MjU4MzYzNzIzOCwneic6LTAuMDA3MzA5Nzk0NDI1OTY0MzU1NX0sJ3RhaWwnOnsneCc6LTAuMDgzMjI5MzAzMzU5OTg1MzUsJ3knOjAuMDYyODE5MDc4NTY0NjQzODYsJ3onOi0wLjAwOTEyNzI1OTI1NDQ1NTU2Nn19LCdJS19zZXJkZWN6bnlfMl9SJzp7J2hlYWQnOnsneCc6MC4xNDQ1MDAwMTcxNjYxMzc3LCd5JzowLjA2MzUzODYyNTgzNjM3MjM4LCd6JzotMC4wMDczMDk3OTQ0MjU5NjQzNTU1fSwndGFpbCc6eyd4JzotMC4wODMyMjkzMDMzNTk5ODUzNSwneSc6MC4wNjI4MTkwNzg1NjQ2NDM4Niwneic6LTAuMDA5MTI3MjU5MjU0NDU1NTY2fX0sJ0lLX3NlcmRlY3pueV8zX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfam9pbnQ1X1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfc3JvZGtvd3lfMV9SJzp7J2hlYWQnOnsneCc6MC4xNDQ1MDAwMTcxNjYxMzc3LCd5JzowLjA2MzUzODYyNTgzNjM3MjM4LCd6JzotMC4wMDczMDk3OTQ0MjU5NjQzNTU1fSwndGFpbCc6eyd4JzotMC4wODMyMjkzMDMzNTk5ODUzNSwneSc6MC4wNjI4MTkwNzg1NjQ2NDM4Niwneic6LTAuMDA5MTI3MjU5MjU0NDU1NTY2fX0sJ0lLX3Nyb2Rrb3d5XzJfUic6eydoZWFkJzp7J3gnOjAuMTQ0NTAwMDE3MTY2MTM3NywneSc6MC4wNjM1Mzg2MjU4MzYzNzIzOCwneic6LTAuMDA3MzA5Nzk0NDI1OTY0MzU1NX0sJ3RhaWwnOnsneCc6LTAuMDgzMjI5MzAzMzU5OTg1MzUsJ3knOjAuMDYyODE5MDc4NTY0NjQzODYsJ3onOi0wLjAwOTEyNzI1OTI1NDQ1NTU2Nn19LCdJS19zcm9ka293eV8zX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfam9pbnQ2X1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfd3NrYXp1amFjeV8xX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfd3NrYXp1amFjeV8yX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfd3NrYXp1amFjeV8zX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fSwnSUtfa2NpdWtfMF9SJzp7J2hlYWQnOnsneCc6MC4xNDQ1MDAwMTcxNjYxMzc3LCd5JzowLjA2MzUzODYyNTgzNjM3MjM4LCd6JzotMC4wMDczMDk3OTQ0MjU5NjQzNTU1fSwndGFpbCc6eyd4JzotMC4wODMyMjkzMDMzNTk5ODUzNSwneSc6MC4wNjI4MTkwNzg1NjQ2NDM4Niwneic6LTAuMDA5MTI3MjU5MjU0NDU1NTY2fX0sJ0lLX2tjaXVrXzFfUic6eydoZWFkJzp7J3gnOjAuMTQ0NTAwMDE3MTY2MTM3NywneSc6MC4wNjM1Mzg2MjU4MzYzNzIzOCwneic6LTAuMDA3MzA5Nzk0NDI1OTY0MzU1NX0sJ3RhaWwnOnsneCc6LTAuMDgzMjI5MzAzMzU5OTg1MzUsJ3knOjAuMDYyODE5MDc4NTY0NjQzODYsJ3onOi0wLjAwOTEyNzI1OTI1NDQ1NTU2Nn19LCdJS19rY2l1a18yX1InOnsnaGVhZCc6eyd4JzowLjE0NDUwMDAxNzE2NjEzNzcsJ3knOjAuMDYzNTM4NjI1ODM2MzcyMzgsJ3onOi0wLjAwNzMwOTc5NDQyNTk2NDM1NTV9LCd0YWlsJzp7J3gnOi0wLjA4MzIyOTMwMzM1OTk4NTM1LCd5JzowLjA2MjgxOTA3ODU2NDY0Mzg2LCd6JzotMC4wMDkxMjcyNTkyNTQ0NTU1NjZ9fX0
-# 
+#
+# Without extremals
+#
+# {
+#     'IK_maly_1_R':          {'y': float, 'x': float, 'z': float},
+#     'IK_maly_2_R':          {'y': float, 'x': float, 'z': float},
+#     'IK_maly_3_R':          {'y': float, 'x': float, 'z': float},
+#  
+#     'IK_serdeczny_1_R':     {'y': float, 'x': float, 'z': float}, 
+#     'IK_serdeczny_2_R':     {'y': float, 'x': float, 'z': float}, 
+#     'IK_serdeczny_3_R':     {'y': float, 'x': float, 'z': float}, 
+#
+#     'IK_srodkowy_1_R':      {'y': float, 'x': float, 'z': float}, 
+#     'IK_srodkowy_2_R':      {'y': float, 'x': float, 'z': float}, 
+#     'IK_srodkowy_3_R':      {'y': float, 'x': float, 'z': float}, 
+#
+#     'IK_wskazujacy_1_R':    {'y': float, 'x': float, 'z': float}, 
+#     'IK_wskazujacy_2_R':    {'y': float, 'x': float, 'z': float}, 
+#     'IK_wskazujacy_3_R':    {'y': float, 'x': float, 'z': float}, 
+#     'IK_kciuk_0_R':         {'y': float, 'x': float, 'z': float},
+#     'IK_kciuk_1_R':         {'y': float, 'x': float, 'z': float}, 
+#     'IK_kciuk_2_R':         {'y': float, 'x': float, 'z': float}
+# }
+#
+# With example values
+#
+# {
+#     'IK_maly_1_R':          {'y': 0.2, 'x': 0.0, 'z': 0.7},
+#     'IK_maly_2_R':          {'y': 0.0, 'x': 0.0, 'z': 0.0},
+#     'IK_maly_3_R':          {'y': 0.0, 'x': 0.0, 'z': 0.0},
+ 
+#     'IK_serdeczny_1_R':     {'y': 0.2, 'x': 0.0, 'z': 0.6},
+#     'IK_serdeczny_2_R':     {'y': 0.0, 'x': 0.0, 'z': 0.0}, 
+#     'IK_serdeczny_3_R':     {'y': 0.0, 'x': 0.0, 'z': 0.0}, 
+
+#     'IK_srodkowy_1_R':      {'y': 0.2, 'x': 0.0, 'z': 0.5},
+#     'IK_srodkowy_2_R':      {'y': 0.0, 'x': 0.0, 'z': 0.0}, 
+#     'IK_srodkowy_3_R':      {'y': 0.0, 'x': 0.0, 'z': 0.0},
+
+#     'IK_wskazujacy_1_R':    {'y': 0.2, 'x': 0.0, 'z': 0.4},
+#     'IK_wskazujacy_2_R':    {'y': 0.0, 'x': 0.0, 'z': 0.0},
+#     'IK_wskazujacy_3_R':    {'y': 0.0, 'x': 0.0, 'z': 0.0},
+
+#     'IK_kciuk_0_R':         {'y': 0.5, 'x': 0.5, 'z': 0.6},
+#     'IK_kciuk_1_R':         {'y': 0.0, 'x': 0.0, 'z': 0.7}, 
+#     'IK_kciuk_2_R':         {'y': 0.0, 'x': 0.0, 'z': 0.7}
+# }
