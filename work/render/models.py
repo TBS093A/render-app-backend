@@ -6,18 +6,17 @@ from rest_framework.response import Response
 from work.account.models import Account
 
 class Model(models.Model):
-    
     name = models.CharField(max_length=255)
-    sets = models.IntegerField()
-    cameras = models.IntegerField()
     model = models.FileField(upload_to='models/')
-
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
 
 
 class RenderAbstract(models.Model):
     name = models.CharField(max_length=30)
     model = models.ForeignKey(Model, on_delete=models.CASCADE)
+    
+    resolutionX = models.IntegerField()
+    resolutionY = models.IntegerField()
 
     def share_archive_of_renders(self):
         file = open(f'renders/{self.name}.7z', 'r')
@@ -29,25 +28,34 @@ class RenderAbstract(models.Model):
 
 
 class RenderAll(RenderAbstract):
-    images_width = models.IntegerField()
-    images_height = models.IntegerField()
+    pass
 
 
-class RenderImage(RenderAll):
+class RenderImage(RenderAbstract):
     setID = models.IntegerField()
+    rotate = models.FloatField()
+    nameSeries = models.IntegerField()
     cameraID = models.IntegerField()
     
 
-class RenderSet(RenderImage):
+class RenderSet(RenderAbstract):
+    setID = models.IntegerField()
+    rotate = models.FloatField()
+    nameSeries = models.IntegerField()
+    cameraID = models.IntegerField()
     angle = models.FloatField()
 
 
-class RenderImageByVector(RenderImage):
-    pass
+class RenderImageByVector(RenderAbstract):
+    rotate = models.FloatField()
+    nameSeries = models.IntegerField()
+    cameraID = models.IntegerField()
 
 
-class RenderSetByVector(RenderSet):
-    pass
+class RenderSetByVector(RenderAbstract):
+    nameSeries = models.IntegerField()
+    cameraID = models.IntegerField()
+    angle = models.FloatField()
 
 
 default_vector = '{"scale": 0.0, "y": 0.0, "x": 0.0, "z": 0.0}'

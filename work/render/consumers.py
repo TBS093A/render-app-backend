@@ -194,8 +194,7 @@ class RenderAllConsumer(AbstractConsumer):
 # test:
 # ws://localhost:9090/render/vector/single/image/<room_uuid>
 # {
-#     "fileName": "testHand", 
-#     "setID": 0, 
+#     "fileName": "testHand",
 #     "rotate": 0.2, 
 #     "nameSeries": 0, 
 #     "cameraID": 1,
