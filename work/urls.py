@@ -29,20 +29,18 @@ urlpatterns = [
     path('', include('work.render.urls'))
 ]
 
-# if settings.DEBUG:
+# schema_view = get_schema_view(
+#     openapi.Info(
+#         title="API",
+#         default_version='0.1',
+#         description="API",
+#         contact=openapi.Contact(email="zukkamil.44@gmail.com"),
+#         license=openapi.License(name="All rights reserved"),
+#     ),
+#     public=True,
+#     permission_classes=(permissions.AllowAny,),
+# )
 
-#     schema_view = get_schema_view(
-#         openapi.Info(
-#             title="API",
-#             default_version='0.1',
-#             description="API",
-#             contact=openapi.Contact(email="zukkamil.44@gmail.com"),
-#             license=openapi.License(name="All rights reserved"),
-#         ),
-#         public=True,
-#         permission_classes=(permissions.AllowAny,),
-#     )
-
-#     urlpatterns += [
-#         path('swagger/', schema_view.with_ui('swagger', cache_timeout=0))
-#     ]
+# urlpatterns += [
+#     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0))
+# ]

@@ -270,8 +270,7 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
 # test:
 # ws://localhost:9090/render/vector/single/set/<room_uuid>
 # {
-#     "fileName": "testHand", 
-#     "setID": 0,
+#     "fileName": "testHand",
 #     "nameSeries": 0, 
 #     "cameraID": 1,
 #     "vectors": {}, 

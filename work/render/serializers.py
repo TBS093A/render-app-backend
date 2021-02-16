@@ -1,4 +1,5 @@
 from rest_framework import serializers
+import json
 
 from .models import (
     Model,
@@ -37,25 +38,34 @@ class RenderSetSerializer(serializers.ModelSerializer):
 
 class ModelSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(max_length=255)
-    sets = serializers.IntegerField()
-    cameras = serializers.IntegerField()
-
+    file_name = serializers.CharField()
+    path = serializers.CharField()
     user_id = serializers.IntegerField()
 
     @staticmethod
-    def create(self, **kwargs) -> dict:
-        newModel = Model(kwargs)
+    def create(**kwargs) -> dict:
+        newModel = Model()
+        newModel.__dict__.update(kwargs)
         newModel.save()
-        return { 'info': 'model has been saved' }
+        return { 
+            'info': 'model has been saved',
+            'effect': newModel.to_dict()
+        }
 
-    @staticmethod
     def update(self, **kwargs) -> dict:
         model = Model.objects.get(id=kwargs['id'])
         model.__dict__.update(kwargs)
         model.save()
-        return { 'info': 'model has been updated' }
+        return { 
+            'info': 'model has been updated',
+            'effect': model.to_dict()
+        }
 
     class Meta:
         model = Model
-        fields = ['id', 'name', 'sets', 'cameras' 'file']
+        fields = [
+            'id', 
+            'file_name', 
+            'path', 
+            'user_id'
+        ]

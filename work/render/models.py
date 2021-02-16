@@ -5,18 +5,30 @@ from rest_framework.response import Response
 
 from work.account.models import Account
 
+from work.settings import (
+    STATIC_ROOT
+)
+
 class Model(models.Model):
-    name = models.CharField(max_length=255)
-    model = models.FileField(upload_to='models/')
+    file_name = models.CharField(max_length=600)
+    path = models.CharField(max_length=600)
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
+
+    def to_dict(self) -> dict:
+        return {
+            'id': self.id,
+            'file_name': self.file_name,
+            'path': self.path,
+            'user_id': self.user.id
+        }
 
 
 class RenderAbstract(models.Model):
     name = models.CharField(max_length=30)
     model = models.ForeignKey(Model, on_delete=models.CASCADE)
     
-    resolutionX = models.IntegerField()
-    resolutionY = models.IntegerField()
+    resolution_x = models.IntegerField()
+    resolution_y = models.IntegerField()
 
     def share_archive_of_renders(self):
         file = open(f'renders/{self.name}.7z', 'r')
@@ -32,29 +44,29 @@ class RenderAll(RenderAbstract):
 
 
 class RenderImage(RenderAbstract):
-    setID = models.IntegerField()
+    set_id = models.IntegerField()
     rotate = models.FloatField()
-    nameSeries = models.IntegerField()
-    cameraID = models.IntegerField()
+    name_series = models.IntegerField()
+    camera_id = models.IntegerField()
     
 
 class RenderSet(RenderAbstract):
-    setID = models.IntegerField()
+    set_id = models.IntegerField()
     rotate = models.FloatField()
-    nameSeries = models.IntegerField()
-    cameraID = models.IntegerField()
+    name_series = models.IntegerField()
+    camera_id = models.IntegerField()
     angle = models.FloatField()
 
 
 class RenderImageByVector(RenderAbstract):
     rotate = models.FloatField()
-    nameSeries = models.IntegerField()
-    cameraID = models.IntegerField()
+    name_series = models.IntegerField()
+    camera_id = models.IntegerField()
 
 
 class RenderSetByVector(RenderAbstract):
-    nameSeries = models.IntegerField()
-    cameraID = models.IntegerField()
+    name_series = models.IntegerField()
+    camera_id = models.IntegerField()
     angle = models.FloatField()
 
 

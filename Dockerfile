@@ -14,8 +14,8 @@ RUN ./packages.sh
 
 RUN python3 manage.py collectstatic --no-input
 
-RUN python3 manage.py makemigrations \
-    && python3 manage.py migrate
+# RUN python3 manage.py makemigrations --no-input \
+#     && python3 manage.py migrate --no-input
 
 RUN ln -s /app/effects /app/static
 

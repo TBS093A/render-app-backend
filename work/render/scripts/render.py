@@ -103,9 +103,9 @@ class RenderSingleSet(AbstractRenderStrategy):
         nameSeries = 0
         renderDir = ''
 
-        if generalDir is '' and resolution[0] is 0 and resolution[1] is 0:
+        if generalDir == '' and resolution[0] == 0 and resolution[1] == 0:
             renderDir = f'Set{ setID }_camera{ cameraID }_sizeDefault'
-        elif generalDir is '':
+        elif generalDir == '':
             renderDir = f'Set{ setID }_camera{ cameraID }_size{ resolution[0] }x{ resolution[1] }'
         else:
             renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'
@@ -144,7 +144,7 @@ class RenderAllSets(AbstractRenderStrategy):
             
             default: 0.2
         """
-        if resolution[0] is 0 and resolution[1] is 0:
+        if resolution[0] == 0 and resolution[1] == 0:
             generalDir = f'AllSets_sizeDefault'
         else:
             generalDir = f'AllSets_size{ resolution[0] }x{ resolution[1] }'
@@ -282,9 +282,9 @@ class RenderSingleSetByVector(AbstractRenderStrategy):
         renderDir = ''
         uuid_hash = uuid.uuid4()
 
-        if generalDir is '' and resolution[0] is 0 and resolution[1] is 0:
+        if generalDir == '' and resolution[0] == 0 and resolution[1] == 0:
             renderDir = f'Set_vector_{ uuid_hash }_camera{ cameraID }_sizeDefault'
-        elif generalDir is '':
+        elif generalDir == '':
             renderDir = f'Set_vector_{ uuid_hash }_camera{ cameraID }_size{ resolution[0] }x{ resolution[1] }'
         else:
             renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'

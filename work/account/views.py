@@ -20,7 +20,7 @@ class AnonAndUserPermissions(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if request.method == 'POST':
             return True
-        return str(obj.username) == str(request.user)
+        return str(obj['username']) == str(request.user)
 
 
 class AccountViewSet(viewsets.ModelViewSet):

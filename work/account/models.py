@@ -6,16 +6,7 @@ from rest_framework.response import Response
 from rest_framework import serializers
 
 
-class AbstractUser(models.Model):
-    city = models.CharField(verbose_name='City', max_length=255)
-    country = models.CharField(verbose_name='Country', max_length=255)
-    ip = models.CharField(verbose_name='IP', max_length=15)
-
-    class Meta:
-        abstract = True
-
-
-class Account(User, AbstractUser):
+class Account(User):
 
     def fromDict(self, dict):
         self.__dict__.update(dict)
@@ -25,10 +16,7 @@ class Account(User, AbstractUser):
             'id': self.id,
             'username': self.username,
             'password': None,
-            'email': self.email,
-            'ip': self.ip,
-            'city': self.city,
-            'country': self.country
+            'email': self.email
         }
 
     @staticmethod
@@ -38,9 +26,6 @@ class Account(User, AbstractUser):
             userDict['email'], 
             userDict['password'],
         )
-        account.ip = userDict['ip']
-        account.city = userDict['city'],
-        account.country = userDict['country']
         account.save()
         return account.toDict()
 

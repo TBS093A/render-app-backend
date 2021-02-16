@@ -12,13 +12,10 @@ class AccountGetSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(read_only = True)
     username = serializers.CharField(max_length = 100)
     email = serializers.EmailField()
-    ip = serializers.CharField(max_length = 12)
-    city = serializers.CharField(max_length = 255)
-    country = serializers.CharField(max_length = 255)
 
     class Meta:
         model = Account
-        fields = ['id', 'username', 'email', 'ip', 'city', 'country']
+        fields = ['id', 'username', 'email']
 
 
 class AccountSerializer(AccountGetSerializer):
@@ -32,7 +29,7 @@ class AccountSerializer(AccountGetSerializer):
 
     class Meta:
         model = Account
-        fields = ['id', 'username', 'password', 'email', 'ip', 'city', 'country']
+        fields = ['id', 'username', 'password', 'email']
 
 class AccountAuthSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length = 100)
