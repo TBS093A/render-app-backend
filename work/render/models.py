@@ -42,12 +42,48 @@ class RenderSet(RenderImage):
     angle = models.FloatField()
 
 
-class FingerVectorsDictAbstract(models.Model):
-    pass
+class Vectors(models.Model):
+    scale   = models.FloatField()
+    y       = models.FloatField()
+    x       = models.FloatField()
+    z       = models.FloatField()
 
-class FingerVectorsDict(FingerVectorsDict):
+
+class FingerVectorsDictAbstract(models.Model):
+    IK_nadgarstek_R     = models.ForeignKey(Vectors, on_delete=models.CASCADE, null=True)
+    
+    IK_joint3_R         = models.ForeignKey(Vectors, on_delete=models.CASCADE, null=True)
+    IK_joint4_R         = models.ForeignKey(Vectors, on_delete=models.CASCADE, null=True)
+    IK_joint5_R         = models.ForeignKey(Vectors, on_delete=models.CASCADE, null=True)
+    IK_joint6_R         = models.ForeignKey(Vectors, on_delete=models.CASCADE, null=True)
+    
+    IK_maly_1_R         = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_maly_2_R         = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_maly_3_R         = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    
+    IK_serdeczny_1_R    = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_serdeczny_2_R    = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_serdeczny_3_R    = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    
+    IK_srodkowy_1_R     = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_srodkowy_2_R     = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_srodkowy_3_R     = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    
+    IK_wskazujacy_1_R   = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_wskazujacy_2_R   = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_wskazujacy_3_R   = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    
+    IK_kciuk_0_R        = models.ForeignKey(Vectors, on_delete=models.CASCADE)         
+    IK_kciuk_1_R        = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+    IK_kciuk_2_R        = models.ForeignKey(Vectors, on_delete=models.CASCADE)
+
+
+class FingerVectorsDict(models.Model):
     render = models.ForeignKey(RenderImageByVector, on_delete=models.CASCADE)
 
 
-class RenderImageByVector(RenderAbstract):
+class RenderImageByVector(RenderImage, FingerVectorsDict):
+    pass
+
+class RenderSetByVector(RenderSet, FingerVectorsDict):
     pass
