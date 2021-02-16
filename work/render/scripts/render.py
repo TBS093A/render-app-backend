@@ -3,6 +3,11 @@ from work.settings import RENDER_DIR
 
 from abc import ABC, abstractmethod
 import uuid
+import json
+
+from work.settings import (
+    BASE_DIR
+)
 
 # Strategy design pattern 
 
@@ -14,7 +19,7 @@ class AbstractRenderStrategy(ABC):
     """
 
     def __init__(self, blenderFile):
-        self.blenderFile = 'static/models/' + blenderFile
+        self.blenderFile = BASE_DIR + '/static/models/' + blenderFile
         self.renderDir = RENDER_DIR + blenderFile[0:-6]
         
         self.slash = chr(92)
@@ -170,7 +175,7 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
         cameraID: int, 
         vectors: dict,
         resolution: tuple=(0,0), 
-        renderDir: str='SingleImages', 
+        renderDir: str='SingleImagesVector', 
     ):
         """
         render single image by parameters:
@@ -241,7 +246,7 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
                 str(resolution[0]),
                 str(resolution[1]),
                 renderDir,
-                str(vectors)
+                json.dumps(vectors)
             ]
         )
 

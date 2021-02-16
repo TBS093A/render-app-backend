@@ -19,7 +19,7 @@ def makeDirIfNotExist(dir):
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-RENDER_DIR = os.path.join(BASE_DIR, 'static/renders')
+RENDER_DIR = os.path.join(BASE_DIR, 'static/render')
 MODEL_DIR = os.path.join(BASE_DIR, 'static/models')
 
 makeDirIfNotExist(RENDER_DIR)
@@ -37,9 +37,11 @@ STATICFILES_DIRS = (
 SECRET_KEY = '0z(0_*lm1a*7p!t^c(2-i!+l7gv!r$z4w@eg78x(1)-a0ze-mu'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "*"
+]
 
 
 # Application definition
@@ -69,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 REST_FRAMEWORK = {
@@ -118,7 +121,10 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('127.0.0.1', 6379)],
+            "hosts": [
+                # ('127.0.0.1', 6379),  # debug
+                ('redis', 6379)         # docker-compose network
+            ],
         },
     },
 }
@@ -171,6 +177,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'effects')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Swagger settings
 

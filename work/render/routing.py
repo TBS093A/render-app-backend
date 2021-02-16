@@ -28,11 +28,11 @@ application = ProtocolTypeRouter({
                 RenderSingleImageConsumer,
             ),
             url(
-                r'^render/single/set/vectors/(?P<room_uuid>[^/]+)', 
+                r'^render/vector/single/set/(?P<room_uuid>[^/]+)', 
                 RenderSingleSetByVectorConsumer,
             ),
             url(
-                r'render/single/image/vectors/(?P<room_uuid>[^/]+)',
+                r'render/vector/single/image/(?P<room_uuid>[^/]+)',
                 RenderSingleImageByVectorConsumer,
             )
         ])
