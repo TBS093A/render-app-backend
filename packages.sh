@@ -22,6 +22,7 @@ pip3 install djangochannelsrestframework==0.1.1
 # pip3 install gunicorn==20.0.4
 pip3 install daphne==3.0.1
 pip3 install whitenoise==5.2.0
+pip3 install django-cors-headers==3.7.0
 
 # blender
 

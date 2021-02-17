@@ -43,6 +43,24 @@ ALLOWED_HOSTS = [
     "*"
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://render-app-frontend:8000'
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'content-type',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
 
 # Application definition
 
@@ -58,6 +76,7 @@ INSTALLED_APPS = [
     'djangochannelsrestframework',
     'drf_yasg',
     'channels',
+    'corsheaders',
     'work',
     'work.account',
     'work.render',
@@ -71,7 +90,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 REST_FRAMEWORK = {
