@@ -18,6 +18,8 @@ class AnonAndUserPermissions(permissions.BasePermission):
     this is override of permissions in settings
     """
     def has_object_permission(self, request, view, obj):
+        if request.method == 'PATCH':
+            return str(obj.username) == str(request.user)
         if request.method == 'POST':
             return True
         return str(obj['username']) == str(request.user)

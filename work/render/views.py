@@ -2,6 +2,8 @@ from rest_framework.response import Response
 from rest_framework.parsers import FileUploadParser
 from rest_framework import viewsets, mixins
 
+from django.http import HttpResponse
+from wsgiref.util import FileWrapper
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
@@ -45,12 +47,31 @@ class ZipUtils():
             os.path.getsize(file) for file in os.listdir(self.path) if os.path.isfile(file)
         )
 
+class AbstractDirsOrFilesAnalyzer():
+
+    DIRECTORY = None
+
+    def listing(self):
+        return Response(
+            {
+                'render_list': os.listdir(self.DIRECTORY)
+            }
+        )
+
+    def get_from_listing(self, index):
+        """
+        file_name, path
+        """
+        file_name = os.listdir(self.DIRECTORY)[index]
+        return file_name, self.DIRECTORY + '/' + file_name
+
 
 class RenderViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
     mixins.DestroyModelMixin,
     viewsets.GenericViewSet,
+    AbstractDirsOrFilesAnalyzer
 ):
     """
     A RenderSet CRUD (abstract from `viewsets.ModelViewSet`):
@@ -61,40 +82,34 @@ class RenderViewSet(
     queryset = RenderSet.objects.all()
     serializer_class = RenderSetSerializer
 
+    DIRECTORY = RENDER_DIR
+
+
     def list(self, request):
-        return Response(
-            {
-                'render_list': os.listdir(RENDER_DIR)
-            }
-        )
+        """
+        get render dir renders listing
+        """
+        return self.listing()
 
     def retrieve(self, request, **kwargs):
-        # try:
+        """
+        download render dir by zip file
+        """
         dir_id = int(kwargs['pk'])
-        path = os.listdir(RENDER_DIR)[dir_id]
-        archive = ZipUtils(path)
-        archiveFile = archive.zipDir()
+        file_name, path = self.get_from_listing(dir_id)
+        archive = ZipUtils(file_name)
+        archive.zipDir()
 
-        # return Response(
-        #     {
-        #         'info': 'zip has been created'
-        #     }
-        # )
-
-        response = FileResponse(archiveFile, content_type='zip')
-        response['Content-Length'] = archive.getSize()
+        zip_file = open(path + '.zip', 'rb')
+        response = HttpResponse(FileWrapper(zip_file), content_type='application/zip')
         response['Content-Disposition'] = f'attachment; filename={archive.name}'
         return response
 
-        # except Exception as error:
-        #     return Response(
-        #         {
-        #             'error': f'{repr(error)}: {str(error)}'
-        #         }
-        #     )
 
-
-class ModelViewSet(viewsets.ModelViewSet):
+class ModelViewSet(
+    viewsets.ModelViewSet,
+    AbstractDirsOrFilesAnalyzer
+):
     """
     A  CRUD (abstract from `viewsets.ModelViewSet`):
         `GET`: `list()`
@@ -105,6 +120,27 @@ class ModelViewSet(viewsets.ModelViewSet):
     """
     queryset = Model.objects.all()
     serializer_class = ModelSerializer
+
+    DIRECTORY = MODEL_DIR
+
+    def list(self, request):
+        """
+        get model dir files listing
+        """
+        return self.listing()
+
+    def retrieve(self, request, **kwargs):
+        """
+        download model by blend file
+        """
+        model_id = int(kwargs['pk'])
+        file_name, path = self.get_from_listing(model_id)
+
+        blend_file = open(path, 'rb')
+        response = HttpResponse(FileWrapper(blend_file), content_type='application/blend')
+        response['Content-Disposition'] = f'attachment; filename={file_name}'
+
+        return response
 
     # How to save textures in blend file:
     # "File"->"External Data"->"Pack All into .blend"

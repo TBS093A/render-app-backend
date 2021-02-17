@@ -2,17 +2,20 @@ from django.db import models
 from django.http import FileResponse
 
 from rest_framework.response import Response
+from abc import ABC, abstractmethod
 
 from work.account.models import Account
 
 from work.settings import (
-    STATIC_ROOT
+    STATIC_ROOT,
+    MODEL_DIR
 )
+
 
 class Model(models.Model):
     file_name = models.CharField(max_length=600)
     path = models.CharField(max_length=600)
-    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    user = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
 
     def to_dict(self) -> dict:
         return {
@@ -22,6 +25,17 @@ class Model(models.Model):
             'user_id': self.user.id
         }
 
+    def update_db(self, params):
+        new_model = Model()
+        new_model.__dict__.update(
+            {
+                'file_name': params['file_or_dir'],
+                'path': params['path'],
+                'user_id': None
+            }
+        )
+        new_model.save()
+
 
 class RenderAbstract(models.Model):
     name = models.CharField(max_length=30)
@@ -29,11 +43,6 @@ class RenderAbstract(models.Model):
     
     resolution_x = models.IntegerField()
     resolution_y = models.IntegerField()
-
-    def share_archive_of_renders(self):
-        file = open(f'renders/{self.name}.7z', 'r')
-        file_download = FileResponse(file, content_type='archive/7zip')
-        file_download['Content-Lenght']
 
     class Meta:
         abstract = True
