@@ -51,18 +51,26 @@ class AbstractDirsOrFilesAnalyzer():
 
     DIRECTORY = None
 
+    def get_list(self) -> list:
+        list_dirs = []
+        for state in os.listdir(self.DIRECTORY):
+            if state[-4:] == '.zip' or state[-7:] == '.blend1':
+                pass
+            else:
+                list_dirs.append(state)
+        return list_dirs
+
+
     def listing(self):
         return Response(
-            {
-                'render_list': os.listdir(self.DIRECTORY)
-            }
+            self.get_list()
         )
 
     def get_from_listing(self, index):
         """
         file_name, path
         """
-        file_name = os.listdir(self.DIRECTORY)[index]
+        file_name = self.get_list()[index]
         return file_name, self.DIRECTORY + '/' + file_name
 
 

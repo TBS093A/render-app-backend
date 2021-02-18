@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.conf.global_settings import (
+    DATA_UPLOAD_MAX_MEMORY_SIZE
+)
 
 def makeDirIfNotExist(dir):
     if not os.path.isdir(dir):
@@ -61,6 +64,7 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000
 
 # Application definition
 
