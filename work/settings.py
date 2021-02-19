@@ -15,18 +15,16 @@ from django.conf.global_settings import (
     DATA_UPLOAD_MAX_MEMORY_SIZE
 )
 
-def makeDirIfNotExist(dir):
-    if not os.path.isdir(dir):
-        os.makedirs(dir)
+from work.env_blender import (
+    RENDER_DIR,
+    MODEL_DIR,
+    BPY_DEFAULT_RENDER_FILE,
+    BPY_RENDER_DIR,
+    BPY_DEVICE
+)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-RENDER_DIR = os.path.join(BASE_DIR, 'static/render')
-MODEL_DIR = os.path.join(BASE_DIR, 'static/models')
-
-makeDirIfNotExist(RENDER_DIR)
-makeDirIfNotExist(MODEL_DIR)
 
 STATICFILES_DIRS = (
     RENDER_DIR,
@@ -221,12 +219,6 @@ SWAGGER_SETTINGS = {
         }
     }
 }
-
-# Blender settings
-
-BPY_DEFAULT_RENDER_FILE = os.path.join(MODEL_DIR, 'uklady_dloni_ver_16_18.01.2014_2.blend')
-BPY_RENDER_DIR = RENDER_DIR
-BPY_DEVICE = 'CPU'
 
 # Celery settings
 

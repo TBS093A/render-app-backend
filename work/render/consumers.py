@@ -21,6 +21,9 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
         'abstract': True
     }
 
+    async def send_json(self, values: dict):
+        await self.send( json.dumps( values ) ) 
+
     async def connect(self):
         self.params = self.scope['url_route']['kwargs']
         self.group_name = 'render_room_' + self.params['room_uuid']
@@ -35,7 +38,7 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
             self.channel_name
         )
         await self.accept()
-        await self.send('type a json')
+        await self.send_json({ 'info': 'Ready to work. Get params' })
 
     @abstractmethod
     async def render(self):
@@ -46,13 +49,13 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
             kwargs['text_data']
         )
         try:
-            await self.send(f'Render { self.group_name } Has Been Started!')
+            await self.send_json({ 'info': f'Render { self.group_name } Has Been Started!' }) 
             await self.render()
         except Exception as error:
-            await self.send(f'Render { self.group_name } Has Been Terminated!')
-            await self.send(f'Bad Parameter! Type JSON like this: {json.dumps(self.schema)}')
-            await self.send(f'Error: { str(error) }')
-            await self.send(f'Error: { repr(error) }')
+            await self.send_json({ 'info': f'Render { self.group_name } Has Been Terminated!' })
+            await self.send_json({ 'info': f'Bad Parameter! Type JSON like this: {json.dumps(self.schema)}' })
+            await self.send_json({ 'error': str(error) })
+            await self.send_json({ 'error': repr(error) })
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
@@ -102,18 +105,19 @@ class RenderSingleImageConsumer(AbstractConsumer):
                 int(self.params['resolutionY'])
             )
         )
-        await self.send(json.dumps({
-            'info': 'render success',
-            'details': self.params,
-            'group': self.group_name
-        }))
+        await self.send_json(
+            {
+                'info': 'render success',
+                'details': self.params,
+                'group': self.group_name
+            }
+        )
 
 # test:
 # ws://localhost:9090/render/single/set/<room_uuid>
 # {
 #     "fileName": "testHand", 
 #     "setID": 0,
-#     "nameSeries": 0, 
 #     "cameraID": 1, 
 #     "resolutionX": 1920, 
 #     "resolutionY": 1080,
@@ -145,13 +149,12 @@ class RenderSingleSetConsumer(AbstractConsumer):
             angle=float(self.params['angle'])
         ):
             await asyncio.sleep(0.5)
-            await self.send(json.dumps(
-                    {
-                        'info': renderImage,
-                        'details': self.params,
-                        'group': self.group_name
-                    }
-                )
+            await self.send_json(
+                {
+                    'info': renderImage,
+                    'details': self.params,
+                    'group': self.group_name
+                }
             )
 
 # test
@@ -182,14 +185,14 @@ class RenderAllConsumer(AbstractConsumer):
             angle=float(self.params['angle'])
         ):
             await asyncio.sleep(0.5)
-            await self.send(json.dumps(
-                    {
-                        'info': renderSet,
-                        'details': self.params,
-                        'group': self.group_name
-                    }
-                )
+            await self.send_json(
+                {
+                    'info': renderSet,
+                    'details': self.params,
+                    'group': self.group_name
+                }
             )
+            
 
 # test:
 # ws://localhost:9090/render/vector/single/image/<room_uuid>
@@ -261,17 +264,18 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
                 int(self.params['resolutionY'])
             )
         )
-        await self.send(json.dumps({
-            'info': 'render success',
-            'details': self.params,
-            'group': self.group_name
-        }))
+        await self.send_json(
+            {
+                'info': 'render success',
+                'details': self.params,
+                'group': self.group_name
+            }
+        )
 
 # test:
 # ws://localhost:9090/render/vector/single/set/<room_uuid>
 # {
 #     "fileName": "testHand",
-#     "nameSeries": 0, 
 #     "cameraID": 1,
 #     "vectors": {}, 
 #     "resolutionX": 1920, 
@@ -284,7 +288,6 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
     schema = {
         'fileName': 'fileName',
         'rotate': 0.0,
-        'nameSeries': 0,
         'cameraID': 0,
         'vectors': {
             'IK_nadgarstek_R': {
@@ -338,14 +341,14 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
             angle=float(self.params['angle'])
         ):
             await asyncio.sleep(0.5)
-            await self.send(json.dumps(
-                    {
-                        'info': renderImage,
-                        'details': self.params,
-                        'group': self.group_name
-                    }
-                )
+            await self.send_json(
+                {
+                    'info': renderImage,
+                    'details': self.params,
+                    'group': self.group_name
+                }
             )
+            
 
 # example vectors
 # 

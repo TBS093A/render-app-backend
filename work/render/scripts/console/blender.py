@@ -2,7 +2,7 @@ import bpy
 import sys
 import os
 
-from work.settings import (
+from work.env_blender import (
     MODEL_DIR,
     BPY_DEFAULT_RENDER_FILE,
     BPY_RENDER_DIR,
