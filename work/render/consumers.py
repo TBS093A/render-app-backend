@@ -1,9 +1,15 @@
 from abc import ABC, abstractmethod
 from channels.generic.websocket import AsyncWebsocketConsumer
+import os
 import json
 import base64
 import sys
 import asyncio
+from datetime import datetime
+
+from work.settings import (
+    RENDER_DIR
+)
 
 from .scripts.render import (
     RenderSingleImage,
@@ -26,7 +32,7 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
 
     async def connect(self):
         self.params = self.scope['url_route']['kwargs']
-        self.group_name = 'render_room_' + self.params['room_uuid']
+        self.group_name = self.params['room_uuid'] # + '_' + str(datetime.now()).replace(' ','_').replace('.','_')
         
         # for param, value in self.params.items():
         #     self.group_name += f'_{param}{value}'
@@ -51,6 +57,7 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
         try:
             await self.send_json({ 'info': f'Render { self.group_name } Has Been Started!' }) 
             await self.render()
+            await self.send_json({ 'info': f'Download Zip Named: { self.group_name } And Check Your Renders!' }) 
         except Exception as error:
             await self.send_json({ 'info': f'Render { self.group_name } Has Been Terminated!' })
             await self.send_json({ 'info': f'Bad Parameter! Type JSON like this: {json.dumps(self.schema)}' })
@@ -62,6 +69,12 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
             self.group_name,
             self.channel_name
         )
+
+    def get_render_image_base64(self, imageName: str):
+        base64_image = b''
+        with open(RENDER_DIR + '/' + self.group_name + '/' + imageName + '.png', 'rb') as image:
+            base64_image = base64.b64encode(image.read())
+        return base64_image.decode('utf-8')
 
     class Meta:
         abstract = True
@@ -214,18 +227,7 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
         'nameSeries': 0,
         'cameraID': 0,
         'vectors': {
-            'IK_nadgarstek_R': {
-                'head': {
-                    'x': 0.1445000171661377, 
-                    'y': 0.06353862583637238, 
-                    'z': -0.0073097944259643555
-                }, 
-                'tail': {
-                    'x': -0.08322930335998535, 
-                    'y': 0.06281907856464386, 
-                    'z': -0.009127259254455566
-                }
-            }, 
+            'IK_nadgarstek_R': {"scale": 0.0, "y": 0.0, "x": 0.0, "z": 0.0}, 
             'IK_joint3_R': {},
             'IK_maly_1_R': {},
             'IK_maly_2_R': {},
@@ -254,21 +256,25 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
         renderSingleImage = RenderSingleImageByVector(
             self.params['fileName'] + '.blend'
         )
+        date = str(datetime.now()).replace(' ','_')
         renderSingleImage.render(
             float(self.params['rotate']),
             int(self.params['nameSeries']),
             int(self.params['cameraID']),
             self.params['vectors'],
+            date,
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
-            )
+            ),
+            renderDir=str(self.group_name)
         )
         await self.send_json(
             {
                 'info': 'render success',
                 'details': self.params,
-                'group': self.group_name
+                'group': self.group_name,
+                'image': self.get_render_image_base64(f'set{0}_deg{ str(float(self.params["rotate"]) * 62) }_customizeVector{ date }_camera{ self.params["cameraID"] }_size{ self.params["resolutionX"] }x{ self.params["resolutionY"] }')
             }
         )
 
@@ -290,18 +296,7 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
         'rotate': 0.0,
         'cameraID': 0,
         'vectors': {
-            'IK_nadgarstek_R': {
-                'head': {
-                    'x': 0.1445000171661377, 
-                    'y': 0.06353862583637238, 
-                    'z': -0.0073097944259643555
-                }, 
-                'tail': {
-                    'x': -0.08322930335998535, 
-                    'y': 0.06281907856464386, 
-                    'z': -0.009127259254455566
-                }
-            }, 
+            'IK_nadgarstek_R': {"scale": 0.0, "y": 0.0, "x": 0.0, "z": 0.0}, 
             'IK_joint3_R': {},
             'IK_maly_1_R': {},
             'IK_maly_2_R': {},
@@ -331,14 +326,17 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
         renderSingleSet = RenderSingleSetByVector(
             self.params['fileName'] + '.blend'
         )
+        date = str(datetime.now()).replace(' ','_')
         for renderImage in renderSingleSet.render(
             int(self.params['cameraID']),
             self.params['vectors'],
+            date,
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
             ),
-            angle=float(self.params['angle'])
+            angle=float(self.params['angle']),
+            generalDir=str(self.group_name)
         ):
             await asyncio.sleep(0.5)
             await self.send_json(

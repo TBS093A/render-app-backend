@@ -3,6 +3,7 @@ from work.settings import RENDER_DIR
 
 from abc import ABC, abstractmethod
 import uuid
+from datetime import datetime
 import json
 
 from work.settings import (
@@ -174,7 +175,8 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
         nameSeries: int, 
         cameraID: int, 
         vectors: dict,
-        resolution: tuple=(0,0), 
+        date: str,
+        resolution: tuple=(0,0),
         renderDir: str='SingleImagesVector', 
     ):
         """
@@ -195,6 +197,8 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
             single images: SingleImages, 
             single sets: Set<setID>_camera<cameraID>_size<width>x<height>
             every sets: AllSets_size<width>x<height>/Set<setID>_camera<cameraID>
+
+        `uuid` - id of image
         
         `vectors` - dict with tuples with positions of fingers in hand: (example)
             
@@ -246,7 +250,8 @@ class RenderSingleImageByVector(AbstractRenderStrategy):
                 str(resolution[0]),
                 str(resolution[1]),
                 renderDir,
-                json.dumps(vectors)
+                json.dumps(vectors),
+                str(date)
             ]
         )
 
@@ -257,7 +262,7 @@ class RenderSingleSetByVector(AbstractRenderStrategy):
         AbstractRenderStrategy.__init__(self, blenderFile)
         self.RenderSingleImage = RenderSingleImageByVector(blenderFile)
 
-    def render(self, cameraID, vectors: dict, resolution=(0,0), angle=0.2, generalDir=''):
+    def render(self, cameraID, vectors: dict, date: str, resolution=(0,0), angle=0.2, generalDir=''):
         """
         render single image by parameters:
 
@@ -296,6 +301,7 @@ class RenderSingleSetByVector(AbstractRenderStrategy):
                 nameSeries, 
                 cameraID, 
                 vectors,
+                date,
                 resolution=resolution, 
                 renderDir=renderDir
             )

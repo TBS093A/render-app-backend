@@ -66,16 +66,19 @@ class RenderGeneral():
         
         self.scene.camera = self.cameras[int(cameraID)]
         self.scene.frame_set(int(setID))
-        self.scene.render.filepath = self.__setFilePathAndName(renderDir, setID, nameSeries, cameraID, resolution)
+        self.scene.render.filepath = self.__setFilePathAndName(
+            renderDir, 
+            f'set_{ setID }_deg{ str(rotate * 62) }_picture_number_{nameSeries}_camera{cameraID}_size{resolution[0]}x{resolution[1]}'
+        )
 
         bpy.ops.render.render(write_still = True)
 
     @classmethod
-    def __setFilePathAndName(self, dirPath, setID, nameSeries, cameraID, resolution):
-        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + 'set' + str(setID) + '_reg' + str(nameSeries) + '_camera' + str(cameraID) + '_size' + str(resolution[0]) + 'x' + str(resolution[1])
+    def __setFilePathAndName(self, dirPath, string):
+        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + string
 
     @classmethod
-    def renderSingleImageByVector(self, rotate, cameraID, resolution, renderDir, vectors):
+    def renderSingleImageByVector(self, rotate, cameraID, resolution, renderDir, vectors, date):
         """
         render single image by parameters:
 
@@ -204,10 +207,15 @@ class RenderGeneral():
         self.bones.rotation_euler = (float(rotate), 0, 0)
         self.bones.keyframe_insert('rotation_euler', frame=0)
 
-        self.scene.render.filepath = self.__setFilePathAndNameVector(renderDir, 0, f'{ str(rotate) }_customizeVector', cameraID, resolution)
+        rotate = float(rotate) * 62
+
+        self.scene.render.filepath = self.__setFilePathAndNameVector(
+            renderDir, 
+            f'set{0}_deg{ rotate }_customizeVector{ date }_camera{ cameraID }_size{ resolution[0] }x{resolution[1]}'
+        )
 
         bpy.ops.render.render(write_still = True)
 
     @classmethod
-    def __setFilePathAndNameVector(self, dirPath, setID, imageName, cameraID, resolution):
-        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + 'set' + str(setID) + '_name_' + str(imageName) + '_camera' + str(cameraID) + '_size' + str(resolution[0]) + 'x' + str(resolution[1])
+    def __setFilePathAndNameVector(self, dirPath, string):
+        return os.path.dirname(self.renderPath) + self.slash + 'render' + self.slash + dirPath + self.slash + string

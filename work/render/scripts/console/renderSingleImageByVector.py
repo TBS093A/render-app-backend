@@ -17,6 +17,7 @@ cameraID = argv[1]
 resolution = (argv[2], argv[3])
 renderDir = argv[4]
 vectors = json.loads(argv[5])
+uuid = argv[6]
 
 render = RenderGeneral()
 render.renderSingleImageByVector(
@@ -24,5 +25,6 @@ render.renderSingleImageByVector(
     cameraID, 
     resolution, 
     renderDir,
-    vectors
+    vectors,
+    uuid
 )
