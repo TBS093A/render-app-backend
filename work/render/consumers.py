@@ -293,7 +293,6 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
 
     schema = {
         'fileName': 'fileName',
-        'rotate': 0.0,
         'cameraID': 0,
         'vectors': {
             'IK_nadgarstek_R': {"scale": 0.0, "y": 0.0, "x": 0.0, "z": 0.0}, 

@@ -292,7 +292,7 @@ class RenderSingleSetByVector(AbstractRenderStrategy):
         elif generalDir == '':
             renderDir = f'Set_vector_{ uuid_hash }_camera{ cameraID }_size{ resolution[0] }x{ resolution[1] }'
         else:
-            renderDir = generalDir + self.slash + f'Set{ setID }_camera{ cameraID }'
+            renderDir = generalDir + self.slash + f'Set{ 0 }_camera{ cameraID }_vector{ date }'
 
         progress = 0 
         while rotate <= 6.2:
