@@ -4,6 +4,10 @@ version: '3.9'
 #   backend_static:
 
 services:
+  render_app_frontend:
+    build: ../work_front
+    ports: 
+      - 8000:8000
   render_app_backend:
     build: .
     ports:
