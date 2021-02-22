@@ -66,9 +66,12 @@ class RenderGeneral():
         
         self.scene.camera = self.cameras[int(cameraID)]
         self.scene.frame_set(int(setID))
+
+        rotate = float(rotate) * 62
+
         self.scene.render.filepath = self.__setFilePathAndName(
             renderDir, 
-            f'set_{ setID }_deg{ str(rotate * 62) }_picture_number_{nameSeries}_camera{cameraID}_size{resolution[0]}x{resolution[1]}'
+            f'set_{ setID }_deg{ rotate }_picture_number_{nameSeries}_camera{cameraID}_size{resolution[0]}x{resolution[1]}'
         )
 
         bpy.ops.render.render(write_still = True)
