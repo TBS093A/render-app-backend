@@ -1,8 +1,14 @@
+# static files
+static/admin
+static/drf-yasg
+static/rest_framework
+
 # blender files
-*.blend
+# *.blend
+# *.blend1
 
 # sqlite database
-db.sqlite3
+*.sqlite3
 
 # every render effects
 *.png

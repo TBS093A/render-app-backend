@@ -1,19 +1,51 @@
 version: '3.9'
 
-# volumes:
-#   backend_static:
-
 services:
-  render_app_frontend:
-    build: ../work_front
+  
+  render-app-frontend:
+    container_name: render-app-frontend
+    build: ../render-app-frontend
+    command:
+      - /bin/sh
+      - -c
+      - |
+        /app/node_modules/.bin/gatsby develop -H 0.0.0.0
     ports: 
       - 8000:8000
-  render_app_backend:
+    environment:
+      HOST: '0.0.0.0'
+      PORT: 8000
+    volumes:
+      - ./../render-app-frontend/public:/app/public
+    networks:
+      - general
+      - micro-services_nginx
+
+  render-app-backend:
+    container_name: render-app-backend
     build: .
     ports:
-      - 9090:9090
+      - 9090
+    environment:
+      ALLOWED_HOSTS: '*'
+      CORS_ALLOWED_ORIGINS: ''
+      CORS_ALLOWED_HEADERS: ''
+      CORS_ORIGIN_WHITELIST: 'http://0.0.0.0;http://nginx;http://render-app-frontend;http://render-app-backend'
     volumes:
-      # - backend_static:/app/static
-      - ~/render_app_static/:/app/static
+      - ./static/:/app/static
+      - ./db.sqlite3:/app/db.sqlite3
+    networks:
+      - general
+      - micro-services_nginx
+  
   redis:
-    image: "redis:5"
+    container_name: redis
+    image: 'redis:5'
+    networks:
+      - general
+
+networks:
+  general:
+    driver: bridge
+  micro-services_nginx:
+    external: true

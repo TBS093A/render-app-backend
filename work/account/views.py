@@ -59,6 +59,7 @@ class AccountAuth(ObtainAuthToken):
     """
     queryset = Account.objects.all()
     serializer_class = AccountAuthSerializer
+    permission_classes = (AnonAndUserPermissions, )
 
     @swagger_auto_schema(
         responses={ 200: '{ Token: Authorize }' },

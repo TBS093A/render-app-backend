@@ -23,6 +23,10 @@ from work.env_blender import (
     BPY_DEVICE
 )
 
+from dotenv import dotenv_values
+
+from corsheaders.defaults import default_headers
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -40,27 +44,35 @@ SECRET_KEY = '0z(0_*lm1a*7p!t^c(2-i!+l7gv!r$z4w@eg78x(1)-a0ze-mu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [
-    "*"
-]
+# env access control
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8000',
-    'http://render-app-frontend:8000'
-]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', default='').split(';')
 
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'content-type',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS', default='http://localhost').split(';')
+
+# CORS_ALLOW_HEADERS = [
+#     'accept',
+#     'accept-encoding',
+#     'content-type',
+#     'authorization',
+#     'content-type',
+#     'dnt',
+#     'origin',
+#     'user-agent',
+#     'x-csrftoken',
+#     'x-requested-with',
+# ] 
+
+CORS_ALLOW_HEADERS = list(default_headers) + os.environ.get('CORS_ALLOWED_HEADERS', default='').split(';')
+
+CORS_ORIGIN_WHITELIST = os.environ.get('CORS_ORIGIN_WHITELIST', default='http://localhost').split(';')
+
+print(ALLOWED_HOSTS)
+print(CORS_ALLOWED_ORIGINS)
+print(CORS_ORIGIN_WHITELIST)
+print(CORS_ALLOW_HEADERS)
+
+# max data size upload
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 524288000
 
@@ -105,7 +117,7 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         # 'rest_framework.permissions.IsAdminUser',
         # 'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        # 'rest_framework.permissions.IsAuthenticatedOrReadOnly',
         # 'rest_framework.permissions.AllowAny'
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
@@ -201,11 +213,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'effects')
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')
-]
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'effects')
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')
+# ]
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Swagger settings
 

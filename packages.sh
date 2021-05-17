@@ -13,17 +13,12 @@ pip3 install channels==2.4.0
 pip3 install channels_redis==3.1.0
 pip3 install djangochannelsrestframework==0.1.1
 
-# postgress
-
-# pip install psycopg2-binary==2.8
-
 # docker
 
-# pip3 install gunicorn==20.0.4
 pip3 install daphne==3.0.1
 pip3 install whitenoise==5.2.0
 pip3 install django-cors-headers==3.7.0
 
-# blender
+# others
 
-    # sudo apt-get install blender===2.91
+pip3 install python-dotenv==0.15.0

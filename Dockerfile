@@ -17,6 +17,6 @@ RUN python3 manage.py collectstatic --no-input
 # RUN python3 manage.py makemigrations --no-input \
 #     && python3 manage.py migrate --no-input
 
-RUN ln -s /app/effects /app/static
+# RUN ln -s /app/effects /app/static
 
 CMD ["daphne", "-b", "0.0.0.0", "-p", "9090", "work.asgi:application"]
