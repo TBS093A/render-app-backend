@@ -1,14 +1,28 @@
+ 
 version: '3.9'
 
 services:
+  # mongo cluster
+  # mongo router
   mongo-router:
-    image: 'mongo:4.4.4'
+    image: 'mongo:4.4.5'
     container_name: mongo-router
     environment: 
       PUID: 1000
       PGID: 1000
-    volumes: 
-      - ./mongodb/router-server/router/database:/data
-    command: mongos --configdb cfgrs/192.168.1.10:50000,192.168.1.10:50000,192.168.1.10:50000 --bind_ip 0.0.0.0 --port 27017
+    command: mongos --configdb cfgrs/mongo-config-server-00:27017,mongo-config-server-01:27017,mongo-config-server-02:27017 --bind_ip 0.0.0.0 --port 27017
     ports:
-      - 40000:27017
+      - 59999:27017
+    expose: 
+      - "27017"
+    volumes: 
+      - ./mongodb/router-server/router/database:/data/db
+    networks: 
+      - mongo-router
+      - config-servers_mongo-config-and-shards
+
+networks:
+  mongo-router:
+    driver: bridge
+  config-servers_mongo-config-and-shards:
+    external: true
