@@ -11,6 +11,10 @@ from work.settings import (
     RENDER_DIR
 )
 
+from .db_client.mongo_db_manager import (
+    MongoDbRequestManager
+)
+
 from .scripts.render import (
     RenderSingleImage,
     RenderSingleSet,
@@ -26,6 +30,9 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
     schema = {
         'abstract': True
     }
+
+    db_manager = MongoDbRequestManager()
+
 
     async def send_json(self, values: dict):
         await self.send( json.dumps( values ) ) 
@@ -76,6 +83,26 @@ class AbstractConsumer(AsyncWebsocketConsumer, ABC):
             base64_image = base64.b64encode(image.read())
         return base64_image.decode('utf-8')
 
+    def insert_render_info_into_db(self, render_type: str, uuid: str = str(self.group_name) ):
+        """
+            `render_type` - choice from:
+
+                '$KEYFRAME#{ set_id }'  - for single image / set from blend file
+
+                '$ALL'                  - for all sets from blend file
+
+                '$SINGLE_VECTOR_IMG'    - for single image as vector customize
+
+                '$SINGLE_VECTOR_SET'    - for single set as vector customize
+
+            `uuid` - render directory (default - room / group uuid)
+        """
+        self.db_manager.insert_render_info(
+            info = self.params,
+            render_type = render_type,
+            uuid = uuid
+        )
+
     class Meta:
         abstract = True
 
@@ -105,6 +132,9 @@ class RenderSingleImageConsumer(AbstractConsumer):
     }
 
     async def render(self):
+        self.insert_render_info_into_db(
+            render_type = f'$SINGLE_IMG$KEYFRAME#{ self.params['setID'] }'
+        )
         renderSingleImage = RenderSingleImage(
             self.params['fileName'] + '.blend'
         )
@@ -116,7 +146,8 @@ class RenderSingleImageConsumer(AbstractConsumer):
             resolution=(
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
-            )
+            ),
+            renderDir=str(self.group_name)
         )
         await self.send_json(
             {
@@ -149,6 +180,9 @@ class RenderSingleSetConsumer(AbstractConsumer):
     }
 
     async def render(self):
+        self.insert_render_info_into_db(
+            render_type = f'$SINGLE_SET$KEYFRAME#{ self.params['setID'] }'
+        )
         renderSingleSet = RenderSingleSet(
             self.params['fileName'] + '.blend'
         )
@@ -159,7 +193,8 @@ class RenderSingleSetConsumer(AbstractConsumer):
                 int(self.params['resolutionX']), 
                 int(self.params['resolutionY'])
             ),
-            angle=float(self.params['angle'])
+            angle=float(self.params['angle']),
+            renderDir=str(self.group_name)
         ):
             await asyncio.sleep(0.5)
             await self.send_json(
@@ -187,6 +222,9 @@ class RenderAllConsumer(AbstractConsumer):
     }
 
     async def render(self):
+        self.insert_render_info_into_db(
+            render_type = f'$ALL'
+        )
         renderAllSets = RenderAllSets(
             self.params['fileName'] + '.blend'
         )
@@ -222,6 +260,7 @@ class RenderAllConsumer(AbstractConsumer):
 class RenderSingleImageByVectorConsumer(AbstractConsumer):
 
     schema = {
+        'renderName': 'renderName',
         'fileName': 'fileName',
         'rotate': 0.0,
         'nameSeries': 0,
@@ -253,6 +292,9 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
     }
 
     async def render(self):
+        self.insert_render_info_into_db(
+            render_type = f'$SINGLE_VECTOR_IMG'
+        )
         renderSingleImage = RenderSingleImageByVector(
             self.params['fileName'] + '.blend'
         )
@@ -292,6 +334,7 @@ class RenderSingleImageByVectorConsumer(AbstractConsumer):
 class RenderSingleSetByVectorConsumer(AbstractConsumer):
 
     schema = {
+        'renderName': 'renderName',
         'fileName': 'fileName',
         'cameraID': 0,
         'vectors': {
@@ -322,6 +365,9 @@ class RenderSingleSetByVectorConsumer(AbstractConsumer):
     }
 
     async def render(self):
+        self.insert_render_info_into_db(
+            render_type = f'$SINGLE_VECTOR_SET'
+        )
         renderSingleSet = RenderSingleSetByVector(
             self.params['fileName'] + '.blend'
         )

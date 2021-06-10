@@ -31,13 +31,14 @@ services:
       CORS_ALLOWED_HEADERS: ''
       CORS_ORIGIN_WHITELIST: 'http://0.0.0.0;http://nginx;http://render-app-frontend;http://render-app-backend'
       MONGO_DB_ADDRESS: 'mongodb://mongo-router:27017'
-      MONGO_DB_NAME: 'render-app'
-      MONGO_COLLECTION_NAME: 'meta-data'
+      MONGO_SHARD_DB_NAME: 'render-app'
+      MONGO_SHARD_COLLECTION_NAME: 'meta-data'
     volumes:
       - ./application/static/:/app/static
       - ./application/db.sqlite3:/app/db.sqlite3
     networks:
       - general
+      - router-server_mongo-router
   
   nginx:
     container_name: nginx
@@ -50,7 +51,7 @@ services:
       - ./application/static:/static
       - ./../render-app-frontend/public:/usr/share/nginx/html/
     networks:
-      - nginx
+      - general
 
   redis:
     container_name: redis

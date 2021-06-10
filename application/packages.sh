@@ -13,6 +13,10 @@ pip3 install channels==2.4.0
 pip3 install channels_redis==3.1.0
 pip3 install djangochannelsrestframework==0.1.1
 
+# databases
+
+pip3 install pymongo==3.11.3
+
 # docker
 
 pip3 install daphne==3.0.1

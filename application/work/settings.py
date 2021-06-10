@@ -67,10 +67,13 @@ CORS_ALLOW_HEADERS = list(default_headers) + os.environ.get('CORS_ALLOWED_HEADER
 
 CORS_ORIGIN_WHITELIST = os.environ.get('CORS_ORIGIN_WHITELIST', default='http://localhost').split(';')
 
-print(ALLOWED_HOSTS)
-print(CORS_ALLOWED_ORIGINS)
-print(CORS_ORIGIN_WHITELIST)
-print(CORS_ALLOW_HEADERS)
+# env MONGO access
+
+MONGO_DB_ADDRESS = os.environ.get('MONGO_DB_ADDRESS', default='missed')
+
+MONGO_SHARD_DB_NAME = os.environ.get('MONGO_SHARD_DB_NAME', default='missed')
+
+MONGO_SHARD_COLLECTION_NAME = os.environ.get('MONGO_SHARD_COLLECTION_NAME', default='missed')
 
 # max data size upload
 

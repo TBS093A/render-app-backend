@@ -60,7 +60,6 @@ class AbstractDirsOrFilesAnalyzer():
                 list_dirs.append(state)
         return list_dirs
 
-
     def listing(self):
         return Response(
             self.get_list()
