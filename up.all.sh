@@ -1,22 +1,18 @@
-# create networks
+# init static file for google monitor django app
 
-    sudo docker network create micro-services_nginx
-    sudo docker network create render-app-backend_general
+    mkdir ./application/static
 
-# run frontend & backend & redis
+# run mongo cluster
 
-    sudo docker-compose up -d
-    sudo docker-compose ps
+    ./micro-services/up.mongo.cluster.sh
 
-    # collect static for backend
+# run render-app-frontend & render-app-backend & nginx
+    # if cannot build use this:
+        # docker-compose build --no-cache   
 
-        sudo docker exec -it render-app-backend python3 manage.py collectstatic --no-input
+    docker-compose -f ./docker-compose.yml up -d
+    docker-compose -f ./docker-compose.yml ps
 
-    # sleep for complete deploy all services
+# generate swagger static files (render-app-backend)
 
-        # sleep 10
-
-# run nginx
-
-    sudo docker-compose -f ./micro-services/docker-compose.yml up -d
-    sudo docker-compose -f ./micro-services/docker-compose.yml ps
+    docker exec -it render-app-backend python manage.py collectstatic --no-input

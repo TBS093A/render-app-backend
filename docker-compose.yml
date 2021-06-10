@@ -19,7 +19,6 @@ services:
       - ./../render-app-frontend/public:/app/public
     networks:
       - general
-      - micro-services_nginx
 
   render-app-backend:
     container_name: render-app-backend
@@ -31,13 +30,28 @@ services:
       CORS_ALLOWED_ORIGINS: ''
       CORS_ALLOWED_HEADERS: ''
       CORS_ORIGIN_WHITELIST: 'http://0.0.0.0;http://nginx;http://render-app-frontend;http://render-app-backend'
+      MONGO_DB_ADDRESS: 'mongodb://mongo-router:27017'
+      MONGO_DB_NAME: 'render-app'
+      MONGO_COLLECTION_NAME: 'meta-data'
     volumes:
-      - ./static/:/app/static
-      - ./db.sqlite3:/app/db.sqlite3
+      - ./application/static/:/app/static
+      - ./application/db.sqlite3:/app/db.sqlite3
     networks:
       - general
-      - micro-services_nginx
   
+  nginx:
+    container_name: nginx
+    image: 'nginx:1.19.0-alpine'
+    ports:
+      - 80:80
+      - 9090:9090
+    volumes:
+      - ./micro-services/nginx:/etc/nginx/conf.d
+      - ./application/static:/static
+      - ./../render-app-frontend/public:/usr/share/nginx/html/
+    networks:
+      - nginx
+
   redis:
     container_name: redis
     image: 'redis:5'
@@ -47,5 +61,5 @@ services:
 networks:
   general:
     driver: bridge
-  micro-services_nginx:
+  router-server_mongo-router:
     external: true

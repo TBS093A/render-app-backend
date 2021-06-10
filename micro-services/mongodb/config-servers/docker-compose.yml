@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  # mongo config servers
+  # master
+  mongo-config-server-00:
+    image: 'mongo:4.4.4'
+    container_name: mongo-config-server-00
+    command: mongod --configsvr --replSet cfgrs --port 27017 --dbpath /data/db
+    ports:
+      - 50000:27017
+    volumes:
+      - ./mongodb/config-servers/config-server-00/database:/data
+
+  # slaves
+  mongo-config-server-01:
+    image: 'mongo:4.4.4'
+    container_name: mongo-config-server-01
+    command: mongod --configsvr --replSet cfgrs --port 27017 --dbpath /data/db
+    ports:
+      - 50001:27017
+    volumes:
+      - ./mongodb/config-servers/config-server-01/database:/data
+  mongo-config-server-02:
+    image: 'mongo:4.4.4'
+    container_name: mongo-config-server-02
+    command: mongod --configsvr --replSet cfgrs --port 27017 --dbpath /data/db
+    ports:
+      - 50002:27017
+    volumes:
+      - ./mongodb/config-servers/config-server-02/database:/data

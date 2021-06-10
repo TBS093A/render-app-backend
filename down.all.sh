@@ -1,12 +1,12 @@
-# down frontend & backend & redis
+# mongo cluster
+    # down mongo config node
+        docker-compose -f ./micro-services/mongodb/config-servers/docker-compose.yml down
 
-    sudo docker-compose down
+    # down mongo shard node
+        docker-compose -f ./micro-services/mongodb/shard-servers/docker-compose.yml down
 
-# down nginx
+    # down mongo cluser router
+        docker-compose -f ./micro-services/mongodb/router-server/docker-compose.yml down
 
-    sudo docker-compose -f ./micro-services/docker-compose.yml down
-
-# remove all networks
-
-    sudo docker network rm micro-services_nginx
-    sudo docker network rm render-app-backend_general
+# down render-app-frontend & render-app-backend & nginx
+    docker-compose -f ./docker-compose.yml down
