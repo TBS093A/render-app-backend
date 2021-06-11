@@ -81,7 +81,6 @@ class MongoDbRequestManager():
             } 
         )
 
-
     def insert_model_info(self, name: str):
         """
             `name` - model name

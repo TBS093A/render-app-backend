@@ -12,6 +12,9 @@ from .models import *
 from .serializers import *
 from .scripts.render import *
 
+from .db_client.mongo_db_manager import (
+    MongoDbRequestManager
+)
 
 from work.settings import (
     MODEL_DIR,
@@ -51,6 +54,8 @@ class AbstractDirsOrFilesAnalyzer():
 
     DIRECTORY = None
 
+    db_manager = MongoDbRequestManager()
+
     def get_list(self) -> list:
         list_dirs = []
         for state in os.listdir(self.DIRECTORY):
@@ -59,11 +64,6 @@ class AbstractDirsOrFilesAnalyzer():
             else:
                 list_dirs.append(state)
         return list_dirs
-
-    def listing(self):
-        return Response(
-            self.get_list()
-        )
 
     def get_from_listing(self, index):
         """
@@ -91,12 +91,25 @@ class RenderViewSet(
 
     DIRECTORY = RENDER_DIR
 
-
     def list(self, request):
         """
         get render dir renders listing
         """
-        return self.listing()
+        listing = []
+        for single_uuid in self.get_list():
+            db_render_details = self.db_manager.get_render_info(
+                uuid = single_uuid
+            )
+            db_render_details['dir'] = single_uuid
+            listing.append(
+                db_render_details
+            )
+        return Response(
+            listing
+        )
+        # return Response(
+        #     self.get_list()
+        # )
 
     def retrieve(self, request, **kwargs):
         """
@@ -134,7 +147,9 @@ class ModelViewSet(
         """
         get model dir files listing
         """
-        return self.listing()
+        return Response(
+            self.get_list()
+        )
 
     def retrieve(self, request, **kwargs):
         """
@@ -163,6 +178,11 @@ class ModelViewSet(
             'path': str(real_path),
             'file_name': str(blend_file)
         }
+
+        self.db_manager.insert_model_info(
+            name = str(blend_file),
+            path = str(real_path)
+        )
 
         serializer = self.serializer_class(data=request_effect, context={'request': request})
         serializer.is_valid(raise_exception=True)
