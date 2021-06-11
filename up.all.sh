@@ -15,4 +15,6 @@
 
 # generate swagger static files (render-app-backend)
 
+    docker exec -it render-app-backend python manage.py makemigrations --no-input
+    docker exec -it render-app-backend python manage.py migrate --no-input
     docker exec -it render-app-backend python manage.py collectstatic --no-input
