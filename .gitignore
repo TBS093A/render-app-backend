@@ -1,7 +1,6 @@
 # static files
-application/static/admin
-application/static/drf-yasg
-application/static/rest_framework
+
+static/
 
 # blender files
 # *.blend
