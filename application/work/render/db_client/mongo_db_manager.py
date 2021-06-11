@@ -81,7 +81,7 @@ class MongoDbRequestManager():
             } 
         )
 
-    def insert_model_info(self, name: str):
+    def insert_model_info(self, name: str, path: str):
         """
             `name` - model name
         """
@@ -91,7 +91,7 @@ class MongoDbRequestManager():
                 'SK': f'$DATE#{ date.today() }'
                 'data': json.dumps(
                     {
-                        'path': f'./static/models/{ name }'
+                        'path': f'{ path }'
                     }
                 )
             } 
