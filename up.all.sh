@@ -10,6 +10,8 @@
 
     # collect static for backend
 
+        sudo docker exec -it render-app-backend python3 manage.py makemigrations --no-input
+        sudo docker exec -it render-app-backend python3 manage.py migrate --no-input
         sudo docker exec -it render-app-backend python3 manage.py collectstatic --no-input
 
     # sleep for complete deploy all services
