@@ -12,6 +12,7 @@ database/
 
 # sqlite database
 *.sqlite3
+database/
 
 # every render effects
 *.png
